@@ -63,7 +63,17 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+}
+
+#section-login-img {
+  background-image: url('https://st3.depositphotos.com/3632179/36314/i/450/depositphotos_363142364-stock-photo-trend-dark-blue-background-leaves.jpg');
+}
+
+#section-login-img::before {
+  background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/9a4755c5-108e-440b-979f-be2641d23783/d4x6dor-104bc481-c68b-439a-afc9-225c6cf729d3.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzlhNDc1NWM1LTEwOGUtNDQwYi05NzlmLWJlMjY0MWQyMzc4M1wvZDR4NmRvci0xMDRiYzQ4MS1jNjhiLTQzOWEtYWZjOS0yMjVjNmNmNzI5ZDMucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.QQSIH0AiF1z100OLnZpXjnY6cub_xBQkHlqWqcAo_gc');
+  mix-blend-mode: screen;
 }
