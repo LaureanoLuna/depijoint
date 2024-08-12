@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import Turno from "./Turno";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCaption, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
 import { CalendarIcon, PlusCircledIcon } from "@radix-ui/react-icons";
+import Boton from "@/assets/components/Boton";
 
 interface Paciente {
     name: string;
@@ -20,12 +20,12 @@ interface TurnoData {
 }
 
 const LIST_PAS: TurnoData[] = [
-    { id: "1", paciente: { name: "Laureano Luna", dni: "38232325" }, hora: "09:30", duracion: "30", estado: false },
+    { id: "1", paciente: { name: "Laureano Luna", dni: "38232325" }, hora: "09:30", duracion: "30", estado: true },
     { id: "2", paciente: { name: "Laureano Luna", dni: "38232325" }, hora: "19:30", duracion: "30", estado: false },
-    { id: "3", paciente: { name: "Laureano Luna", dni: "38232325" }, hora: "08:30", duracion: "30", estado: false },
+    { id: "3", paciente: { name: "Laureano Luna", dni: "38232325" }, hora: "08:30", duracion: "30", estado: true },
     { id: "4", paciente: { name: "Laureano Luna", dni: "38232325" }, hora: "19:30", duracion: "30", estado: false },
-    { id: "5", paciente: { name: "Laureano Luna", dni: "38232325" }, hora: "19:30", duracion: "30", estado: false },
-    { id: "6", paciente: { name: "Laureano Luna", dni: "38232325" }, hora: "19:30", duracion: "30", estado: false },
+    { id: "5", paciente: { name: "Laureano Luna", dni: "38232325" }, hora: "19:30", duracion: "30", estado: true },
+    { id: "6", paciente: { name: "Laureano Luna", dni: "38232325" }, hora: "19:30", duracion: "30", estado: true },
 ];
 
 const Item: React.FC = () => {
@@ -47,7 +47,7 @@ const Item: React.FC = () => {
                         <span>
                             Turnos
                             <CardDescription className="tracking-widest">
-                                del dia 
+                                del dia
                             </CardDescription>
                         </span>
                     </CardTitle>
@@ -62,10 +62,7 @@ const Item: React.FC = () => {
                     onChange={(e) => setDate(new Date(e.target.value))}
                 />
                 <CardHeader>
-                    <Button variant={"outline"} className="flex gap-2 uppercase">
-                        <PlusCircledIcon />
-                        nuevo
-                    </Button>
+                    <Boton prop={{ is_tooltip: false, icono: <PlusCircledIcon />, texto: "Nuevo", tamaño: "default", variante: "outline", estilo: "flex gap-2" }} />
                 </CardHeader>
             </Card>
             <Table className="w-full text-center overflow-visible">
