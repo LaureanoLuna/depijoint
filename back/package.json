@@ -1,0 +1,24 @@
+{
+  "name": "back",
+  "version": "1.0.0",
+  "description": "BackEnd del proyecto DepiJoint",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LaureanoLuna/depijoint.git"
+  },
+  "author": "Laureano Luna",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LaureanoLuna/depijoint/issues"
+  },
+  "homepage": "https://github.com/LaureanoLuna/depijoint#readme",
+  "dependencies": {
+    "express": "^4.19.2",
+    "mysql": "^2.18.1"
+  }
+}

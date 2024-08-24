@@ -5,38 +5,12 @@ import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/ca
 import { Table, TableBody, TableCaption, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { CalendarIcon, PlusCircledIcon } from "@radix-ui/react-icons";
 import Boton from "@/assets/components/Boton";
+import useDateFilter from "@/assets/hooks/useDateFilter";
 
-interface Paciente {
-    name: string;
-    dni: string;
-}
-
-interface TurnoData {
-    id: string;
-    paciente: Paciente;
-    hora: string;
-    duracion: string;
-    estado: boolean;
-}
-
-const LIST_PAS: TurnoData[] = [
-    { id: "1", paciente: { name: "Laureano Luna", dni: "38232325" }, hora: "09:30", duracion: "30", estado: true },
-    { id: "2", paciente: { name: "Laureano Luna", dni: "38232325" }, hora: "19:30", duracion: "30", estado: false },
-    { id: "3", paciente: { name: "Laureano Luna", dni: "38232325" }, hora: "08:30", duracion: "30", estado: true },
-    { id: "4", paciente: { name: "Laureano Luna", dni: "38232325" }, hora: "19:30", duracion: "30", estado: false },
-    { id: "5", paciente: { name: "Laureano Luna", dni: "38232325" }, hora: "19:30", duracion: "30", estado: true },
-    { id: "6", paciente: { name: "Laureano Luna", dni: "38232325" }, hora: "19:30", duracion: "30", estado: true },
-];
-
-const Item: React.FC = () => {
+const ListaTurnos: React.FC = () => {
     const [date, setDate] = useState<Date>(new Date());
 
-    const refactoriDate = (): string => {
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Los meses son 0-indexados
-        const year = date.getFullYear();
-        return `${year}-${month}-${day}`;
-    };
+    const { filteredTurnos, refactoriDate } = useDateFilter({ fecha: date })
 
     return (
         <>
@@ -55,11 +29,8 @@ const Item: React.FC = () => {
                 <input
                     type="date"
                     className="bg-transparent border-2 px-3 py-1 text-white rounded-md w-1/4 text-center text-lg font-semibold"
-                    defaultValue={refactoriDate()}
-                    style={
-                        { fill: 'red' }
-                    }
-                    onChange={(e) => setDate(new Date(e.target.value))}
+                    defaultValue={refactoriDate(date)}
+                    onChange={(e) => setDate(new Date(`${e.target.value}T00:00:00`))}
                 />
                 <CardHeader>
                     <Boton prop={{ is_tooltip: false, icono: <PlusCircledIcon />, texto: "Nuevo", tamaño: "default", variante: "outline", estilo: "flex gap-2" }} />
@@ -76,7 +47,7 @@ const Item: React.FC = () => {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {LIST_PAS.map((pass) => (
+                    {filteredTurnos.map((pass) => (
                         <Turno key={pass.id} prop={pass} />
                     ))}
                 </TableBody>
@@ -85,4 +56,4 @@ const Item: React.FC = () => {
     );
 };
 
-export default Item;
+export default ListaTurnos;
