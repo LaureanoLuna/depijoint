@@ -17,7 +17,7 @@ export default function Layout(props?: ReactElementProps) {
                     <div className="flex flex-col gap-4 items-center" >
                         <Enlace text={"turno"} url="/turnos" />
                         <Enlace aria-label="" text={"pacientes"} url="/turnos" />
-                        <Enlace aria-label="" text={"insumos"} url="/#" />
+                        <Enlace aria-label="" text={"insumos"} url="/addTurno" />
                         <Enlace aria-label="" text={"proveedores"} url="/#" />
                         <Enlace aria-label="" text={"colaboradores"} url="/#" />
                         <Enlace aria-label="" text={"facturacion"} url="/#" />
