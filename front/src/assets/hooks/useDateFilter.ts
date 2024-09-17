@@ -12,7 +12,7 @@ const LIST_PAS: TurnoData[] = [
 ];
 
 /* Hook con el cual manejamos los turnos mediante la fecha */
-function useDateFilter({ fecha }: { fecha: Date }) {
+function useDateFilter({ fecha = new Date() }: { fecha: Date }) {
     const [filteredTurnos, setFilteredTurnos] = useState<TurnoData[]>([]);
 
     /* Funcion con la cual filtramos los turnos mediante la fecha */

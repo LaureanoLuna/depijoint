@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import Turno from "./Turno";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCaption, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { CalendarIcon, PlusCircledIcon } from "@radix-ui/react-icons";
-import Boton from "@/assets/components/Boton";
+import { CalendarIcon } from "@radix-ui/react-icons";
 import useDateFilter from "@/assets/hooks/useDateFilter";
+import AddTurno from "./AddTurno";
 
 const ListaTurnos: React.FC = () => {
     const [date, setDate] = useState<Date>(new Date());
@@ -33,7 +33,7 @@ const ListaTurnos: React.FC = () => {
                     onChange={(e) => setDate(new Date(`${e.target.value}T00:00:00`))}
                 />
                 <CardHeader>
-                    <Boton prop={{ is_tooltip: false, icono: <PlusCircledIcon />, texto: "Nuevo", tamaño: "default", variante: "outline", estilo: "flex gap-2" }} />
+                    <AddTurno />
                 </CardHeader>
             </Card>
             <Table className="w-full text-center overflow-visible">
