@@ -4,8 +4,8 @@ import App from './App.tsx'
 import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Login } from './components/page/auth/Login.tsx'
-import Item from './components/page/admin/turnos/ListaTurnos.tsx'
-import Add from './components/page/admin/turnos/AddTurno.tsx'
+import ListaTurnos from './components/page/admin/turnos/ListaTurnos.tsx'
+import AddTurno from './components/page/admin/turnos/AddTurno.tsx'
 
 const router = createBrowserRouter([
   {
@@ -14,9 +14,12 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/turnos",
-        element: <Item />
+        element: <ListaTurnos />
       },
-      { path: "/addTurno", element: <Add /> }
+      {
+        path: "/add",
+        element: <AddTurno />
+      }
     ]
   },
   { path: "/login", element: <Login /> }
