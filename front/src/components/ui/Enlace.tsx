@@ -10,10 +10,10 @@ export default function Enlace(prop: Text) {
     return (
         <Link
             to={prop.url}
-            className="flex items-center gap-5 rounded-lg bg-muted px-3 py-2 text-primary transition-all border border-transparent hover:border-green-600 w-3/4 uppercase"
+            className="flex items-center lg:gap-5 sm:gap-2 rounded-lg bg-muted px-3 py-2 text-primary transition-all border border-transparent hover:border-green-600 w-3/4 uppercase"
         >
             <span>{prop.icon}</span>
-            {prop.text}
+            <p className="md:block hidden ">{prop.text}</p>
         </Link>
     )
 }

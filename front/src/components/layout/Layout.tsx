@@ -3,7 +3,7 @@
 import { ThemeProvider } from "@/assets/context/ThemeContext";
 import Enlace from "../ui/Enlace";
 import Boton from "@/assets/components/Boton";
-import { ExitIcon } from "@radix-ui/react-icons";
+import { CheckCircledIcon, ExitIcon } from "@radix-ui/react-icons";
 interface ReactElementProps {
     children: React.ReactElement;
 }
@@ -15,12 +15,12 @@ export default function Layout(props?: ReactElementProps) {
                     <h3 className="py-10">texto</h3>
 
                     <div className="flex flex-col gap-4 items-center" >
-                        <Enlace text={"turno"} url="/turnos" />
-                        <Enlace aria-label="" text={"pacientes"} url="/add" />
-                        <Enlace aria-label="" text={"insumos"} url="/#" />
-                        <Enlace aria-label="" text={"proveedores"} url="/#" />
-                        <Enlace aria-label="" text={"colaboradores"} url="/#" />
-                        <Enlace aria-label="" text={"facturacion"} url="/#" />
+                        <Enlace icon={<CheckCircledIcon />} text={"turno"} url="/turnos" />
+                        <Enlace icon={<CheckCircledIcon />} aria-label="" text={"pacientes"} url="/add" />
+                        <Enlace icon={<CheckCircledIcon />} aria-label="" text={"insumos"} url="/#" />
+                        <Enlace icon={<CheckCircledIcon />} aria-label="" text={"proveedores"} url="/#" />
+                        <Enlace icon={<CheckCircledIcon />} aria-label="" text={"colaboradores"} url="/#" />
+                        <Enlace icon={<CheckCircledIcon />} aria-label="" text={"facturacion"} url="/#" />
                     </div>
                     <Boton prop={
                         {
