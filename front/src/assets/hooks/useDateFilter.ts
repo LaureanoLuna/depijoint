@@ -3,12 +3,12 @@ import { useState, useEffect } from 'react';
 import { TurnoData } from '../interfaces/turno';
 
 const LIST_PAS: TurnoData[] = [
-    { id: "1", paciente: { name: "Laureano Luna", dni: "38232325" }, dia: "2024-08-26", hora: "09:30", duracion: "30", estado: true },
-    { id: "2", paciente: { name: "Laureano Luna", dni: "38232325" }, dia: "2024-09-29", hora: "19:30", duracion: "30", estado: true },
-    { id: "3", paciente: { name: "Laureano Luna", dni: "38232325" }, dia: "2024-08-24", hora: "08:30", duracion: "30", estado: true },
-    { id: "4", paciente: { name: "Laureano Luna", dni: "38232325" }, dia: "2024-08-24", hora: "19:30", duracion: "30", estado: true },
-    { id: "5", paciente: { name: "Laureano Luna", dni: "38232325" }, dia: "2024-08-26", hora: "19:30", duracion: "30", estado: true },
-    { id: "6", paciente: { name: "Laureano Luna", dni: "38232325" }, dia: "2024-08-30", hora: "15:30", duracion: "30", estado: true },
+    { id: "1", paciente: { name: "Laureano Luna", dni: "38232325" }, dia: "2025-01-26", hora: "09:30", duracion: "30", estado: true },
+    { id: "2", paciente: { name: "Laureano Luna", dni: "38232325" }, dia: "2025-01-29", hora: "19:30", duracion: "30", estado: true },
+    { id: "3", paciente: { name: "Laureano Luna", dni: "38232325" }, dia: "2025-01-24", hora: "20:30", duracion: "30", estado: true },
+    { id: "4", paciente: { name: "Laureano Luna", dni: "38232325" }, dia: "2025-01-24", hora: "19:30", duracion: "30", estado: true },
+    { id: "5", paciente: { name: "Laureano Luna", dni: "38232325" }, dia: "2025-01-26", hora: "19:30", duracion: "30", estado: true },
+    { id: "6", paciente: { name: "Laureano Luna", dni: "38232325" }, dia: "2025-01-30", hora: "15:30", duracion: "30", estado: true },
 ];
 
 /* Hook con el cual manejamos los turnos mediante la fecha */
