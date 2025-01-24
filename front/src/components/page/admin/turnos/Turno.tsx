@@ -6,9 +6,9 @@ import { CheckIcon, Cross1Icon, Pencil1Icon } from "@radix-ui/react-icons"
 
 export default function Turno({ prop }: { prop: TurnoInterface }) {
 
-    function prueba(): void {
+  /*   function prueba(): void {
         alert("es una prueba")
-    }
+    } */
 
 
     return prop.estado ?
