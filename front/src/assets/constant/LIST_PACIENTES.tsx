@@ -11,7 +11,7 @@ export const LIST_PACIENTE: Paciente[] = [
     direccion: "PO Box 35572",
     fechaNac: new Date("20041018"),
     consentimiento: {
-      tiene: false,
+      tiene: true,
     },
   },
   {
