@@ -1,4 +1,4 @@
-"use client";
+
 import { useState } from "react";
 import Turno from "./Turno";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,6 +6,7 @@ import { Table, TableBody, TableCaption, TableHead, TableHeader, TableRow } from
 import { CalendarIcon } from "@radix-ui/react-icons";
 import useDateFilter from "@/assets/hooks/useDateFilter";
 import AddTurno from "./AddTurno";
+import { TurnoInterface } from "@/assets/interfaces/turno";
 
 const ListaTurnos: React.FC = () => {
     const [date, setDate] = useState<Date>(new Date());
@@ -47,7 +48,7 @@ const ListaTurnos: React.FC = () => {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {filteredTurnos.map((pass) => (
+                    {filteredTurnos.map((pass: TurnoInterface) => (
                         <Turno key={pass.id} prop={pass} />
                     ))}
                 </TableBody>

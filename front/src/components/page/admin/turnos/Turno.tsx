@@ -1,10 +1,10 @@
 import Boton from "@/assets/components/Boton"
-import { TurnoData } from "@/assets/interfaces/turno"
+import { TurnoInterface } from "@/assets/interfaces/turno"
 import { TableCell, TableRow } from "@/components/ui/table"
 import { CheckIcon, Cross1Icon, Pencil1Icon } from "@radix-ui/react-icons"
 
 
-export default function Turno({ prop }: { prop: TurnoData }) {
+export default function Turno({ prop }: { prop: TurnoInterface }) {
 
     function prueba(): void {
         alert("es una prueba")
@@ -14,7 +14,7 @@ export default function Turno({ prop }: { prop: TurnoData }) {
     return prop.estado ?
         (<TableRow className="text-md  hover:bg-green-500 " key={prop.id}>
             <TableCell>
-                <div className="font-medium">{prop.paciente.name}</div>
+                <div className="font-medium">{prop.paciente.nombre}</div>
                 <div className="hidden text-sm text-muted-foreground md:inline">
                     {prop.paciente.dni}
                 </div>
@@ -31,7 +31,7 @@ export default function Turno({ prop }: { prop: TurnoData }) {
                 <Boton prop={{ is_tooltip: true, text_tooltip: "Cancelar ", icono: <Cross1Icon className="h-5 w-5" />, tamaño: "icon", variante: "destructive", estilo: "hover:border-red-600" }} />
             </TableCell>
         </TableRow>) : (
-           console.log("hola")
+           <h1>No Hay</h1>
            
         )
 }

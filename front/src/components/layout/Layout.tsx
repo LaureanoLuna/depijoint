@@ -16,7 +16,7 @@ export default function Layout(props?: ReactElementProps) {
 
                     <div className="flex flex-col gap-4 items-center" >
                         <Enlace icon={<CheckCircledIcon />} text={"turno"} url="/turnos" />
-                        <Enlace icon={<CheckCircledIcon />} aria-label="" text={"pacientes"} url="/add" />
+                        <Enlace icon={<CheckCircledIcon />} aria-label="" text={"pacientes"} url="/pacientes" />
                         <Enlace icon={<CheckCircledIcon />} aria-label="" text={"insumos"} url="/#" />
                         <Enlace icon={<CheckCircledIcon />} aria-label="" text={"proveedores"} url="/#" />
                         <Enlace icon={<CheckCircledIcon />} aria-label="" text={"colaboradores"} url="/#" />

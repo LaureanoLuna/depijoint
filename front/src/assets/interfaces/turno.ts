@@ -1,8 +1,8 @@
-import { PacienteDate } from "./paciente";
+import { Paciente } from "./paciente";
 
-export interface TurnoData {
-    id?: string;
-    paciente: PacienteDate;
+export interface TurnoInterface {
+    id: string;
+    paciente: Paciente;
     dia: string;
     hora: string;
     duracion: string;
@@ -10,7 +10,7 @@ export interface TurnoData {
 }
 
 export interface TurnoAdd {
-    paciente: PacienteDate;
+    paciente: Paciente;
     dia: string;
     hora: string;
     duracion: string;
