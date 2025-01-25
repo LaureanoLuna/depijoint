@@ -1,11 +1,11 @@
 import React from 'react'
-import ReactDOM from 'react-dom/client'
+import ReactDOM from 'react-dom/client';
 import App from './App.tsx'
 import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Login } from './components/page/auth/Login.tsx'
 import ListaTurnos from './components/page/admin/turnos/ListaTurnos.tsx'
-import AddTurno from './components/page/admin/turnos/AddTurno.tsx'
+import PacienteList from './components/page/admin/pacientes/PacienteList.tsx';
 
 const router = createBrowserRouter([
   {
@@ -17,12 +17,15 @@ const router = createBrowserRouter([
         element: <ListaTurnos />
       },
       {
-        path: "/add",
-        element: <AddTurno />
+        path:"/pacientes",
+        element:<PacienteList />
       }
     ]
   },
-  { path: "/login", element: <Login /> }
+  { path: "/login", element: <Login /> },
+  {
+    errorElement:"nada",
+  }
 
 ])
 
