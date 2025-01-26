@@ -2,7 +2,8 @@ import { Paciente } from "../interfaces/paciente";
 
 export const LIST_PACIENTE: Paciente[] = [
   {
-    id: 1,
+    personaId:1,
+    pacienteId: 1,
     nombre: "Wileen Sullens",
     apellido: "Sullens",
     email: "wsullens0@yolasite.com",
@@ -15,7 +16,8 @@ export const LIST_PACIENTE: Paciente[] = [
     },
   },
   {
-    id: 2,
+    personaId:1,
+    pacienteId: 2,
     nombre: "Tiphanie Jeacocke",
     apellido: "Jeacocke",
     email: "tjeacocke1@ow.ly",
@@ -26,7 +28,8 @@ export const LIST_PACIENTE: Paciente[] = [
     consentimiento: { tiene: false },
   },
   {
-    id: 3,
+    personaId:1,
+    pacienteId: 3,
     nombre: "Putnam Hussell",
     apellido: "Hussell",
     email: "phussell2@tumblr.com",
@@ -39,7 +42,8 @@ export const LIST_PACIENTE: Paciente[] = [
     },
   },
   {
-    id: 4,
+    personaId:1,
+    pacienteId: 4,
     nombre: "Errol Falkner",
     apellido: "Falkner",
     email: "efalkner3@prweb.com",
@@ -52,7 +56,8 @@ export const LIST_PACIENTE: Paciente[] = [
     },
   },
   {
-    id: 5,
+    personaId:1,
+    pacienteId: 5,
     nombre: "Barnard McClounan",
     apellido: "McClounan",
     email: "bmcclounan4@trellian.com",
@@ -65,7 +70,8 @@ export const LIST_PACIENTE: Paciente[] = [
     },
   },
   {
-    id: 6,
+    personaId:1,
+    pacienteId: 6,
     nombre: "Cam Daymond",
     apellido: "Daymond",
     email: "cdaymond5@google.de",
@@ -78,7 +84,8 @@ export const LIST_PACIENTE: Paciente[] = [
     },
   },
   {
-    id: 7,
+    personaId:1,
+    pacienteId: 7,
     nombre: "Gearalt Wayte",
     apellido: "Wayte",
     email: "gwayte6@pinterest.com",
@@ -91,7 +98,8 @@ export const LIST_PACIENTE: Paciente[] = [
     },
   },
   {
-    id: 8,
+    personaId:1,
+    pacienteId: 8,
     nombre: "Shanie Greenstead",
     apellido: "Greenstead",
     email: "sgreenstead7@mediafire.com",
@@ -104,7 +112,8 @@ export const LIST_PACIENTE: Paciente[] = [
     },
   },
   {
-    id: 9,
+    personaId:1,
+    pacienteId: 9,
     nombre: "Eberhard O'Sheeryne",
     apellido: "O'Sheeryne",
     email: "eosheeryne8@prnewswire.com",
@@ -117,7 +126,8 @@ export const LIST_PACIENTE: Paciente[] = [
     },
   },
   {
-    id: 10,
+    personaId:1,
+    pacienteId: 10,
     nombre: "Pooh Driffe",
     apellido: "Driffe",
     email: "pdriffe9@technorati.com",

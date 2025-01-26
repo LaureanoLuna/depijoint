@@ -44,7 +44,7 @@ export default function PacienteList() {
         arrTitulos={["", "Nombre", "Apellido", "DNI"]}
       >
         {LIST_PACIENTE.map((paciente: Paciente) => (
-          <TableRow className="text-md hover:bg-green-500" key={paciente.id}>
+          <TableRow className="text-md hover:bg-green-500" key={paciente.pacienteId}>
             {/* Columna para el consentimiento */}
             <TableCell>
               {paciente.consentimiento.tiene ? (

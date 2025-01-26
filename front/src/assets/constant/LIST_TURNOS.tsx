@@ -8,7 +8,7 @@ export const LIST_TURNOS: TurnoInterface[] = [
         duracion: "30",
         estado: true,
         paciente: {
-            id: 1,
+            pacienteId: 1,
             nombre: "Laureano ivan",
             apellido: "luna",
             dni: "38232325",
@@ -26,7 +26,7 @@ export const LIST_TURNOS: TurnoInterface[] = [
         duracion: "30",
         estado: true,
         paciente: {
-            id: 1,
+            pacienteId: 1,
             nombre: "Laureano ivan",
             apellido: "luna",
             dni: "38232325",
@@ -44,7 +44,7 @@ export const LIST_TURNOS: TurnoInterface[] = [
         duracion: "30",
         estado: true,
         paciente: {
-            id: 1,
+            pacienteId: 1,
             nombre: "Laureano ivan",
             apellido: "luna",
             dni: "38232325",
@@ -62,7 +62,7 @@ export const LIST_TURNOS: TurnoInterface[] = [
         duracion: "30",
         estado: true,
         paciente: {
-            id: 1,
+            pacienteId: 1,
             nombre: "Laureano ivan",
             apellido: "luna",
             dni: "38232325",
@@ -80,7 +80,7 @@ export const LIST_TURNOS: TurnoInterface[] = [
         duracion: "30",
         estado: true,
         paciente: {
-            id: 1,
+            pacienteId: 1,
             nombre: "Laureano ivan",
             apellido: "luna",
             dni: "38232325",
@@ -98,7 +98,7 @@ export const LIST_TURNOS: TurnoInterface[] = [
         duracion: "30",
         estado: true,
         paciente: {
-            id: 1,
+            pacienteId: 1,
             nombre: "Laureano ivan",
             apellido: "luna",
             dni: "38232325",

@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
+import { Home, Inbox, Settings, UsersRound, ContactRound } from "lucide-react"
 
 // Menu items.
 export const LIST_RUTAS = [
@@ -13,14 +13,14 @@ export const LIST_RUTAS = [
         icon: Inbox,
     },
     {
-        title: "Calendar",
-        url: "#",
-        icon: Calendar,
+        title: "Asignados",
+        url: "asignados",
+        icon: ContactRound,
     },
     {
-        title: "Search",
+        title: "Colaboradores",
         url: "#",
-        icon: Search,
+        icon: UsersRound,
     },
     {
         title: "Settings",
