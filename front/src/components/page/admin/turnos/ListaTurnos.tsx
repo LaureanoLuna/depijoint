@@ -12,7 +12,7 @@ import { InputFecha } from "@/assets/components/InputFecha";
 const ListaTurnos: React.FC = () => {
     const [date, setDate] = useState<Date>(new Date());
 
-    const { filteredTurnos, refactoriDate } = useDateFilter({ fecha: date });
+    const { filteredTurnos } = useDateFilter({ fecha: date });
 
     return (
         <>

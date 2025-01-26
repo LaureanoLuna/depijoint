@@ -1,12 +1,4 @@
-/* export default function InputFecha({}) {
-  return (
-    <div>InputFecha</div>
-  )
-} */
 
-"use client";
-
-import * as React from "react";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 
@@ -20,8 +12,6 @@ import {
 } from "@/components/ui/popover";
 
 export function InputFecha({ date, funcDate }: { funcDate: any, date: Date }) {
-    //const [date, setDate] = React.useState<Date>();
-
     return (
         <Popover>
             <PopoverTrigger asChild>
