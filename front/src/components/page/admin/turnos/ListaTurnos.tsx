@@ -7,11 +7,12 @@ import { CalendarIcon } from "@radix-ui/react-icons";
 import useDateFilter from "@/assets/hooks/useDateFilter";
 import AddTurno from "./AddTurno";
 import { TurnoInterface } from "@/assets/interfaces/turno";
+import { InputFecha } from "@/assets/components/InputFecha";
 
 const ListaTurnos: React.FC = () => {
     const [date, setDate] = useState<Date>(new Date());
 
-    const { filteredTurnos, refactoriDate } = useDateFilter({ fecha: date })
+    const { filteredTurnos, refactoriDate } = useDateFilter({ fecha: date });
 
     return (
         <>
@@ -27,12 +28,8 @@ const ListaTurnos: React.FC = () => {
                         </span>
                     </CardTitle>
                 </CardHeader>
-                <input
-                    type="date"
-                    className="bg-transparent border-2 px-3 py-1 text-white rounded-md w-1/4 text-center text-lg font-semibold"
-                    defaultValue={refactoriDate(date)}
-                    onChange={(e) => setDate(new Date(`${e.target.value}T00:00:00`))}
-                />
+                
+                <InputFecha date={date} funcDate={setDate} />
                 <CardHeader>
                     <AddTurno />
                 </CardHeader>
