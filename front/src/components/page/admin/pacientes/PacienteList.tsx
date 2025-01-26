@@ -2,6 +2,7 @@ import TablaComponent from "@/assets/components/TablaComponent";
 import { FaWhatsapp } from "react-icons/fa";
 import { BsPatchPlus } from "react-icons/bs";
 import { FaWpforms } from "react-icons/fa";
+import { FiAlertCircle } from "react-icons/fi";
 import {
   Card,
   CardDescription,
@@ -13,7 +14,6 @@ import { LIST_PACIENTE } from "@/assets/constant/LIST_PACIENTES";
 import { Paciente } from "@/assets/interfaces/paciente";
 import { TableCell, TableRow } from "@/components/ui/table";
 import Boton from "@/assets/components/Boton";
-import { Badge } from "@/components/ui/badge";
 
 /**
  * Componente que muestra una lista de pacientes con opciones para agregar nuevos pacientes
@@ -55,7 +55,6 @@ export default function PacienteList() {
                     icono: <FaWpforms size={"20px"} />,
                     tamaño: "icon",
                     variante: "ghost",
-                    texto: "",
                     estilo: "hover:border hover:border-green-900 uppercase",
                     onClick: () => {
                       alert(paciente.telefono); // Muestra el teléfono del paciente
@@ -63,12 +62,19 @@ export default function PacienteList() {
                   }}
                 />
               ) : (
-                <Badge
-                  variant="destructive"
-                  className="text-center"
-                >
-                  Alerta
-                </Badge>
+                <Boton
+                  prop={{
+                    is_tooltip: true,
+                    text_tooltip: "Incompleto",
+                    icono: <FiAlertCircle  />,
+                    tamaño: "icon",
+                    variante: "alert",
+                    estilo: "hover:border hover:border-green-900 uppercase",
+                    onClick: () => {
+                      alert(paciente.telefono); // Muestra el teléfono del paciente
+                    },
+                  }}
+                />
               )}
             </TableCell>
 

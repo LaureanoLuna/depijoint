@@ -26,8 +26,8 @@ export default function Turno({ prop }: { prop: TurnoInterface }) {
                 {prop.duracion} min
             </TableCell>
             <TableCell className="py-2">
-                <Boton prop={{ is_tooltip: true, text_tooltip: "Confirmar", icono: <CheckIcon className="h-6 w-6" />, tamaño: "icon", variante: "ghost", estilo: "hover:border-green-600" }} />
-                <Boton prop={{ is_tooltip: true, text_tooltip: "Editar ", icono: <Pencil1Icon className="h-5 w-5" />, tamaño: "icon", variante: "ghost", estilo: "hover:border-yellow-600" }} />
+                <Boton prop={{ is_tooltip: true, text_tooltip: "Confirmar", icono: <CheckIcon className="h-6 w-6" />, tamaño: "icon", variante: "confirm", estilo: "hover:border-green-600" }} />
+                <Boton prop={{ is_tooltip: true, text_tooltip: "Editar ", icono: <Pencil1Icon className="h-5 w-5" />, tamaño: "icon", variante: "outline", estilo: "hover:border-yellow-600" }} />
                 <Boton prop={{ is_tooltip: true, text_tooltip: "Cancelar ", icono: <Cross1Icon className="h-5 w-5" />, tamaño: "icon", variante: "destructive", estilo: "hover:border-red-600" }} />
             </TableCell>
         </TableRow>) : (

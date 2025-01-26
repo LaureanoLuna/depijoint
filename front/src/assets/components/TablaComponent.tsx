@@ -6,7 +6,6 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { useEffect } from "react";
 
 export default function TablaComponent({
     children,
@@ -15,9 +14,7 @@ export default function TablaComponent({
     children: React.ReactNode;
     arrTitulos: string[]; // Cambiado a string[]
 }) {
-    useEffect(() => {
-        console.log(arrTitulos);
-    }, [arrTitulos]); // Agregado arrTitulos como dependencia
+
 
     return (
         <Table className="w-full text-center overflow-visible">
