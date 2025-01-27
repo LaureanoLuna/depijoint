@@ -19,12 +19,12 @@ export const LIST_RUTAS = [
     },
     {
         title: "Colaboradores",
-        url: "#",
+        url: "colaboradores",
         icon: UsersRound,
     },
     {
         title: "Settings",
         url: "#",
         icon: Settings,
-    },
+    }
 ]

@@ -19,7 +19,7 @@ import Boton from "@/assets/components/Boton";
  * Componente que muestra una lista de pacientes con opciones para agregar nuevos pacientes
  * y realizar acciones sobre ellos.
  */
-export default function PacienteList() {
+export default function ListaPacientes() {
   return (
     <>
       {/* Encabezado de la tarjeta con el título y el botón para agregar pacientes */}

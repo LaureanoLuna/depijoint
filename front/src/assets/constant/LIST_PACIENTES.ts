@@ -16,7 +16,7 @@ export const LIST_PACIENTE: Paciente[] = [
     },
   },
   {
-    personaId:1,
+    personaId:2,
     pacienteId: 2,
     nombre: "Tiphanie Jeacocke",
     apellido: "Jeacocke",
@@ -28,7 +28,7 @@ export const LIST_PACIENTE: Paciente[] = [
     consentimiento: { tiene: false },
   },
   {
-    personaId:1,
+    personaId:3,
     pacienteId: 3,
     nombre: "Putnam Hussell",
     apellido: "Hussell",
@@ -42,7 +42,7 @@ export const LIST_PACIENTE: Paciente[] = [
     },
   },
   {
-    personaId:1,
+    personaId:4,
     pacienteId: 4,
     nombre: "Errol Falkner",
     apellido: "Falkner",
@@ -56,7 +56,7 @@ export const LIST_PACIENTE: Paciente[] = [
     },
   },
   {
-    personaId:1,
+    personaId:5,
     pacienteId: 5,
     nombre: "Barnard McClounan",
     apellido: "McClounan",
@@ -70,7 +70,7 @@ export const LIST_PACIENTE: Paciente[] = [
     },
   },
   {
-    personaId:1,
+    personaId:6,
     pacienteId: 6,
     nombre: "Cam Daymond",
     apellido: "Daymond",
@@ -84,7 +84,7 @@ export const LIST_PACIENTE: Paciente[] = [
     },
   },
   {
-    personaId:1,
+    personaId:7,
     pacienteId: 7,
     nombre: "Gearalt Wayte",
     apellido: "Wayte",
@@ -98,7 +98,7 @@ export const LIST_PACIENTE: Paciente[] = [
     },
   },
   {
-    personaId:1,
+    personaId:8,
     pacienteId: 8,
     nombre: "Shanie Greenstead",
     apellido: "Greenstead",
@@ -112,7 +112,7 @@ export const LIST_PACIENTE: Paciente[] = [
     },
   },
   {
-    personaId:1,
+    personaId:9,
     pacienteId: 9,
     nombre: "Eberhard O'Sheeryne",
     apellido: "O'Sheeryne",
@@ -126,7 +126,7 @@ export const LIST_PACIENTE: Paciente[] = [
     },
   },
   {
-    personaId:1,
+    personaId:10,
     pacienteId: 10,
     nombre: "Pooh Driffe",
     apellido: "Driffe",

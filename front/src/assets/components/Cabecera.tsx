@@ -8,15 +8,15 @@ import {
 interface CabeceraProps {
   titulo: string;
   descripcion: string;
-  hijoMedio?: React.ReactNode; // Cambiado a React.ReactNode para permitir más tipos de hijos
-  botonAcion?: React.ReactNode; // Cambiado a React.ReactNode para permitir más tipos de hijos
+  contenidoMedio?: React.ReactNode; // Cambiado a React.ReactNode para permitir más tipos de hijos
+  botonAccion?: React.ReactNode; // Cambiado a React.ReactNode para permitir más tipos de hijos
 }
 
 export default function Cabecera({
   titulo,
   descripcion,
-  botonAcion,
-  hijoMedio,
+  botonAccion,
+  contenidoMedio,
 }: CabeceraProps) {
   return (
     <Card className="flex justify-between items-center px-5">
@@ -29,10 +29,10 @@ export default function Cabecera({
         </CardTitle>
       </CardHeader>
       <CardHeader>        
-        {hijoMedio}
+        {contenidoMedio}
       </CardHeader>
       <CardHeader>
-      {botonAcion} {/* Simplificado el renderizado de children */}
+      {botonAccion} {/* Simplificado el renderizado de children */}
       </CardHeader>
     </Card>
   );

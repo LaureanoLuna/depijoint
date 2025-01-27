@@ -5,7 +5,9 @@ import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Login } from './components/page/auth/Login.tsx'
 import ListaTurnos from './components/page/admin/turnos/ListaTurnos.tsx'
-import PacienteList from './components/page/admin/pacientes/PacienteList.tsx';
+import ListaPacientes from './components/page/admin/pacientes/ListaPacientes.tsx';
+import ListaAsignados from './components/page/admin/asignados/ListaAsignados.tsx';
+import ListaColaboradores from './components/page/admin/colaboradores/ListaColaboradores.tsx';
 
 const router = createBrowserRouter([
   {
@@ -18,11 +20,15 @@ const router = createBrowserRouter([
       },
       {
         path:"/pacientes",
-        element:<PacienteList />
+        element:<ListaPacientes />
       },
       {
         path:"/asignados",
-        element: <h1>hola</h1>
+        element: <ListaAsignados />
+      },
+      {
+        path:"/colaboradores",
+        element:<ListaColaboradores />
       }
     ]
   },

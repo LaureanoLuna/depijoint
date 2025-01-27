@@ -3,54 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { FormLateral } from "@/assets/components/FormLateral";
-import { Paciente } from "@/assets/interfaces/paciente";
-
-const PACIENTES_LIST: Paciente[] = [
-  {
-    id: 1,
-    nombre: "Laureano",
-    dni: "38232325",
-    apellido: "luna",
-    consentimiento: { tiene: false },
-    direccion: "Nahuel 696",
-    email: "Laureano@gmail.com",
-    fechaNac: new Date("19940622"),
-    telefono: "123456789",
-  },
-  {
-    id: 2,
-    nombre: "Antonella",
-    dni: "36841599",
-    apellido: "luna",
-    consentimiento: { tiene: false },
-    direccion: "Nahuel 696",
-    email: "Laureano@gmail.com",
-    fechaNac: new Date("19940622"),
-    telefono: "123456789",
-  },
-  {
-    id: 3,
-    nombre: "Oscar",
-    dni: "13599001",
-    apellido: "luna",
-    consentimiento: { tiene: false },
-    direccion: "Nahuel 696",
-    email: "Laureano@gmail.com",
-    fechaNac: new Date("19940622"),
-    telefono: "123456789",
-  },
-  {
-    id: 4,
-    nombre: "Tachi",
-    dni: "16852699",
-    apellido: "luna",
-    consentimiento: { tiene: false },
-    direccion: "Nahuel 696",
-    email: "Laureano@gmail.com",
-    fechaNac: new Date("19940622"),
-    telefono: "123456789",
-  },
-];
+import { LIST_PACIENTE } from "@/assets/constant/LIST_PACIENTES";
 
 export default function AddTurno() {
   /* Funcion para la refactirizacion de la fecha ingresada por el usuario */
@@ -112,9 +65,9 @@ export default function AddTurno() {
             {...register("paciente", { required: true })}
             className="w-full py-1.5 px-1 border-[1px] rounded-sm bg-transparent border-gray-800"
           >
-            {PACIENTES_LIST.map((paciente) => {
+            {LIST_PACIENTE.map((paciente) => {
               return (
-                <option className="" key={paciente.id} value={paciente.dni}>
+                <option className="" key={paciente.pacienteId} value={paciente.dni}>
                   {paciente.nombre}
                 </option>
               );
