@@ -67,7 +67,7 @@ export default function AddTurno() {
           >
             {LIST_PACIENTE.map((paciente) => {
               return (
-                <option className="" key={paciente.pacienteId} value={paciente.dni}>
+                <option className="" key={paciente.dni} value={paciente.dni}>
                   {paciente.nombre}
                 </option>
               );

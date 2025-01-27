@@ -21,9 +21,9 @@ export default function Cabecera({
   return (
     <Card className="flex justify-between items-center px-5">
       <CardHeader>
-        <CardTitle className="text-justify text-xl uppercase flex flex-col items-center gap-2">
+        <CardTitle className="text-start text-xl uppercase flex flex-col items-start gap-2">
           <span>{titulo}</span>
-          <CardDescription className="tracking-widest text-center">
+          <CardDescription className="tracking-widest text-center ">
             {descripcion}
           </CardDescription>
         </CardTitle>
