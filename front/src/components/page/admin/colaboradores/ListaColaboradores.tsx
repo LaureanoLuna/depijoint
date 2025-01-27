@@ -31,7 +31,7 @@ export default function ListaColaboradores() {
       >
         {LIST_COLABORADORES?.map((colaborador: Colaborador) => (
           <TableRow
-            className="text-md hover:bg-green-500"
+            className="text-md "
             key={colaborador.colaboradorId}
           >
             {/* Columna para el nombre completo */}

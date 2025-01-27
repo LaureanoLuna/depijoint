@@ -29,6 +29,10 @@ const router = createBrowserRouter([
       {
         path:"/colaboradores",
         element:<ListaColaboradores />
+      },
+      {
+        path:"/zonas",
+        element:""
       }
     ]
   },
