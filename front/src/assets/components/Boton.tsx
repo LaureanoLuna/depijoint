@@ -7,18 +7,18 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-interface Props {
+interface BotonProps {
   icono?: ReactElement;
   is_tooltip: boolean; // Cambié a boolean en lugar de false
   text_tooltip?: string; // Cambié String a string
   texto?: string; // Cambié String a string
   tamaño: "icon" | "lg" | "sm" | "default";
-  variante: "ghost" | "secondary" | "destructive" | "outline" | "link" | "confirm" | "alert";
-  estilo: string; // Cambié String a string
+  variante: "ghost" | "secondary" | "destructive" | "outline" | "link" | "confirm" | "alert" | "delete";
+  estilo?: string; // Cambié String a string
   onClick?: () => void;
 }
 
-export default function Boton({ prop }: { prop: Props }) {
+export default function Boton({ prop }: { prop: BotonProps }) {
   const buttonElement = (
     <Button
       asChild
