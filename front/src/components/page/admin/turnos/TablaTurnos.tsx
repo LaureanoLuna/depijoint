@@ -32,8 +32,8 @@ export default function TablaTurnos() {
   return (
     <>
       <Cabecera
-        titulo="Prueba"
-        descripcion="Desc"
+        titulo="Turnos"
+        descripcion="Turnos del dia"
         contenidoMedio={<InputFecha date={date} funcDate={setDate} />}
         botonAccion={<AddTurno />}
       />

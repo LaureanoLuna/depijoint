@@ -19,16 +19,16 @@ export default function Cabecera({
   contenidoMedio,
 }: CabeceraProps) {
   return (
-    <Card className="flex justify-between items-center px-5">
-      <CardHeader>
-        <CardTitle className="text-start text-xl uppercase flex flex-col items-start gap-2">
+    <Card className="grid grid-cols-2 gap-2 md:flex flex-col-reverse md:flex-row justify-between items-center">
+      <CardHeader className="hidden md:block">
+        <CardTitle className="text-start text-xl uppercase md:flex flex-col items-start gap-2">
           <span>{titulo}</span>
           <CardDescription className="tracking-widest text-center ">
             {descripcion}
           </CardDescription>
         </CardTitle>
       </CardHeader>
-      <CardHeader>        
+      <CardHeader >        
         {contenidoMedio}
       </CardHeader>
       <CardHeader>
