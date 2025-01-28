@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/table";
 
 import { Input } from "@/components/ui/input";
+import Seleccion from "../Seleccion";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -45,17 +46,26 @@ export function Tabla<TData, TValue>({
         getSortedRowModel: getSortedRowModel(),
         state: {
             sorting,
+            columnFilters
         },
     });
 
+    const [seleccion, setSeleccion] = React.useState("nombre");
+
+    const manejaCambioSeleccion = (e: string) => {
+        let opcion = e.toLowerCase()
+        setSeleccion(opcion);
+    }
+
     return (
         <>
-            <div className="flex items-center py-4">
+            <div className="flex items-center py-4 gap-2">
+                <Seleccion opciones={['Nombre', 'Usuario', 'Clave']} titulo={'Filtro'} funccion={manejaCambioSeleccion} />
                 <Input
                     placeholder="Filter emails..."
-                    value={(table.getColumn("nombre")?.getFilterValue() as string) ?? ""}
+                    value={(table.getColumn(seleccion)?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
-                        table.getColumn("nombre")?.setFilterValue(event.target.value)
+                        table.getColumn(seleccion)?.setFilterValue(event.target.value)
                     }
                     className="max-w-sm"
                 />
