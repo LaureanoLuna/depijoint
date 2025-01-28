@@ -1,4 +1,4 @@
-import { ReactElement, forwardRef } from "react";
+import { forwardRef } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -6,17 +6,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { BotonProps } from "../interfaces/props/BotonProps";
 
-interface BotonProps {
-  icono?: ReactElement;
-  is_tooltip: boolean;
-  text_tooltip?: string;
-  texto?: string;
-  tamaño: "icon" | "lg" | "sm" | "default";
-  variante: "ghost" | "secondary" | "destructive" | "outline" | "link" | "confirm" | "alert" | "delete";
-  estilo?: string;
-  onClick?: () => void;
-}
+
 
 const Boton = forwardRef<HTMLButtonElement, { prop: BotonProps }>(
   ({ prop }, ref) => {
