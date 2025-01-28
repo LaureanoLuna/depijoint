@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { TurnoInterface } from "../interfaces/turno";
+import { TurnoInterface, TurnoLista } from "../interfaces/turno";
 import { LIST_TURNOS } from "../constant/LIST_TURNOS";
+import { formatearListaTurnos } from "../function/formatearListaTurnos";
 
 
 /* Hook con el cual manejamos los turnos mediante la fecha */
 function useDateFilter({ fecha = new Date() }: { fecha: Date }) {
-    const [filteredTurnos, setFilteredTurnos] = useState<TurnoInterface[]>([]);
+    const [filteredTurnos, setFilteredTurnos] = useState<TurnoLista[]>([]);
 
     /* Funcion con la cual filtramos los turnos mediante la fecha */
     const dateFilter = (turnos: TurnoInterface[], fecha: Date) => {
@@ -23,7 +24,7 @@ function useDateFilter({ fecha = new Date() }: { fecha: Date }) {
     };
 
     useEffect(() => {
-        setFilteredTurnos(dateFilter(LIST_TURNOS, fecha));
+        setFilteredTurnos(formatearListaTurnos(dateFilter(LIST_TURNOS, fecha)));
     }, [fecha]);
 
     return { filteredTurnos, refactoriDate };

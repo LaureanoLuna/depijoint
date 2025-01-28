@@ -4,11 +4,11 @@ import App from './App'
 import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Login } from './components/page/auth/Login'
-import ListaTurnos from './components/page/admin/turnos/ListaTurnos'
 import ListaPacientes from './components/page/admin/pacientes/ListaPacientes';
 import ListaAsignados from './components/page/admin/asignados/ListaAsignados';
 import ListaColaboradores from './components/page/admin/colaboradores/ListaColaboradores';
 import ListaZonas from './components/page/admin/zonas/ListaZonas';
+import TablaTurnos from './components/page/admin/turnos/TablaTurnos';
 
 const router = createBrowserRouter([
   {
@@ -17,7 +17,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/turnos",
-        element: <ListaTurnos />
+        element: <TablaTurnos />
       },
       {
         path: "/pacientes",

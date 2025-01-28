@@ -1,2 +1,2 @@
 
-export const LIST_ASIGNADOS:
+//export const LIST_ASIGNADOS:[]

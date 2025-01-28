@@ -31,6 +31,6 @@ export const Columna: ColumnDef<Colaborador>[] = [
 
 export default function TablaColaboradores() {
   return (
-    <Tabla columns={Columna} data={LIST_COLABORADORES} />
+    <Tabla columns={Columna} data={LIST_COLABORADORES} opcionesFilto={['Nombre', 'Usuario', 'Clave']} />
   )
 }

@@ -14,5 +14,16 @@ export interface TurnoAdd {
     dia: string;
     hora: string;
     duracion: string;
-    estado: boolean ;
+    estado: boolean;
+}
+
+export interface TurnoLista {
+    id: string;
+    nombre: string;
+    dni: string;
+    consentimiento: boolean;
+    dia: string;
+    hora: string;
+    duracion: string;
+    estado: boolean;
 }

@@ -27,11 +27,13 @@ import Seleccion from "../Seleccion";
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
+    opcionesFilto:string[];
 }
 
 export function Tabla<TData, TValue>({
     columns,
     data,
+    opcionesFilto
 }: DataTableProps<TData, TValue>) {
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
     const [sorting, setSorting] = React.useState<SortingState>([])
@@ -50,7 +52,7 @@ export function Tabla<TData, TValue>({
         },
     });
 
-    const [seleccion, setSeleccion] = React.useState("nombre");
+    const [seleccion, setSeleccion] = React.useState(opcionesFilto[0].toLowerCase());
 
     const manejaCambioSeleccion = (e: string) => {
         let opcion = e.toLowerCase()
@@ -60,14 +62,14 @@ export function Tabla<TData, TValue>({
     return (
         <>
             <div className="flex items-center py-4 gap-2">
-                <Seleccion opciones={['Nombre', 'Usuario', 'Clave']} titulo={'Filtro'} funccion={manejaCambioSeleccion} />
+                <Seleccion opciones={opcionesFilto} titulo={'Filtro'} funccion={manejaCambioSeleccion} />
                 <Input
-                    placeholder="Filter emails..."
+                    placeholder="..."
                     value={(table.getColumn(seleccion)?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
                         table.getColumn(seleccion)?.setFilterValue(event.target.value)
                     }
-                    className="max-w-sm"
+                    className="max-w-xs"
                 />
             </div>
             <div className="rounded-md border">
@@ -98,7 +100,7 @@ export function Tabla<TData, TValue>({
                                     data-state={row.getIsSelected() && "selected"}
                                 >
                                     {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id}>
+                                        <TableCell key={cell.id} className="text-start">
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </TableCell>
                                     ))}
