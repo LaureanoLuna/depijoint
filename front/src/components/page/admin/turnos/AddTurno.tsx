@@ -1,3 +1,4 @@
+import React from "react";
 import { TurnoAdd } from "@/assets/interfaces/turno";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Label } from "@/components/ui/label";
@@ -7,6 +8,15 @@ import { LIST_PACIENTE } from "@/assets/constant/LIST_PACIENTES";
 import { SeleccionComponente } from "@/assets/components/SeleccionComponente";
 import { listaPacienteReducida } from "@/assets/function/formatearListaTurnos";
 import { FormAdd } from "./FormAdd";
+import { PacienteSelect } from "@/assets/interfaces/paciente";
+import Seleccion from "@/assets/components/Seleccion";
+import { Select } from "@/components/ui/select";
+import {
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@radix-ui/react-select";
 
 export default function AddTurno() {
   /* Funcion para la refactirizacion de la fecha ingresada por el usuario */
@@ -32,13 +42,43 @@ export default function AddTurno() {
 
   const listaPacientes = listaPacienteReducida(LIST_PACIENTE);
 
+  const [filtroPacientes, setFiltroPaciente] =
+    React.useState<PacienteSelect[]>(listaPacientes);
+
+  const handleFiltroPaciente = (
+    lista: PacienteSelect[],
+    input: string
+  ): void => {
+    const filtroPacientes = lista.filter(
+      (l) =>
+        l.apellido.includes(input) ||
+        l.dni.includes(input) ||
+        l.nombre.includes(input)
+    );
+    setFiltroPaciente(filtroPacientes);
+  };
+
+  const [inputFiltro, setinputFiltro] = React.useState<String>("");
+
   const onSubmit: SubmitHandler<TurnoAdd> = (data) => console.log(data);
 
   const Formulario = () => {
     return (
       <form onSubmit={handleSubmit(onSubmit)} className="p-10">
         <div className="mb-5">
-          
+          <Input type={"text"} value={inputFiltro} onKeyDown={handleFiltroPaciente} />
+          <Select onValueChange={(e) => console.log(e)}>
+            <SelectTrigger className="w-[120px]">
+              <SelectValue placeholder={"Pruba"} />
+            </SelectTrigger>
+            <SelectContent>
+              {filtroPacientes?.map((o, i) => (
+                <SelectItem className="capitalize" key={i} value={o.dni}>
+                  {o.nombre}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
         <div className="mb-5">
           <Label>Dia</Label>
