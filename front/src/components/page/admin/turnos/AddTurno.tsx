@@ -1,11 +1,12 @@
 import { TurnoAdd } from "@/assets/interfaces/turno";
-import { useForm, SubmitHandler, useWatch } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { FormLateral } from "@/assets/components/FormLateral";
 import { LIST_PACIENTE } from "@/assets/constant/LIST_PACIENTES";
 import { SeleccionComponente } from "@/assets/components/SeleccionComponente";
 import { listaPacienteReducida } from "@/assets/function/formatearListaTurnos";
+import { FormAdd } from "./FormAdd";
 
 export default function AddTurno() {
   /* Funcion para la refactirizacion de la fecha ingresada por el usuario */
@@ -22,7 +23,6 @@ export default function AddTurno() {
     handleSubmit,
     setValue,
     formState: { errors },
-    watch
   } = useForm<TurnoAdd>({
     defaultValues: {
       duracion: "",
@@ -31,14 +31,6 @@ export default function AddTurno() {
   });
 
   const listaPacientes = listaPacienteReducida(LIST_PACIENTE);
-  const pacienteValue = watch('paciente.dni'); // Observa el valor del paciente
-
-  const manejaSelect = (valor:string)=>{
-    console.log(valor);
-    
-        watch('paciente.dni',valor);
-  }
-
 
   const onSubmit: SubmitHandler<TurnoAdd> = (data) => console.log(data);
 
@@ -46,10 +38,7 @@ export default function AddTurno() {
     return (
       <form onSubmit={handleSubmit(onSubmit)} className="p-10">
         <div className="mb-5">
-          <SeleccionComponente lista={listaPacientes}
-            onClick={manejaSelect}
-          />
-          {errors.paciente && <p role="alert">El paciente es requerido</p>}
+          
         </div>
         <div className="mb-5">
           <Label>Dia</Label>
@@ -77,8 +66,6 @@ export default function AddTurno() {
             <p role="alert">Es un dato requerido y minimo son 10 min</p>
           )}
         </div>
-
-
 
         <input
           className=" border p-2 rounded-md hover:bg-gray-500 hover:text-black hover:font-semibold w-full mt-5"
