@@ -1,3 +1,4 @@
+import { Paciente, PacienteSelect } from "../interfaces/paciente";
 import { TurnoInterface, TurnoLista } from "../interfaces/turno";
 
 export function formatearListaTurnos(turnos: TurnoInterface[]): TurnoLista[] {
@@ -18,4 +19,19 @@ export function formatearListaTurnos(turnos: TurnoInterface[]): TurnoLista[] {
     });
 
     return arr; // Devuelve el array de turnos formateados
+}
+
+export function listaPacienteReducida(pacientes: Paciente[]): PacienteSelect[] {
+    const arr: PacienteSelect[] = [];
+
+    pacientes.forEach((paciente: Paciente) => {
+        const listapaciente: PacienteSelect = {
+            pacienteId: paciente.pacienteId,
+            nombre: paciente.nombre,
+            apellido: paciente.apellido,
+            dni: paciente.dni
+        }
+        arr.push(listapaciente)
+    });
+    return arr;
 }

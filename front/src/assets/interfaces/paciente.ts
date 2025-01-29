@@ -9,3 +9,10 @@ export interface Paciente extends Persona {
   fechaNac: Date; // Asegúrate de validar que sea una fecha válida
   consentimiento: Consentimiento;
 }
+
+export interface PacienteSelect extends Persona {
+  pacienteId: number;
+  nombre: string;
+  apellido: string;
+  dni: string;
+}
