@@ -16,15 +16,13 @@ const usePacienteAccion = () => {
    * @returns Una promesa que resuelve cuando se encuentra el paciente.
    */
   const buscaPaciente = async (dni: PersonaSearch): Promise<void> => {
-    const localStorageP:Paciente[] =  JSON.parse(localStorage.getItem("pacientes") || "[]");
-    console.log(localStorageP);
-    
+    const localStorageP:Paciente[] =  JSON.parse(localStorage.getItem("pacientes") || "[]");    
 
     // Busca el paciente en la lista usando el DNI
     const pac = localStorageP.find((paciente) => paciente.dni === dni.dni);
 
     // Si no se encuentra el paciente, se sale de la función
-    if (!pac) return;
+    if (!pac) setPaciente(undefined);
 
     // Actualiza el estado con el paciente encontrado
     setPaciente(pac);

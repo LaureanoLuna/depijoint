@@ -29,11 +29,11 @@ export default function InputSearch<T extends FieldValues>({
   return (
     <form
       onSubmit={handleSubmit(onSearch)}
-      className="grid grid-cols-4 items-center gap-1 mt-5"
+      className="grid grid-cols-4 items-start gap-1 mt-5 "
     >
       <div className="col-span-3">
         <Input
-          className="col-span-3"
+          className="col-span-3 relative"
           {...register(inputName as string, {
             required: "Este campo es requerido",
           })}
@@ -41,7 +41,7 @@ export default function InputSearch<T extends FieldValues>({
           placeholder={placeholder}
         />
         {errors[inputName] && (
-          <span className="text-red-500">{errors[inputName]?.message}</span>
+          <span className="text-red-500 top-full left-0">{errors[inputName]?.message}</span>
         )}
       </div>
       <Button

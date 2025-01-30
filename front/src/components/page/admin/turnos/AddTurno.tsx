@@ -7,6 +7,8 @@ import { PersonaSearch } from "@/assets/interfaces/persona";
 import InputSearch from "./InputSearch";
 import usePacienteAccion from "@/assets/hooks/usePacienteAccion";
 import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 /**
  * Componente para agregar un turno.
@@ -44,7 +46,12 @@ export default function AddTurno() {
    * @param data - Datos del formulario.
    */
   const onSubmit: SubmitHandler<TurnoAdd> = (data) => {
-    console.log(data, paciente?.dni);
+    //const x = buscaPaciente(paciente?.dni);
+    if (paciente?.consentimiento.tiene) {
+      console.log(data, paciente?.dni);
+    } else {
+      console.error("Legajo incompleto");
+    }
   };
 
   /**
@@ -66,55 +73,76 @@ export default function AddTurno() {
           placeholder="Ingrese el DNI"
         />
         <form onSubmit={handleSubmit(onSubmit)} className="p-5">
-          <div className="grid grid-rows-2 mb-2">
-            <span className="row-span-1">{paciente?.nombre}</span>
-            <span className="row-span-1 text-sm ml-2 text-slate-600">
-              DNI: {paciente?.dni}
-            </span>
-            <span>{paciente?.consentimiento.tiene}</span>
-          </div>
-          <input
-            type="hidden"
-            id="dniPacienteSearch"
-            {...register("dni")}
-          />
+          {paciente ? (
+            <Card className={`grid grid-rows-2 mb-2  min-h-20 p-2 transform `}>
+              <CardTitle className="row-span-1">{paciente?.nombre}, {paciente.apellido}
+              <CardDescription className="row-span-1 text-sm ml-2 text-slate-600">
+                <small>DNI:</small> {paciente?.dni}
+              </CardDescription>
+              </CardTitle>
+            </Card>
+          ) : (
+            <Card className={`grid grid-rows-3 mb-2 min-h-20 p-2 transform `}>
+              <div>Legajo Incompleto </div>
+            </Card>
+          )}
+
+          <input type="hidden" id="dniPacienteSearch" {...register("dni")} />
           <div className="mb-5">
             <Label>Día</Label>
             <Input
+              disabled={!paciente?.consentimiento.tiene ?? false}
               type="date"
               {...register("dia", {
                 required: "Este campo es requerido",
                 validate: {
                   isFutureDate: (value) =>
-                    new Date(value) >= new Date() || "No se pueden fechas ya pasadas",
+                    new Date(value) >= new Date() ||
+                    "No se pueden fechas ya pasadas",
                 },
               })}
             />
-            {errors.dia && <p role="alert" className="text-red-500">{errors.dia.message}</p>}
+            {errors.dia && (
+              <p role="alert" className="text-red-500">
+                {errors.dia.message}
+              </p>
+            )}
           </div>
           <div className="mb-5">
             <Label>Hora</Label>
             <Input
+              disabled={!paciente?.consentimiento.tiene ?? false}
               type="time"
               {...register("hora", { required: "La hora es requerida" })}
             />
-            {errors.hora && <p role="alert" className="text-red-500">{errors.hora.message}</p>}
+            {errors.hora && (
+              <p role="alert" className="text-red-500">
+                {errors.hora.message}
+              </p>
+            )}
           </div>
           <div className="mb-5">
             <Label>Duración</Label>
             <Input
-              {...register("duracion", { required: "Es un dato requerido y mínimo son 10 min", min: 10 })}
+              disabled={!paciente?.consentimiento.tiene ?? false}
+              {...register("duracion", {
+                required: "Es un dato requerido y mínimo son 10 min",
+                min: 10,
+              })}
             />
             {errors.duracion && (
-              <p role="alert" className="text-red-500">{errors.duracion.message}</p>
+              <p role="alert" className="text-red-500">
+                {errors.duracion.message}
+              </p>
             )}
           </div>
-          <button
+          <Button
+            disabled={!paciente?.consentimiento.tiene ?? false}
             className="border p-2 rounded-md hover:bg-gray-500 hover:text-black hover:font-semibold w-full mt-5"
             type="submit"
           >
             Cargar
-          </button>
+          </Button>
         </form>
       </>
     );
