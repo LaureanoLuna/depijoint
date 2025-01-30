@@ -2,6 +2,7 @@ import { ReactElement } from "react";
 
 export interface BotonProps {
     icono?: ReactElement;
+    tipo?:"text"|"submit" | "reset" | "button" | undefined;
     is_tooltip: boolean;
     text_tooltip?: string;
     texto?: string;
