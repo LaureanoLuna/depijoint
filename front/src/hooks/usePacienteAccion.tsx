@@ -3,19 +3,32 @@ import { Paciente } from "@/assets/interfaces/paciente";
 import { PersonaSearch } from "@/assets/interfaces/persona";
 import { useState } from "react";
 
+/**
+ * Hook personalizado para manejar la búsqueda de pacientes.
+ * @returns Un objeto que contiene el paciente encontrado y la función para buscar un paciente.
+ */
 const usePacienteAccion = () => {
-  const [paciente, setPaciente] = useState<Paciente>();
+  // Estado para almacenar el paciente encontrado
+  const [paciente, setPaciente] = useState<Paciente | undefined>(undefined);
 
-  const buscaPaciente = (dni: PersonaSearch) : any => {
-    const pac = LIST_PACIENTE.find((pac) => pac.dni === dni.dni);
-    if (pac) {
-      setPaciente(pac);
-    }
-    console.log(paciente);
+  /**
+   * Busca un paciente por su DNI.
+   * @param dni - Objeto que contiene el DNI del paciente a buscar.
+   * @returns Una promesa que resuelve cuando se encuentra el paciente.
+   */
+  const buscaPaciente = async (dni: PersonaSearch): Promise<void> => {
+    // Busca el paciente en la lista usando el DNI
+    const pac = LIST_PACIENTE.find((paciente) => paciente.dni === dni.dni);
     
+    // Si no se encuentra el paciente, se sale de la función
+    if (!pac) return;
+
+    // Actualiza el estado con el paciente encontrado
+    setPaciente(pac);
   };
 
-return { paciente, buscaPaciente };
+  // Retorna el paciente y la función de búsqueda
+  return { paciente, buscaPaciente };
 };
 
 export default usePacienteAccion;
