@@ -1,4 +1,3 @@
-import { LIST_PACIENTE } from "@/assets/constant/LIST_PACIENTES";
 import { Paciente } from "@/assets/interfaces/paciente";
 import { PersonaSearch } from "@/assets/interfaces/persona";
 import { useState } from "react";
@@ -17,9 +16,13 @@ const usePacienteAccion = () => {
    * @returns Una promesa que resuelve cuando se encuentra el paciente.
    */
   const buscaPaciente = async (dni: PersonaSearch): Promise<void> => {
-    // Busca el paciente en la lista usando el DNI
-    const pac = LIST_PACIENTE.find((paciente) => paciente.dni === dni.dni);
+    const localStorageP:Paciente[] =  JSON.parse(localStorage.getItem("pacientes") || "[]");
+    console.log(localStorageP);
     
+
+    // Busca el paciente en la lista usando el DNI
+    const pac = localStorageP.find((paciente) => paciente.dni === dni.dni);
+
     // Si no se encuentra el paciente, se sale de la función
     if (!pac) return;
 

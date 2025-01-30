@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { FormLateral } from "@/assets/components/FormLateral";
 import { PersonaSearch } from "@/assets/interfaces/persona";
 import InputSearch from "./InputSearch";
-import usePacienteAccion from "@/hooks/usePacienteAccion";
+import usePacienteAccion from "@/assets/hooks/usePacienteAccion";
 import { useEffect } from "react";
 
 /**
