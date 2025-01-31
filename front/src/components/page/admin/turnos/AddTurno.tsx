@@ -8,7 +8,8 @@ import InputSearch from "./InputSearch";
 import usePacienteAccion from "@/assets/hooks/usePacienteAccion";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import ListContrataciones from "./ListContrataciones";
 
 /**
  * Componente para agregar un turno.
@@ -40,18 +41,14 @@ export default function AddTurno() {
   });
 
   const { paciente, buscaPaciente } = usePacienteAccion();
+  //const { contratacion, searchContratacion } = useContratacionAccion();
 
   /**
    * Maneja el envío del formulario.
    * @param data - Datos del formulario.
    */
   const onSubmit: SubmitHandler<TurnoAdd> = (data) => {
-    //const x = buscaPaciente(paciente?.dni);
-    if (paciente?.consentimiento.tiene) {
-      console.log(data, paciente?.dni);
-    } else {
-      console.error("Legajo incompleto");
-    }
+    
   };
 
   /**
@@ -59,11 +56,12 @@ export default function AddTurno() {
    * @returns Formulario para agregar un turno.
    */
   const Formulario = () => {
+
     useEffect(() => {
       if (paciente) {
         setValue("dni", paciente.dni);
       }
-    }, [paciente, setValue]);
+    }, [paciente,setValue]);
 
     return (
       <>
@@ -80,6 +78,9 @@ export default function AddTurno() {
                 <small>DNI:</small> {paciente?.dni}
               </CardDescription>
               </CardTitle>
+              <CardDescription>
+                <ListContrataciones dniPaciente={paciente.dni} />
+              </CardDescription>
             </Card>
           ) : (
             <Card className={`grid grid-rows-3 mb-2 min-h-20 p-2 transform `}>
@@ -91,7 +92,7 @@ export default function AddTurno() {
           <div className="mb-5">
             <Label>Día</Label>
             <Input
-              disabled={!paciente?.consentimiento.tiene ?? false}
+              disabled={paciente?.consentimiento.tiene ? false : true}
               type="date"
               {...register("dia", {
                 required: "Este campo es requerido",
@@ -111,7 +112,7 @@ export default function AddTurno() {
           <div className="mb-5">
             <Label>Hora</Label>
             <Input
-              disabled={!paciente?.consentimiento.tiene ?? false}
+              disabled={paciente?.consentimiento.tiene ? false : true}
               type="time"
               {...register("hora", { required: "La hora es requerida" })}
             />
@@ -124,7 +125,7 @@ export default function AddTurno() {
           <div className="mb-5">
             <Label>Duración</Label>
             <Input
-              disabled={!paciente?.consentimiento.tiene ?? false}
+              disabled={paciente?.consentimiento.tiene ? false : true}
               {...register("duracion", {
                 required: "Es un dato requerido y mínimo son 10 min",
                 min: 10,
@@ -137,7 +138,7 @@ export default function AddTurno() {
             )}
           </div>
           <Button
-            disabled={!paciente?.consentimiento.tiene ?? false}
+            disabled={paciente?.consentimiento.tiene ? false : true}
             className="border p-2 rounded-md hover:bg-gray-500 hover:text-black hover:font-semibold w-full mt-5"
             type="submit"
           >
