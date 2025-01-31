@@ -8,7 +8,7 @@ import InputSearch from "./InputSearch";
 import usePacienteAccion from "@/assets/hooks/usePacienteAccion";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardTitle } from "@/components/ui/card";
 import ListContrataciones from "./ListContrataciones";
 
 /**
@@ -48,6 +48,7 @@ export default function AddTurno() {
    * @param data - Datos del formulario.
    */
   const onSubmit: SubmitHandler<TurnoAdd> = (data) => {
+    console.log(data);
     
   };
 
@@ -78,9 +79,9 @@ export default function AddTurno() {
                 <small>DNI:</small> {paciente?.dni}
               </CardDescription>
               </CardTitle>
-              <CardDescription>
+              <CardContent className="flex justify-end items-end gap-1 p-0" >
                 <ListContrataciones dniPaciente={paciente.dni} />
-              </CardDescription>
+              </CardContent>
             </Card>
           ) : (
             <Card className={`grid grid-rows-3 mb-2 min-h-20 p-2 transform `}>

@@ -1,5 +1,7 @@
 import useContratacionAccion from "@/assets/hooks/useContratacionAccion";
 import { useEffect } from "react"
+import { Badge } from "@/components/ui/badge"
+
 
 export default function ListContrataciones({ dniPaciente }: { dniPaciente: string }) {
     const { contratacion, searchContratacion } = useContratacionAccion()
@@ -11,7 +13,7 @@ export default function ListContrataciones({ dniPaciente }: { dniPaciente: strin
     return (
         <>{
             contratacion?.zonas.map((element,i) =>(
-                <span key={i}>{element.codigoZona}</span>
+                <Badge key={i} variant="outline">{element.codigoZona} </Badge>
             ))
         } </>
     )

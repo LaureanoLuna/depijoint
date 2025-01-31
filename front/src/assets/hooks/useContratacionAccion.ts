@@ -21,7 +21,6 @@ const useContratacionAccion = () => {
         if (contratacionFind) {
             setContratacion(contratacionFind);
         } else {
-            console.log("hola");
             setContratacion(undefined);
         }
     };
