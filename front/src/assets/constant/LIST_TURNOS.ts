@@ -45,8 +45,8 @@ export const LIST_TURNOS: TurnoInterface[] = [
         estado: true,
         paciente: {
             pacienteId: 1,
-            nombre: "Laureano ivan",
-            apellido: "luna",
+            nombre: "Victoria Belen",
+            apellido: "Luna",
             dni: "38232325",
             email: "laureano@luna.com",
             direccion: "nahuel 696",

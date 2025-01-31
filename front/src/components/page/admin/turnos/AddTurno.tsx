@@ -8,7 +8,11 @@ import InputSearch from "./InputSearch";
 import usePacienteAccion from "@/assets/hooks/usePacienteAccion";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardDescription,
+  CardTitle,
+} from "@/components/ui/card";
 import ListContrataciones from "./ListContrataciones";
 
 /**
@@ -49,7 +53,6 @@ export default function AddTurno() {
    */
   const onSubmit: SubmitHandler<TurnoAdd> = (data) => {
     console.log(data);
-    
   };
 
   /**
@@ -57,12 +60,11 @@ export default function AddTurno() {
    * @returns Formulario para agregar un turno.
    */
   const Formulario = () => {
-
     useEffect(() => {
       if (paciente) {
         setValue("dni", paciente.dni);
       }
-    }, [paciente,setValue]);
+    }, [paciente, setValue]);
 
     return (
       <>
@@ -71,81 +73,91 @@ export default function AddTurno() {
           inputName="dni"
           placeholder="Ingrese el DNI"
         />
-        <form onSubmit={handleSubmit(onSubmit)} className="p-5">
-          {paciente ? (
-            <Card className={`grid grid-rows-2 mb-2  min-h-20 p-2 transform `}>
-              <CardTitle className="row-span-1">{paciente?.nombre}, {paciente.apellido}
-              <CardDescription className="row-span-1 text-sm ml-2 text-slate-600">
-                <small>DNI:</small> {paciente?.dni}
-              </CardDescription>
+        {paciente && (
+          <>
+            <Card className={`my-2  p-2   `}>
+              <CardTitle className="text-center">
+                {paciente?.nombre}, {paciente.apellido}
+                <CardDescription className="text-center text-sm ml-2 text-slate-600">
+                  <small>DNI:</small> {paciente?.dni}
+                </CardDescription>
               </CardTitle>
-              <CardContent className="flex justify-end items-end gap-1 p-0" >
-                <ListContrataciones dniPaciente={paciente.dni} />
-              </CardContent>
+              <div className="text-center">
+                {paciente.consentimiento.tiene ? (
+                  <p className="text-sm text-green-600 capitalize">Legajo <strong>completo</strong> </p>
+                ) : (
+                  <p className="text-sm text-red-600 capitalize">Legajo Sin <strong>consentimiento</strong></p>
+                )}
+              </div>
             </Card>
-          ) : (
-            <Card className={`grid grid-rows-3 mb-2 min-h-20 p-2 transform `}>
-              <div>Legajo Incompleto </div>
+            <Card className={`mb-2 p-2 `}>
+              <ListContrataciones dniPaciente={paciente.dni} />
             </Card>
-          )}
-
-          <input type="hidden" id="dniPacienteSearch" {...register("dni")} />
-          <div className="mb-5">
-            <Label>Día</Label>
-            <Input
+          </>
+        )}
+        <Card className="p-2 my-2">
+          <CardTitle>Nuevo Turno</CardTitle>
+          <form onSubmit={handleSubmit(onSubmit)} className="">
+            <input type="hidden" id="dniPacienteSearch" {...register("dni")} />
+            <div className="grid grid-cols-2 gap-1">
+              <div className="mb-5 col-span-1">
+                <Label>Día</Label>
+                <Input
+                  disabled={paciente?.consentimiento.tiene ? false : true}
+                  type="date"
+                  {...register("dia", {
+                    required: "Este campo es requerido",
+                    validate: {
+                      isFutureDate: (value) =>
+                        new Date(value) >= new Date() ||
+                        "No se pueden fechas ya pasadas",
+                    },
+                  })}
+                />
+                {errors.dia && (
+                  <p role="alert" className="text-red-500">
+                    {errors.dia.message}
+                  </p>
+                )}
+              </div>
+              <div className="mb-5 col-span-1">
+                <Label>Hora</Label>
+                <Input
+                  disabled={paciente?.consentimiento.tiene ? false : true}
+                  type="time"
+                  {...register("hora", { required: "La hora es requerida" })}
+                />
+                {errors.hora && (
+                  <p role="alert" className="text-red-500">
+                    {errors.hora.message}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="mb-5">
+              <Label>Duración</Label>
+              <Input
+                disabled={paciente?.consentimiento.tiene ? false : true}
+                {...register("duracion", {
+                  required: "Es un dato requerido y mínimo son 10 min",
+                  min: 10,
+                })}
+              />
+              {errors.duracion && (
+                <p role="alert" className="text-red-500">
+                  {errors.duracion.message}
+                </p>
+              )}
+            </div>
+            <Button
               disabled={paciente?.consentimiento.tiene ? false : true}
-              type="date"
-              {...register("dia", {
-                required: "Este campo es requerido",
-                validate: {
-                  isFutureDate: (value) =>
-                    new Date(value) >= new Date() ||
-                    "No se pueden fechas ya pasadas",
-                },
-              })}
-            />
-            {errors.dia && (
-              <p role="alert" className="text-red-500">
-                {errors.dia.message}
-              </p>
-            )}
-          </div>
-          <div className="mb-5">
-            <Label>Hora</Label>
-            <Input
-              disabled={paciente?.consentimiento.tiene ? false : true}
-              type="time"
-              {...register("hora", { required: "La hora es requerida" })}
-            />
-            {errors.hora && (
-              <p role="alert" className="text-red-500">
-                {errors.hora.message}
-              </p>
-            )}
-          </div>
-          <div className="mb-5">
-            <Label>Duración</Label>
-            <Input
-              disabled={paciente?.consentimiento.tiene ? false : true}
-              {...register("duracion", {
-                required: "Es un dato requerido y mínimo son 10 min",
-                min: 10,
-              })}
-            />
-            {errors.duracion && (
-              <p role="alert" className="text-red-500">
-                {errors.duracion.message}
-              </p>
-            )}
-          </div>
-          <Button
-            disabled={paciente?.consentimiento.tiene ? false : true}
-            className="border p-2 rounded-md hover:bg-gray-500 hover:text-black hover:font-semibold w-full mt-5"
-            type="submit"
-          >
-            Cargar
-          </Button>
-        </form>
+              className="border p-2 rounded-md hover:bg-gray-500 hover:text-black hover:font-semibold w-full mt-5"
+              type="submit"
+            >
+              Cargar
+            </Button>
+          </form>
+        </Card>
       </>
     );
   };
