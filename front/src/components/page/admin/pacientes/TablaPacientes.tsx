@@ -5,6 +5,7 @@ import { ColumnDef } from "@tanstack/react-table"
 import AddPaciente from "./AddPaciente"
 import { Tabla } from "@/assets/components/dataTable/Tabla"
 import usePacienteAccion from "@/assets/hooks/usePacienteAccion"
+import GrupoBotones from "@/assets/components/GrupoBotones"
 
 export const Columna: ColumnDef<PacienteSelect>[] = [
     {
@@ -19,13 +20,16 @@ export const Columna: ColumnDef<PacienteSelect>[] = [
         accessorKey: "dni",
         header: ({ column }) => <CabeceraColumna column={column} title="DNI" />
     },
-    /*     {
-            id:'actions',
-            cell:({row})=>{
-                const paciente = row.original;
-                return
-            }
-        } */
+    {
+        id: 'actions',
+        cell: ({ row }) => {
+            const paciente = row.original;
+
+            return (
+                <GrupoBotones key={paciente.dni} />
+            );
+        }
+    }
 ]
 
 export default function TablaPacientes() {
