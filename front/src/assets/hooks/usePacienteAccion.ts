@@ -28,9 +28,26 @@ const usePacienteAccion = () => {
     setPaciente(pac);
   };
 
+  /**
+ * Obtiene un paciente a partir de su DNI.
+ * 
+ * @param dni - El DNI del paciente que se desea buscar.
+ * @returns Una promesa que resuelve a un objeto Paciente o undefined si no se encuentra.
+ */
+const getPaciente = async (dni: string): Promise<Paciente | undefined> => {
+  // Recuperar la lista de pacientes del localStorage
+  const pacientesJson = localStorage.getItem("pacientes") || "[]";
+  const pacientes: Paciente[] = JSON.parse(pacientesJson);
+
+  // Buscar el paciente por su DNI
+  const paciente = pacientes.find((p: Paciente) => p.dni === dni);
+  
+  return paciente; // Retornar el paciente encontrado o undefined si no se encuentra
+};
+
 
   // Retorna el paciente y la función de búsqueda
-  return { paciente, buscaPaciente };
+  return { paciente, buscaPaciente, getPaciente };
 };
 
 export default usePacienteAccion;

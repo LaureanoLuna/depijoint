@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import ListContrataciones from "./ListContrataciones";
 import useContratacionAccion from "@/assets/hooks/useContratacionAccion";
+import useTurnoAccion from "@/assets/hooks/useTurnoAccion";
 
 /**
  * Componente para agregar un turno.
@@ -43,16 +44,28 @@ export default function AddTurno() {
 
   const { paciente, buscaPaciente } = usePacienteAccion();
   const { calcularTiempoSesion, calcularPrecioSesion } = useContratacionAccion();
+  const { agregarTurno } = useTurnoAccion();
+  
   const [tiempo, setTiempo] = useState<number>(0);
   const [precioSesion, setPrecioSesion] = useState<string>("");
-  //const { contratacion, searchContratacion } = useContratacionAccion();
+  const [reset,setReset] = useState<boolean>(false);
 
   /**
    * Maneja el envío del formulario.
    * @param data - Datos del formulario.
    */
-  const onSubmit: SubmitHandler<TurnoAdd> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<TurnoAdd> = async (data) => {
+    console.log(data); // Imprime los datos del formulario en la consola para depuración
+    try {
+      const result = await agregarTurno(data);
+      if (result) {
+        setReset(!reset);
+      } else {
+        console.error("No se pudo agregar el turno.");
+      }
+    } catch (error) {
+      console.error("Error al agregar el turno:", error);
+    }
   };
 
   /**
@@ -61,21 +74,17 @@ export default function AddTurno() {
    */
   const Formulario = () => {
     useEffect(() => {
-      let y = 0;
-      let x = 0;
       const fetchData = async () => {
         if (paciente) {
           setValue("dni", paciente.dni);
-          y = (await calcularTiempoSesion(paciente.dni)) ?? 0;
-          x = (await calcularPrecioSesion(paciente.dni)) ?? 0;
-
-          setTiempo(y);
-          setPrecioSesion(x)
+          const tiempoSesion = await calcularTiempoSesion(paciente.dni) ?? 0;
+          const precioSesion = await calcularPrecioSesion(paciente.dni) ?? "";
+          setTiempo(tiempoSesion);
+          setPrecioSesion(precioSesion);
         }
       };
-
       fetchData();
-    }, [paciente, setValue]);
+    }, [paciente, setValue, reset]);
 
     return (
       <>
@@ -84,19 +93,20 @@ export default function AddTurno() {
           inputName="dni"
           placeholder="Ingrese el DNI"
         />
+        
         {paciente && (
           <>
-            <Card className={`my-2  p-2   `}>
+            <Card className="my-2 p-2">
               <CardTitle className="text-center">
-                {paciente?.nombre}, {paciente.apellido}
+                {paciente.nombre}, {paciente.apellido}
                 <CardDescription className="text-center text-sm ml-2 text-slate-600">
-                  <small>DNI:</small> {paciente?.dni}
+                  <small>DNI:</small> {paciente.dni}
                 </CardDescription>
               </CardTitle>
               <div className="text-center">
                 {paciente.consentimiento.tiene ? (
                   <p className="text-sm text-green-600 capitalize">
-                    Legajo <strong>completo</strong>{" "}
+                    Legajo <strong>completo</strong>
                   </p>
                 ) : (
                   <p className="text-sm text-red-600 capitalize">
@@ -105,20 +115,22 @@ export default function AddTurno() {
                 )}
               </div>
             </Card>
-            <Card className={`mb-2 p-2 `}>
+            <Card className="mb-2 p-2">
               <ListContrataciones dniPaciente={paciente.dni} />
             </Card>
           </>
         )}
+
         <Card className="p-2 my-2">
           <CardTitle>Nuevo Turno</CardTitle>
-          <form onSubmit={handleSubmit(onSubmit)} className="">
-            <input type="hidden" id="dniPacienteSearch" {...register("dni")} />
+          <form id='formAddTurno' onSubmit={handleSubmit(onSubmit)}>
+            <input type="hidden" {...register("dni")} />
+            
             <div className="grid grid-cols-2 gap-1">
               <div className="mb-5 col-span-1">
                 <Label>Día</Label>
                 <Input
-                  disabled={paciente?.consentimiento.tiene ? false : true}
+                  disabled={!paciente?.consentimiento.tiene}
                   type="date"
                   {...register("dia", {
                     required: "Este campo es requerido",
@@ -138,7 +150,7 @@ export default function AddTurno() {
               <div className="mb-5 col-span-1">
                 <Label>Hora</Label>
                 <Input
-                  disabled={paciente?.consentimiento.tiene ? false : true}
+                  disabled={!paciente?.consentimiento.tiene}
                   type="time"
                   {...register("hora", { required: "La hora es requerida" })}
                 />
@@ -149,13 +161,13 @@ export default function AddTurno() {
                 )}
               </div>
             </div>
+
             <div className="grid grid-cols-2 gap-2">
               <div className="mb-5">
                 <Label>Duración</Label>
                 <Input
-                  disabled={true}//{paciente?.consentimiento.tiene ? false : true}
+                  disabled={true}
                   defaultValue={tiempo}
-
                 />
                 {errors.duracion && (
                   <p role="alert" className="text-red-500">
@@ -166,9 +178,8 @@ export default function AddTurno() {
               <div className="mb-5">
                 <Label>Precio x Sesion</Label>
                 <Input
-                  disabled={true}//{paciente?.consentimiento.tiene ? false : true}
+                  disabled={true}
                   defaultValue={precioSesion}
-
                 />
                 {errors.duracion && (
                   <p role="alert" className="text-red-500">
@@ -177,8 +188,9 @@ export default function AddTurno() {
                 )}
               </div>
             </div>
+
             <Button
-              disabled={paciente?.consentimiento.tiene ? false : true}
+              disabled={!paciente?.consentimiento.tiene}
               className="border p-2 rounded-md hover:bg-gray-500 hover:text-black hover:font-semibold w-full mt-5"
               type="submit"
             >

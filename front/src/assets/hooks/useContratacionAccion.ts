@@ -11,6 +11,15 @@ const useContratacionAccion = () => {
     setContratacion(contratacion);
   };
 
+  const getContratacion = async (dni: string): Promise<Contratacion | undefined> => {
+    const contratacionJson = localStorage.getItem("contrataciones") || "[]";
+    const contrataciones: Contratacion[] = JSON.parse(contratacionJson);
+
+    const contratacion = contrataciones.find((c: Contratacion) => c.pacienteDni === dni);
+
+    return contratacion;
+  }
+
   // Función para buscar una contratacion por DNI
   const searchContratacion = (dni: string): void => {
     const contratacionesLocalStorage: Contratacion[] = JSON.parse(
@@ -51,6 +60,8 @@ const useContratacionAccion = () => {
     return suma;
   };
 
+
+
   // Función para calcular el precio total de sesiones de un paciente
   const calcularPrecioSesion = async (pacienteID: string | undefined): Promise<string | undefined> => {
     if (!pacienteID) return;
@@ -83,6 +94,7 @@ const useContratacionAccion = () => {
     searchContratacion,
     calcularTiempoSesion,
     calcularPrecioSesion,
+    getContratacion
   };
 };
 

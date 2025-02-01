@@ -6,12 +6,14 @@ export interface TurnoInterface {
     dia: string;
     hora: string;
     duracion: string;
+    monto?: number;
+    tiempo?: number;
     estado: boolean;
 }
 
 export interface TurnoAdd {
     paciente: Paciente;
-    dni:string;
+    dni: string;
     dia: string;
     hora: string;
     duracion: string;
