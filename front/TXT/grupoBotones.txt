@@ -1,0 +1,69 @@
+import GrupoBotones from "./GrupoBotones";
+import { FaCheck, FaPencilAlt, FaRegTimesCircle } from "react-icons/fa";
+
+const botonesAccion = [
+  {
+    variante: "confirm",
+    icono: <FaCheck color="success" />,
+    tamaño: "icon",
+    is_tooltip: true,
+    text_tooltip: "confirmar",
+  },
+  {
+    variante: "alert",
+    icono: <FaPencilAlt color="alert" />,
+    tamaño: "icon",
+    is_tooltip: true,
+    text_tooltip: "editar",
+  },
+  {
+    variante: "delete",
+    icono: <FaRegTimesCircle color="delete" />,
+    tamaño: "icon",
+    is_tooltip: true,
+    text_tooltip: "cancelar",
+  },
+];
+
+const botonesDropdown = [
+  {
+    variante: "confirm",
+    tamaño: "sm",
+    estilo: "w-full",
+    texto: "confirmar",
+    is_tooltip: false,
+  },
+  {
+    variante: "alert",
+    estilo: "w-full",
+    tamaño: "sm",
+    texto: "editar",
+    is_tooltip: false,
+  },
+  {
+    variante: "delete",
+    estilo: "w-full",
+    tamaño: "sm",
+    texto: "cancelar",
+    is_tooltip: false,
+  },
+];
+
+function App() {
+  const handleAccion = (accion: string) => {
+    console.log(`Acción seleccionada: ${accion}`);
+    // Aquí puedes manejar la lógica para cada acción
+  };
+
+  return (
+    <div>
+      <GrupoBotones
+        botonesAccion={botonesAccion}
+        botonesDropdown={botonesDropdown}
+        onAccion={handleAccion}
+      />
+    </div>
+  );
+}
+
+export default App;
