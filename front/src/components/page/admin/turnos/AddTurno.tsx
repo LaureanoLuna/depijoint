@@ -62,12 +62,12 @@ export default function AddTurno() {
   const Formulario = () => {
     useEffect(() => {
       let y = 0;
-      let x = 0;
+      let x = "0";
       const fetchData = async () => {
         if (paciente) {
           setValue("dni", paciente.dni);
           y = (await calcularTiempoSesion(paciente.dni)) ?? 0;
-          x = (await calcularPrecioSesion(paciente.dni)) ?? 0;
+          x = (await calcularPrecioSesion(paciente.dni)) ?? "0";
 
           setTiempo(y);
           setPrecioSesion(x)

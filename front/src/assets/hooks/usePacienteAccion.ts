@@ -1,4 +1,4 @@
-import { Paciente } from "@/assets/interfaces/paciente";
+import { Paciente, PacienteSelect } from "@/assets/interfaces/paciente";
 import { PersonaSearch } from "@/assets/interfaces/persona";
 import { useState } from "react";
 
@@ -9,6 +9,11 @@ import { useState } from "react";
 const usePacienteAccion = () => {
   // Estado para almacenar el paciente encontrado
   const [paciente, setPaciente] = useState<Paciente | undefined>(undefined);
+
+  const getPacientes = () => {
+    const localStorageP: PacienteSelect[] = JSON.parse(localStorage.getItem("pacientes") || "[]");
+    return localStorageP;
+  };
 
   /**
    * Busca un paciente por su DNI.
@@ -29,8 +34,10 @@ const usePacienteAccion = () => {
   };
 
 
+
+
   // Retorna el paciente y la función de búsqueda
-  return { paciente, buscaPaciente };
+  return { paciente, buscaPaciente, getPacientes };
 };
 
 export default usePacienteAccion;
