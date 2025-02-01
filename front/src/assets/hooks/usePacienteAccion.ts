@@ -28,6 +28,7 @@ const usePacienteAccion = () => {
     setPaciente(pac);
   };
 
+
   // Retorna el paciente y la función de búsqueda
   return { paciente, buscaPaciente };
 };

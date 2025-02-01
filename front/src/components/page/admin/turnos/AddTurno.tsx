@@ -6,14 +6,11 @@ import { FormLateral } from "@/assets/components/FormLateral";
 import { PersonaSearch } from "@/assets/interfaces/persona";
 import InputSearch from "./InputSearch";
 import usePacienteAccion from "@/assets/hooks/usePacienteAccion";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardDescription,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import ListContrataciones from "./ListContrataciones";
+import useContratacionAccion from "@/assets/hooks/useContratacionAccion";
 
 /**
  * Componente para agregar un turno.
@@ -37,7 +34,7 @@ export default function AddTurno() {
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<TurnoAdd, PersonaSearch>({
+  } = useForm<TurnoAdd>({
     defaultValues: {
       duracion: "",
       dia: refactoriDate(new Date()),
@@ -45,6 +42,9 @@ export default function AddTurno() {
   });
 
   const { paciente, buscaPaciente } = usePacienteAccion();
+  const { calcularTiempoSesion, calcularPrecioSesion } = useContratacionAccion();
+  const [tiempo, setTiempo] = useState<number>(0);
+  const [precioSesion, setPrecioSesion] = useState<string>("");
   //const { contratacion, searchContratacion } = useContratacionAccion();
 
   /**
@@ -61,9 +61,20 @@ export default function AddTurno() {
    */
   const Formulario = () => {
     useEffect(() => {
-      if (paciente) {
-        setValue("dni", paciente.dni);
-      }
+      let y = 0;
+      let x = 0;
+      const fetchData = async () => {
+        if (paciente) {
+          setValue("dni", paciente.dni);
+          y = (await calcularTiempoSesion(paciente.dni)) ?? 0;
+          x = (await calcularPrecioSesion(paciente.dni)) ?? 0;
+
+          setTiempo(y);
+          setPrecioSesion(x)
+        }
+      };
+
+      fetchData();
     }, [paciente, setValue]);
 
     return (
@@ -84,9 +95,13 @@ export default function AddTurno() {
               </CardTitle>
               <div className="text-center">
                 {paciente.consentimiento.tiene ? (
-                  <p className="text-sm text-green-600 capitalize">Legajo <strong>completo</strong> </p>
+                  <p className="text-sm text-green-600 capitalize">
+                    Legajo <strong>completo</strong>{" "}
+                  </p>
                 ) : (
-                  <p className="text-sm text-red-600 capitalize">Legajo Sin <strong>consentimiento</strong></p>
+                  <p className="text-sm text-red-600 capitalize">
+                    Legajo Sin <strong>consentimiento</strong>
+                  </p>
                 )}
               </div>
             </Card>
@@ -134,20 +149,33 @@ export default function AddTurno() {
                 )}
               </div>
             </div>
-            <div className="mb-5">
-              <Label>Duración</Label>
-              <Input
-                disabled={paciente?.consentimiento.tiene ? false : true}
-                {...register("duracion", {
-                  required: "Es un dato requerido y mínimo son 10 min",
-                  min: 10,
-                })}
-              />
-              {errors.duracion && (
-                <p role="alert" className="text-red-500">
-                  {errors.duracion.message}
-                </p>
-              )}
+            <div className="grid grid-cols-2 gap-2">
+              <div className="mb-5">
+                <Label>Duración</Label>
+                <Input
+                  disabled={true}//{paciente?.consentimiento.tiene ? false : true}
+                  defaultValue={tiempo}
+
+                />
+                {errors.duracion && (
+                  <p role="alert" className="text-red-500">
+                    {errors.duracion.message}
+                  </p>
+                )}
+              </div>
+              <div className="mb-5">
+                <Label>Precio x Sesion</Label>
+                <Input
+                  disabled={true}//{paciente?.consentimiento.tiene ? false : true}
+                  defaultValue={precioSesion}
+
+                />
+                {errors.duracion && (
+                  <p role="alert" className="text-red-500">
+                    {errors.duracion.message}
+                  </p>
+                )}
+              </div>
             </div>
             <Button
               disabled={paciente?.consentimiento.tiene ? false : true}
