@@ -8,8 +8,10 @@ import { TurnoLista } from "@/assets/interfaces/turno";
 
 import { ColumnDef } from "@tanstack/react-table";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddTurno from "./AddTurno";
+import usePacienteAccion from "@/assets/hooks/usePacienteAccion";
+import useTurnoAccion from "@/assets/hooks/useTurnoAccion";
 
 export const Columna: ColumnDef<TurnoLista>[] = [
   {
@@ -40,6 +42,14 @@ export const Columna: ColumnDef<TurnoLista>[] = [
 
 export default function TablaTurnos() {
   const [date, setDate] = useState<Date>(new Date());
+  const [reset, setReset] = useState<boolean>(false);
+
+  const { addTurno } = useTurnoAccion()
+
+  useEffect(() => {
+    console.log("se renderizo");
+    
+  }, [reset, setReset]);
 
   const { filteredTurnos } = useDateFilter({ fecha: date });
   return (
@@ -48,7 +58,7 @@ export default function TablaTurnos() {
         titulo="Turnos"
         descripcion="Turnos del dia"
         contenidoMedio={<InputFecha date={date} funcDate={setDate} />}
-        botonAccion={<AddTurno />}
+        botonAccion={<AddTurno funcion={setReset} elemento={reset} />}
       />
       <Tabla
         columns={Columna}

@@ -4,11 +4,30 @@ import { Zona } from "../interfaces/zona";
 
 const useContratacionAccion = () => {
   // Estado para almacenar la contratacion seleccionada
-  const [contratacion, setContratacion] = useState<Contratacion | undefined>(undefined);
+  const [contratacion, setContratacion] = useState<Contratacion | undefined>(
+    undefined
+  );
 
   // Función para establecer la contratacion
   const setContratacionAccion = (contratacion: Contratacion) => {
     setContratacion(contratacion);
+  };
+
+  const getContrataciones = (): Contratacion[] => {
+    const contrataciones: Contratacion[] = JSON.parse(
+      localStorage.getItem("contrataciones") || "[]"
+    );
+    return contrataciones;
+  };
+
+  const getContratacion = (dni: string): Contratacion | undefined => {
+    const contratacion = getContrataciones().find(
+      (c: Contratacion) => c.pacienteDni === dni
+    );
+
+    if (!contratacion) return undefined;
+
+    return contratacion;
   };
 
   // Función para buscar una contratacion por DNI
@@ -27,7 +46,9 @@ const useContratacionAccion = () => {
   };
 
   // Función para calcular el tiempo total de sesiones de un paciente
-  const calcularTiempoSesion = async (pacienteID: string | undefined): Promise<number | undefined> => {
+  const calcularTiempoSesion = async (
+    pacienteID: string | undefined
+  ): Promise<number | undefined> => {
     if (!pacienteID) return;
 
     const contrataciones: Contratacion[] = JSON.parse(
@@ -52,7 +73,9 @@ const useContratacionAccion = () => {
   };
 
   // Función para calcular el precio total de sesiones de un paciente
-  const calcularPrecioSesion = async (pacienteID: string | undefined): Promise<string | undefined> => {
+  const calcularPrecioSesion = async (
+    pacienteID: string | undefined
+  ): Promise<number | undefined> => {
     if (!pacienteID) return;
 
     const contrataciones: Contratacion[] = JSON.parse(
@@ -74,7 +97,7 @@ const useContratacionAccion = () => {
     );
 
     // Retornar el precio promedio (dividido por 6)
-    return (suma / 6).toFixed(2);
+    return Number.parseFloat((suma / 6).toFixed(2));
   };
 
   return {
@@ -83,6 +106,8 @@ const useContratacionAccion = () => {
     searchContratacion,
     calcularTiempoSesion,
     calcularPrecioSesion,
+    getContratacion,
+    getContrataciones
   };
 };
 

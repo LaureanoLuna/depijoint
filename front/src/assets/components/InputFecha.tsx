@@ -23,7 +23,7 @@ export function InputFecha({ date, funcDate }: { funcDate: any, date: Date }) {
                     )}
                 >
                     <CalendarIcon />
-                    {date ? format(date, "P") : <span>Elegi tú Fecha</span>}
+                    {date ? format(date, "dd/MM/yyyy") : <span>Elegi tú Fecha</span>}
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">

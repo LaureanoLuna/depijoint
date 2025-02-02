@@ -11,12 +11,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import ListContrataciones from "./ListContrataciones";
 import useContratacionAccion from "@/assets/hooks/useContratacionAccion";
+import useTurnoAccion from "@/assets/hooks/useTurnoAccion";
 
 /**
  * Componente para agregar un turno.
  * @returns Componente AddTurno.
  */
-export default function AddTurno() {
+export default function AddTurno({ funcion, elemento }: { funcion: any, elemento: boolean }) {
   /**
    * Función para formatear la fecha ingresada por el usuario.
    * @param date - Fecha a formatear.
@@ -43,6 +44,7 @@ export default function AddTurno() {
 
   const { paciente, buscaPaciente } = usePacienteAccion();
   const { calcularTiempoSesion, calcularPrecioSesion } = useContratacionAccion();
+  const { addTurno } = useTurnoAccion()
   const [tiempo, setTiempo] = useState<number>(0);
   const [precioSesion, setPrecioSesion] = useState<string>("");
   //const { contratacion, searchContratacion } = useContratacionAccion();
@@ -51,8 +53,11 @@ export default function AddTurno() {
    * Maneja el envío del formulario.
    * @param data - Datos del formulario.
    */
-  const onSubmit: SubmitHandler<TurnoAdd> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<TurnoAdd> = async (data) => {
+    const x = await addTurno(data)
+
+    console.log(data, x);
+    funcion(!elemento);
   };
 
   /**
@@ -67,7 +72,7 @@ export default function AddTurno() {
         if (paciente) {
           setValue("dni", paciente.dni);
           y = (await calcularTiempoSesion(paciente.dni)) ?? 0;
-          x = (await calcularPrecioSesion(paciente.dni)) ?? "0";
+          x = ((await calcularPrecioSesion(paciente.dni)) ?? "0").toString();
 
           setTiempo(y);
           setPrecioSesion(x)
