@@ -6,6 +6,8 @@ export interface TurnoInterface {
     dia: string;
     hora: string;
     duracion: string;
+    monto?: number;
+    tiempo?: number;
     estado: boolean;
 }
 

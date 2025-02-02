@@ -72,6 +72,8 @@ const useContratacionAccion = () => {
     return suma;
   };
 
+
+
   // Función para calcular el precio total de sesiones de un paciente
   const calcularPrecioSesion = async (
     pacienteID: string | undefined
