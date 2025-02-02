@@ -12,12 +12,19 @@ import { LIST_CONTRATACIONES } from './assets/constant/LIST_CONTRATACIONES'
 function App() {
 
   useEffect(() => {
-    localStorage.setItem('pacientes',JSON.stringify(LIST_PACIENTE));
-    localStorage.setItem('colaboradores',JSON.stringify(LIST_COLABORADORES));
-    localStorage.setItem('turnos',JSON.stringify(LIST_TURNOS));
-    localStorage.setItem('contrataciones',JSON.stringify(LIST_CONTRATACIONES));
-
-  }, [])
+    if (!localStorage.getItem('pacientes')) {
+      localStorage.setItem('pacientes', JSON.stringify(LIST_PACIENTE));
+    }
+    if (!localStorage.getItem('colaboradores')) {
+      localStorage.setItem('colaboradores', JSON.stringify(LIST_COLABORADORES));
+    }
+    if (!localStorage.getItem('turnos')) {
+      localStorage.setItem('turnos', JSON.stringify(LIST_TURNOS));
+    }
+    if (!localStorage.getItem('contrataciones')) {
+      localStorage.setItem('contrataciones', JSON.stringify(LIST_CONTRATACIONES));
+    }
+  }, []);
   
 
   

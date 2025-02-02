@@ -22,8 +22,8 @@ export default function ListContrataciones({
 
   return (
     <>
-      <CardTitle className="capitalize mb-1">
-        <span className="mb-1">tratamiento: {contratacion?.contratacionId} </span>
+      <CardTitle className="capitalize mb-1 flex items-start justify-between">
+        <span className="mb-2">tratamiento:</span> <span>#{contratacion?.contratacionId}</span> 
       </CardTitle>
       <CardContent className="p-0 grid grid-cols-4 gap-1">
         {contratacion?.zonas.map((element, i) => (
