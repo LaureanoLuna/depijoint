@@ -13,91 +13,88 @@ import ListContrataciones from "./ListContrataciones";
 import useContratacionAccion from "@/assets/hooks/useContratacionAccion";
 import useTurnoAccion from "@/assets/hooks/useTurnoAccion";
 import { useDepiJoint } from "@/assets/context/DepiJointContexto";
-
-import { estaDisponible } from '../../../../assets/function/funcionesTurnos';
+import { estaDisponible, refactoriDate } from '../../../../assets/function/funcionesTurnos';
 
 /**
- * Componente para agregar un turno.
- * @returns Componente AddTurno.
+ * Componente principal para agregar un turno.
+ * 
+ * @param {Object} props - Propiedades del componente.
+ * @param {Function} props.funcion - Función para manejar el estado externo (por ejemplo, cerrar un modal).
+ * @param {boolean} props.elemento - Estado externo que controla la visibilidad o comportamiento del componente.
+ * @returns {JSX.Element} - Componente de formulario para agregar un turno.
  */
-export default function AddTurno({
-  funcion,
-  elemento,
-}: {
-  funcion: any;
-  elemento: boolean;
-}) {
-  const { dia, setDia, turnosFiltador } = useDepiJoint();
-  /**
-   * Función para formatear la fecha ingresada por el usuario.
-   * @param date - Fecha a formatear.
-   * @returns Fecha en formato 'YYYY-MM-DD'.
-   */
-  const refactoriDate = (date: Date): string => {
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Los meses son 0-indexados
-    const year = date.getFullYear();
-    return `${year}-${month}-${day}`;
-  };
-
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    watch,
-    formState: { errors },
-  } = useForm<TurnoAdd>({
-    defaultValues: {
-      duracion: "",
-      dia: refactoriDate(dia),
-    },
-  });
-
-  const { paciente, buscaPaciente } = usePacienteAccion();
-  const { calcularTiempoSesion, calcularPrecioSesion } =
-    useContratacionAccion();
-  const { agregarTurno } = useTurnoAccion();
-  const [tiempo, setTiempo] = useState<number>(0);
-  const [precioSesion, setPrecioSesion] = useState<string>("");
-  const [reset, setReset] = useState<boolean>(false);
+export default function AddTurno({ funcion, elemento }: { funcion: any; elemento: boolean; }) {
+  return (
+    <FormLateral
+      title="Agregar Turno"
+      descripcion="Formulario para guardar un turno para el paciente"
+      formChild={<Formulario />}
+      tituloAbrir="Nuevo Turno"
+    />
+  );
 
   /**
-   * Maneja el envío del formulario.
-   * @param data - Datos del formulario.
+   * Componente interno que contiene el formulario para agregar un turno.
+   * 
+   * @returns {TSX.Element} - Formulario para agregar un turno.
    */
-  const onSubmit: SubmitHandler<TurnoAdd> = async (data) => {
-    (await agregarTurno(data)) ? funcion(!elemento) : console.log("no dio");
-  };
+  function Formulario() {
+    // Contexto y estado
+    const { dia, turnosFiltador } = useDepiJoint();
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm<TurnoAdd>();
 
-  /**
-   * Componente interno para el formulario.
-   * @returns Formulario para agregar un turno.
-   */
-  const Formulario = () => {
+    // Hooks personalizados
+    const { paciente, buscaPaciente } = usePacienteAccion();
+    const { calcularTiempoSesion, calcularPrecioSesion } = useContratacionAccion();
+    const { agregarTurno } = useTurnoAccion();
+
+    // Estado local
+    const [tiempo, setTiempo] = useState<number>(0);
+    const [precioSesion, setPrecioSesion] = useState<string>("");
+
+    /**
+     * Efecto para calcular los datos del paciente cuando cambia el paciente o el día.
+     */
     useEffect(() => {
-      let y = 0;
-      let x = "0";
-      const fetchData = async () => {
-        if (paciente) {
-          setValue("dni", paciente.dni);
-          y = (await calcularTiempoSesion(paciente.dni)) ?? 0;
-          x = ((await calcularPrecioSesion(paciente.dni)) ?? "0").toString();
+      if (paciente) {
+        setValue("dni", paciente.dni);
+        calcularDatosPaciente(paciente.dni);
+      }
+    }, [paciente, dia]);
 
-          setTiempo(y);
-          setPrecioSesion(x);
-        }
-      };
-      fetchData();
-    }, [paciente, setValue, reset, dia]);
+    /**
+     * Función para calcular la duración y el precio de la sesión del paciente.
+     * 
+     * @param {string} dni - DNI del paciente.
+     */
+    const calcularDatosPaciente = async (dni: string) => {
+      const tiempo = await calcularTiempoSesion(dni);
+      const precio = await calcularPrecioSesion(dni);
+      
+      setTiempo(tiempo ?? 0);
+      setPrecioSesion(precio?.toString() ?? "0");
+    };
+
+    /**
+     * Función para manejar el envío del formulario.
+     * 
+     * @param {TurnoAdd} data - Datos del formulario.
+     */
+    const onSubmit: SubmitHandler<TurnoAdd> = async (data) => {
+      const success = await agregarTurno(data);
+      funcion(success ? !elemento : elemento);
+    };
 
     return (
       <>
+        {/* Buscador de paciente */}
         <InputSearch<PersonaSearch>
           funcion={buscaPaciente}
           inputName="dni"
           placeholder="Ingrese el DNI"
         />
 
+        {/* Información del paciente */}
         {paciente && (
           <>
             <Card className="my-2 p-2">
@@ -108,15 +105,9 @@ export default function AddTurno({
                 </CardDescription>
               </CardTitle>
               <div className="text-center">
-                {paciente.consentimiento.tiene ? (
-                  <p className="text-sm text-green-600 capitalize">
-                    Legajo <strong>completo</strong>
-                  </p>
-                ) : (
-                  <p className="text-sm text-red-600 capitalize">
-                    Legajo Sin <strong>consentimiento</strong>
-                  </p>
-                )}
+                <p className={`text-sm ${paciente.consentimiento.tiene ? 'text-green-600' : 'text-red-600'} capitalize`}>
+                  Legajo {paciente.consentimiento.tiene ? <strong>completo</strong> : <strong>Sin consentimiento</strong>}
+                </p>
               </div>
             </Card>
             <Card className="mb-2 p-2">
@@ -125,31 +116,29 @@ export default function AddTurno({
           </>
         )}
 
+        {/* Formulario para agregar un turno */}
         <Card className="p-2 my-2">
           <CardTitle>Nuevo Turno</CardTitle>
           <form id="formAddTurno" onSubmit={handleSubmit(onSubmit)}>
             <input type="hidden" {...register("dni")} />
 
+            {/* Campos del formulario */}
             <div className="grid grid-cols-2 gap-1">
               <div className="mb-5 col-span-1">
                 <Label>Día</Label>
                 <Input
                   disabled={!paciente?.consentimiento.tiene}
                   type="date"
+                  value={refactoriDate(dia)}
                   {...register("dia", {
                     required: "Este campo es requerido",
                     validate: {
                       isFutureDate: (value) =>
-                        new Date(value) > new Date() ||
-                        "No se pueden fechas ya pasadas",
+                        new Date(value) > new Date() || "No se pueden fechas ya pasadas",
                     },
                   })}
                 />
-                {errors.dia && (
-                  <p role="alert" className="text-red-500">
-                    {errors.dia.message}
-                  </p>
-                )}
+                {errors.dia && <p role="alert" className="text-red-500">{errors.dia.message}</p>}
               </div>
               <div className="mb-5 col-span-1">
                 <Label>Hora</Label>
@@ -159,41 +148,27 @@ export default function AddTurno({
                   {...register("hora", {
                     required: "La hora es requerida",
                     validate: {
-                      onchange: (e) => {
-                        return estaDisponible(e,tiempo,turnosFiltador) || "Horario Ocupado"
-                      },
+                      onchange: (value) => estaDisponible(value, tiempo, turnosFiltador) || "Horario Ocupado",
                     },
                   })}
                 />
-                {errors.hora && (
-                  <p role="alert" className="text-red-500">
-                    {errors.hora.message}
-                  </p>
-                )}
+                {errors.hora && <p role="alert" className="text-red-500">{errors.hora.message}</p>}
               </div>
             </div>
 
+            {/* Duración y precio de la sesión */}
             <div className="grid grid-cols-2 gap-2">
               <div className="mb-5">
                 <Label>Duración</Label>
-                <Input disabled={true} defaultValue={tiempo} />
-                {errors.duracion && (
-                  <p role="alert" className="text-red-500">
-                    {errors.duracion.message}
-                  </p>
-                )}
+                <Input disabled={true} value={tiempo} />
               </div>
               <div className="mb-5">
                 <Label>Precio x Sesion</Label>
-                <Input disabled={true} defaultValue={precioSesion} />
-                {errors.duracion && (
-                  <p role="alert" className="text-red-500">
-                    {errors.duracion.message}
-                  </p>
-                )}
+                <Input disabled={true} value={precioSesion} />
               </div>
             </div>
 
+            {/* Botón de envío */}
             <Button
               disabled={!paciente?.consentimiento.tiene}
               className="border p-2 rounded-md hover:bg-gray-500 hover:text-black hover:font-semibold w-full mt-5"
@@ -205,14 +180,5 @@ export default function AddTurno({
         </Card>
       </>
     );
-  };
-
-  return (
-    <FormLateral
-      title="Agregar Turno"
-      descripcion="Formulario para guardar un turno para el paciente"
-      formChild={<Formulario />}
-      tituloAbrir="Nuevo Turno"
-    />
-  );
+  }
 }

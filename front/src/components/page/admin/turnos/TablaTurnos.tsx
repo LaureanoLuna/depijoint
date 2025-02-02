@@ -3,12 +3,11 @@ import { CabeceraColumna } from "@/assets/components/dataTable/CabeceraColumna";
 import { Tabla } from "@/assets/components/dataTable/Tabla";
 import GrupoBotones from "@/assets/components/GrupoBotones";
 import { InputFecha } from "@/assets/components/InputFecha";
-import useDateFilter from "@/assets/hooks/useDateFilter";
 import { TurnoLista } from "@/assets/interfaces/turno";
 
 import { ColumnDef } from "@tanstack/react-table";
 
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AddTurno from "./AddTurno";
 import { useDepiJoint } from "@/assets/context/DepiJointContexto";
 
@@ -47,9 +46,9 @@ export default function TablaTurnos() {
 
 
   useEffect(() => {
-    console.log("se renderizo");
 
-  }, [reset, setReset]);
+
+  }, [dia, setDia]);
   return (
     <>
       <Cabecera
