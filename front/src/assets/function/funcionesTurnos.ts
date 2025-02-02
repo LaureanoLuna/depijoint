@@ -1,0 +1,34 @@
+import { TurnoInterface, TurnoLista } from "../interfaces/turno";
+
+const tiempoEnMinutos = (tiempo: string): number => {
+  let [h, m] = tiempo.split(":").map(Number);
+  return h * 60 + m;
+};
+
+export const estaDisponible = (
+  nuevoTurno: string,
+  duracion: number,
+  turnos: TurnoInterface[] | TurnoLista[]
+): boolean => {
+  let bool = true;
+  let turnoNuevoInicio = tiempoEnMinutos(nuevoTurno);
+  let turnoNuevoFin = turnoNuevoInicio + duracion;
+
+  turnos.forEach((turno: TurnoInterface | TurnoLista) => {
+    let turnoAgendadoInicio = tiempoEnMinutos(turno.hora);
+    let turnoAgendadoFin =
+      turnoAgendadoInicio + Number.parseInt(turno.duracion);
+
+    if (
+      (turnoNuevoInicio >= turnoAgendadoInicio &&
+        turnoNuevoInicio < turnoAgendadoFin) ||
+      (turnoNuevoFin > turnoAgendadoInicio &&
+        turnoNuevoFin <= turnoAgendadoFin) ||
+      (turnoNuevoInicio <= turnoAgendadoInicio &&
+        turnoNuevoFin >= turnoAgendadoFin)
+    ) {
+      bool = false;
+    }
+  });
+  return bool;
+};

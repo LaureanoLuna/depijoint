@@ -1,3 +1,4 @@
+import { estaDisponible } from "../function/funcionesTurnos";
 import { TurnoInterface } from "../interfaces/turno";
 import { Zona } from "../interfaces/zona";
 import useContratacionAccion from "./useContratacionAccion";
@@ -36,6 +37,11 @@ const useTurnoAccion = () => {
         }
     };
 
+    const validaTurno = (turno: TurnoInterface) => {
+        const turnos = getTurnos().filter((t) => t.dia === turno.dia);
+        return estaDisponible(turno.hora, Number.parseInt(turno.duracion), turnos);
+    }
+
     /**
      * Agrega un nuevo turno después de validar la contratación y el paciente.
      * @param data - Datos necesarios para crear el nuevo turno.
@@ -60,13 +66,14 @@ const useTurnoAccion = () => {
                 id: "21", // Considerar generar un ID único dinámicamente
                 dia: data.dia,
                 hora: data.hora,
-                duracion: "30", // Considerar hacer que la duración sea dinámica
+                duracion: tiempo.toFixed(), // Considerar hacer que la duración sea dinámica
                 tiempo: tiempo ?? 0,
                 paciente: paciente,
                 monto: costo ?? 0,
                 estado: false,
             };
 
+            if (!validaTurno(turnoNuevo)) return false;
             return setTurnos(turnoNuevo);
         } catch (error) {
             console.error("Error al agregar el turno:", error);

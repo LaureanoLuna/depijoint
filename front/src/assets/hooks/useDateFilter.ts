@@ -40,7 +40,7 @@ function useDateFilter({ fecha = new Date() }: { fecha?: Date }) {
     setFilteredTurnos(formatearListaTurnos(turnosFiltrados));
   }, [fecha]);
 
-  return { filteredTurnos, refactoriDate };
+  return { filteredTurnos, refactoriDate, dateFilter };
 }
 
 export default useDateFilter;

@@ -8,10 +8,10 @@ import { TurnoLista } from "@/assets/interfaces/turno";
 
 import { ColumnDef } from "@tanstack/react-table";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AddTurno from "./AddTurno";
-import usePacienteAccion from "@/assets/hooks/usePacienteAccion";
-import useTurnoAccion from "@/assets/hooks/useTurnoAccion";
+import { useDepiJoint } from "@/assets/context/DepiJointContexto";
+
 
 export const Columna: ColumnDef<TurnoLista>[] = [
   {
@@ -41,28 +41,26 @@ export const Columna: ColumnDef<TurnoLista>[] = [
 ];
 
 export default function TablaTurnos() {
-  const [date, setDate] = useState<Date>(new Date());
   const [reset, setReset] = useState<boolean>(false);
 
-  const { addTurno } = useTurnoAccion()
+  const { turnosFiltador, setDia, dia } = useDepiJoint()
+
 
   useEffect(() => {
     console.log("se renderizo");
-    
-  }, [reset, setReset]);
 
-  const { filteredTurnos } = useDateFilter({ fecha: date });
+  }, [reset, setReset]);
   return (
     <>
       <Cabecera
         titulo="Turnos"
         descripcion="Turnos del dia"
-        contenidoMedio={<InputFecha date={date} funcDate={setDate} />}
+        contenidoMedio={<InputFecha date={dia} funcDate={setDia} />}
         botonAccion={<AddTurno funcion={setReset} elemento={reset} />}
       />
       <Tabla
         columns={Columna}
-        data={filteredTurnos}
+        data={turnosFiltador}
         opcionesFilto={["Nombre", "Hora", "Duracion"]}
       />
     </>

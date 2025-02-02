@@ -12,12 +12,22 @@ import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import ListContrataciones from "./ListContrataciones";
 import useContratacionAccion from "@/assets/hooks/useContratacionAccion";
 import useTurnoAccion from "@/assets/hooks/useTurnoAccion";
+import { useDepiJoint } from "@/assets/context/DepiJointContexto";
+
+import { estaDisponible } from '../../../../assets/function/funcionesTurnos';
 
 /**
  * Componente para agregar un turno.
  * @returns Componente AddTurno.
  */
-export default function AddTurno({ funcion, elemento }: { funcion: any, elemento: boolean }) {
+export default function AddTurno({
+  funcion,
+  elemento,
+}: {
+  funcion: any;
+  elemento: boolean;
+}) {
+  const { dia, setDia, turnosFiltador } = useDepiJoint();
   /**
    * Función para formatear la fecha ingresada por el usuario.
    * @param date - Fecha a formatear.
@@ -34,30 +44,29 @@ export default function AddTurno({ funcion, elemento }: { funcion: any, elemento
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<TurnoAdd>({
     defaultValues: {
       duracion: "",
-      dia: refactoriDate(new Date()),
+      dia: refactoriDate(dia),
     },
   });
 
   const { paciente, buscaPaciente } = usePacienteAccion();
-  const { calcularTiempoSesion, calcularPrecioSesion } = useContratacionAccion();
-  const { agregarTurno } = useTurnoAccion()
+  const { calcularTiempoSesion, calcularPrecioSesion } =
+    useContratacionAccion();
+  const { agregarTurno } = useTurnoAccion();
   const [tiempo, setTiempo] = useState<number>(0);
   const [precioSesion, setPrecioSesion] = useState<string>("");
-  const [reset,setReset] = useState<boolean>(false);
+  const [reset, setReset] = useState<boolean>(false);
 
   /**
    * Maneja el envío del formulario.
    * @param data - Datos del formulario.
    */
   const onSubmit: SubmitHandler<TurnoAdd> = async (data) => {
-    const x = await agregarTurno(data)
-
-    console.log(data, x);
-    funcion(!elemento);
+    (await agregarTurno(data)) ? funcion(!elemento) : console.log("no dio");
   };
 
   /**
@@ -75,11 +84,11 @@ export default function AddTurno({ funcion, elemento }: { funcion: any, elemento
           x = ((await calcularPrecioSesion(paciente.dni)) ?? "0").toString();
 
           setTiempo(y);
-          setPrecioSesion(x)
+          setPrecioSesion(x);
         }
       };
       fetchData();
-    }, [paciente, setValue, reset]);
+    }, [paciente, setValue, reset, dia]);
 
     return (
       <>
@@ -88,7 +97,7 @@ export default function AddTurno({ funcion, elemento }: { funcion: any, elemento
           inputName="dni"
           placeholder="Ingrese el DNI"
         />
-        
+
         {paciente && (
           <>
             <Card className="my-2 p-2">
@@ -118,9 +127,9 @@ export default function AddTurno({ funcion, elemento }: { funcion: any, elemento
 
         <Card className="p-2 my-2">
           <CardTitle>Nuevo Turno</CardTitle>
-          <form id='formAddTurno' onSubmit={handleSubmit(onSubmit)}>
+          <form id="formAddTurno" onSubmit={handleSubmit(onSubmit)}>
             <input type="hidden" {...register("dni")} />
-            
+
             <div className="grid grid-cols-2 gap-1">
               <div className="mb-5 col-span-1">
                 <Label>Día</Label>
@@ -131,7 +140,7 @@ export default function AddTurno({ funcion, elemento }: { funcion: any, elemento
                     required: "Este campo es requerido",
                     validate: {
                       isFutureDate: (value) =>
-                        new Date(value) >= new Date() ||
+                        new Date(value) > new Date() ||
                         "No se pueden fechas ya pasadas",
                     },
                   })}
@@ -147,7 +156,14 @@ export default function AddTurno({ funcion, elemento }: { funcion: any, elemento
                 <Input
                   disabled={!paciente?.consentimiento.tiene}
                   type="time"
-                  {...register("hora", { required: "La hora es requerida" })}
+                  {...register("hora", {
+                    required: "La hora es requerida",
+                    validate: {
+                      onchange: (e) => {
+                        return estaDisponible(e,tiempo,turnosFiltador) || "Horario Ocupado"
+                      },
+                    },
+                  })}
                 />
                 {errors.hora && (
                   <p role="alert" className="text-red-500">
@@ -160,10 +176,7 @@ export default function AddTurno({ funcion, elemento }: { funcion: any, elemento
             <div className="grid grid-cols-2 gap-2">
               <div className="mb-5">
                 <Label>Duración</Label>
-                <Input
-                  disabled={true}
-                  defaultValue={tiempo}
-                />
+                <Input disabled={true} defaultValue={tiempo} />
                 {errors.duracion && (
                   <p role="alert" className="text-red-500">
                     {errors.duracion.message}
@@ -172,10 +185,7 @@ export default function AddTurno({ funcion, elemento }: { funcion: any, elemento
               </div>
               <div className="mb-5">
                 <Label>Precio x Sesion</Label>
-                <Input
-                  disabled={true}
-                  defaultValue={precioSesion}
-                />
+                <Input disabled={true} defaultValue={precioSesion} />
                 {errors.duracion && (
                   <p role="alert" className="text-red-500">
                     {errors.duracion.message}
