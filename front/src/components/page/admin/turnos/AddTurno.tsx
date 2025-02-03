@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import ListContrataciones from "./ListContrataciones";
 import useContratacionAccion from "@/assets/hooks/useContratacionAccion";
-import useTurnoAccion from "@/assets/hooks/useTurnoAccion";
 import { useDepiJoint } from "@/assets/context/DepiJointContexto";
 import { estaDisponible, refactoriDate } from '../../../../assets/function/funcionesTurnos';
 
@@ -23,7 +22,7 @@ import { estaDisponible, refactoriDate } from '../../../../assets/function/funci
  * @param {boolean} props.elemento - Estado externo que controla la visibilidad o comportamiento del componente.
  * @returns {JSX.Element} - Componente de formulario para agregar un turno.
  */
-export default function AddTurno({ funcion, elemento }: { funcion: any; elemento: boolean; }) {
+export default function AddTurno() {
   return (
     <FormLateral
       title="Agregar Turno"
@@ -46,7 +45,6 @@ export default function AddTurno({ funcion, elemento }: { funcion: any; elemento
     // Hooks personalizados
     const { paciente, buscaPaciente } = usePacienteAccion();
     const { calcularTiempoSesion, calcularPrecioSesion } = useContratacionAccion();
-    const { agregarTurno } = useTurnoAccion();
 
     // Estado local
     const [tiempo, setTiempo] = useState<number>(0);
@@ -82,7 +80,6 @@ export default function AddTurno({ funcion, elemento }: { funcion: any; elemento
      */
     const onSubmit: SubmitHandler<TurnoAdd> = async (data) => {
       const success = await addTurno(data);
-      funcion(success ? !elemento : elemento);
     };
 
     return (

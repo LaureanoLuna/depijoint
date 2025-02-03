@@ -52,7 +52,7 @@ export default function TablaTurnos() {
         titulo="Turnos"
         descripcion="Turnos del dia"
         contenidoMedio={<InputFecha date={dia} funcDate={setDia} />}
-        botonAccion={<AddTurno funcion={setReset} elemento={reset} />}
+        botonAccion={<AddTurno />}
       />
       <Tabla
         columns={Columna}

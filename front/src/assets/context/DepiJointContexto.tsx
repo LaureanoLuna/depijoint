@@ -31,19 +31,34 @@ interface DepiJointProviderProps {
 const DepiJointProvider: React.FC<DepiJointProviderProps> = ({ children }) => {
     const [state, setState] = useState<DepiJointState>({}); // Define el estado que deseas compartir
     const [dia, setDia] = useState<Date>(new Date());
-    const { filteredTurnos,getTurnos } = useDateFilter({ fecha: dia });
+    const { filteredTurnos, getTurnos } = useDateFilter({ fecha: dia });
     const { agregarTurno } = useTurnoAccion();
 
 
+    /**
+  * Agrega un nuevo turno.
+  * 
+  * Esta función intenta agregar un nuevo turno utilizando la función `agregarTurno`.
+  * Si la operación es exitosa, se actualizan los turnos y se devuelve `true`.
+  * En caso contrario, se devuelve `false`.
+  * 
+  * @param data - Los datos del turno que se desea agregar.
+  * @returns Una promesa que resuelve a `true` si el turno fue agregado exitosamente, o `false` en caso contrario.
+  */
     const addTurno = async (data: any): Promise<boolean> => {
-        if (await agregarTurno(data)) {
-            getTurnos()
-            return true
-        } else {
-            return false
+        // Intenta agregar el nuevo turno
+        const isAdded = await agregarTurno(data);
+
+        // Si el turno fue agregado exitosamente
+        if (isAdded) {
+            // Actualiza la lista de turnos
+            await getTurnos();
+            return true;
         }
 
-    }
+        // Si no se pudo agregar el turno, retorna false
+        return false;
+    };
 
     return (
         <DepiJointContexto.Provider value={{ state, setState, turnosFiltador: filteredTurnos, dia, setDia, addTurno }}>
