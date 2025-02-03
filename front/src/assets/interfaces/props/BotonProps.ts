@@ -12,26 +12,3 @@ export interface BotonProps {
     onClick?: () => void;
 }
 
-const botonesDropdown: BotonProps[] = [
-    {
-      variante: "confirm",
-      tamaño: "sm",
-      estilo: "w-full",
-      texto: "confirmar",
-      is_tooltip: false,
-    },
-    {
-      variante: "alert",
-      estilo: "w-full",
-      tamaño: "sm",
-      texto: "editar",
-      is_tooltip: false,
-    },
-    {
-      variante: "delete",
-      estilo: "w-full",
-      tamaño: "sm",
-      texto: "cancelar",
-      is_tooltip: false,
-    },
-  ];

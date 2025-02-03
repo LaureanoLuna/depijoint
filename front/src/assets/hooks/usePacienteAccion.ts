@@ -1,4 +1,4 @@
-import { Paciente, PacienteSelect } from "@/assets/interfaces/paciente";
+import { Paciente } from "@/assets/interfaces/paciente";
 import { PersonaSearch } from "@/assets/interfaces/persona";
 import { useState } from "react";
 
