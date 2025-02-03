@@ -5,22 +5,24 @@ import GrupoBotones from "@/assets/components/GrupoBotones";
 import { InputFecha } from "@/assets/components/InputFecha";
 import { TurnoLista } from "@/assets/interfaces/turno";
 import { ColumnDef } from "@tanstack/react-table";
-import { useEffect, useState } from "react";
 import AddTurno from "./AddTurno";
 import { useDepiJoint } from "@/assets/context/DepiJointContexto";
 import { BotonProps } from "@/assets/interfaces/props/BotonProps";
 import { FaCheck, FaPencilAlt, FaRegTimesCircle } from "react-icons/fa";
 import Seleccion from "@/assets/components/Seleccion";
 import useColaboradorAccion from "@/assets/hooks/useColaboradorAccion";
+import useTurnoAccion from "@/assets/hooks/useTurnoAccion";
 
-
-const botonesAccion: BotonProps[] = [
+const botonesAccion: BotonProps<TurnoLista>[] = [
   {
     variante: "confirm",
     icono: <FaCheck color="success" />,
     tamaño: "icon",
     is_tooltip: true,
     text_tooltip: "confirmar",
+    onClick: (turno: TurnoLista) => {
+      // Lógica para confirmar turno
+    },
   },
   {
     variante: "alert",
@@ -28,6 +30,9 @@ const botonesAccion: BotonProps[] = [
     tamaño: "icon",
     is_tooltip: true,
     text_tooltip: "editar",
+    onClick: (turno: TurnoLista) => {
+      console.log(turno);
+    },
   },
   {
     variante: "delete",
@@ -35,16 +40,22 @@ const botonesAccion: BotonProps[] = [
     tamaño: "icon",
     is_tooltip: true,
     text_tooltip: "cancelar",
+    onClick: (turno: TurnoLista) => {
+      console.log(turno);
+    },
   },
 ];
 
-const botonesDropdown: BotonProps[] = [
+const botonesDropdown: BotonProps<TurnoLista>[] = [
   {
     variante: "confirm",
     tamaño: "sm",
     estilo: "w-full",
     texto: "confirmar",
     is_tooltip: false,
+    onClick: (turno: TurnoLista) => {
+      // Lógica para confirmar turno
+    },
   },
   {
     variante: "alert",
@@ -52,6 +63,9 @@ const botonesDropdown: BotonProps[] = [
     tamaño: "sm",
     texto: "editar",
     is_tooltip: false,
+    onClick: (turno: TurnoLista) => {
+      console.log(turno);
+    },
   },
   {
     variante: "delete",
@@ -59,6 +73,9 @@ const botonesDropdown: BotonProps[] = [
     tamaño: "sm",
     texto: "cancelar",
     is_tooltip: false,
+    onClick: (turno: TurnoLista) => {
+      console.log(turno);
+    },
   },
 ];
 
@@ -73,39 +90,54 @@ export const Columna: ColumnDef<TurnoLista>[] = [
   },
   {
     accessorKey: "duracion",
-    header: ({ column }) => (
-      <CabeceraColumna column={column} title="Duracion" />
-    ),
+    header: ({ column }) => <CabeceraColumna column={column} title="Duracion" />,
   },
   {
     id: "colaborador",
-    cell: ({ row }) => {
+    header: "Colaborador",
+    cell: ({ row }) => {      
       const { getColaboradores } = useColaboradorAccion();
-      return (
-        <Seleccion opciones={getColaboradores()} titulo="Usuario" funccion={()=>console.log("goo")
-        } />
+      return row.original.colaboradorId ? (
+        <h1>{row.original.colaboradorId}</h1>
+      ) : (
+        <Seleccion
+          opciones={getColaboradores()}
+          funccion={(e: string) => {
+            console.log(row.original);
+            row.original.colaboradorId = e;
+            
+          }}
+          titulo={"Usuarios..."}
+          name={"usuario"}
+        />
       );
     },
   },
   {
     id: "acciones",
     cell: ({ row }) => {
+      const { confirmarTurno } = useTurnoAccion();
+
       const turno = row.original;
+
+      const botonesConDatos = botonesAccion.map(boton => ({
+        ...boton,
+        onClick: () => confirmarTurno(turno), // Asegúrate de que se llame la función
+      }));
+
       return (
-        <GrupoBotones botonesAccion={botonesAccion} botonesDropdown={botonesDropdown} key={turno.id} />
+        <GrupoBotones
+          botonesAccion={botonesConDatos} // Usar los botones con datos
+          botonesDropdown={botonesDropdown}
+          key={turno.id}
+        />
       );
     },
-  },
+  }
 ];
 
 export default function TablaTurnos() {
-  const [reset, setReset] = useState<boolean>(false);
   const { turnosFiltador, setDia, dia } = useDepiJoint();
-
-  useEffect(() => {
-    console.log(turnosFiltador);
-  }, [turnosFiltador]);
-
   return (
     <>
       <Cabecera

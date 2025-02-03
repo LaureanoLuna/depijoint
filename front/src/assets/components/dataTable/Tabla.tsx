@@ -27,7 +27,7 @@ import Seleccion from "../Seleccion";
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
-    opcionesFilto:string[];
+    opcionesFilto: string[];
 }
 
 export function Tabla<TData, TValue>({
@@ -102,6 +102,7 @@ export function Tabla<TData, TValue>({
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id} className="text-start">
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                            
                                         </TableCell>
                                     ))}
                                 </TableRow>
@@ -109,7 +110,7 @@ export function Tabla<TData, TValue>({
                         ) : (
                             <TableRow>
                                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                                    No results.
+                                    No hay nada.
                                 </TableCell>
                             </TableRow>
                         )}

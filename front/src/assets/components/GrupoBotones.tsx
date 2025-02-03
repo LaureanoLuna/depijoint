@@ -11,9 +11,11 @@ import { BotonProps } from "../interfaces/props/BotonProps";
 export default function GrupoBotones({
   botonesAccion,
   botonesDropdown,
+
 }: {
   botonesAccion: BotonProps[];
   botonesDropdown: BotonProps[];
+ 
 }) {
   return (
     <div className="w-fit ml-auto">
@@ -30,6 +32,7 @@ export default function GrupoBotones({
               icono: <CiMenuKebab />,
               tamaño: "icon",
               is_tooltip: false,
+              onClick:()=>{}
             }}
           />
         </DropdownMenuTrigger>

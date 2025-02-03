@@ -1,5 +1,5 @@
 import { estaDisponible } from "../function/funcionesTurnos";
-import { TurnoInterface } from "../interfaces/turno";
+import { TurnoInterface, TurnoLista } from "../interfaces/turno";
 import { Zona } from "../interfaces/zona";
 import useContratacionAccion from "./useContratacionAccion";
 import usePacienteAccion from "./usePacienteAccion";
@@ -19,6 +19,13 @@ const useTurnoAccion = () => {
         const turnosJson = localStorage.getItem("turnos") || "[]";
         return JSON.parse(turnosJson);
     };
+
+    const getTurno = (turniId: string) => {
+        const turnos = getTurnos().find((t, i) => {
+            t.id === turniId && t.estado === false
+        })
+        return turnos;
+    }
 
     /**
      * Almacena un nuevo turno en el localStorage.
@@ -81,12 +88,25 @@ const useTurnoAccion = () => {
         }
     };
 
-    const asignarTurno = async () =>{
+    const confirmarTurno = (data: TurnoLista) => {
+
+        const turnos = getTurnos().map((turno) => {
+            if (turno.id === data.id) {
+                return { ...turno, colaboradorId: data.colaboradorId }
+            }
+            return turno;
+        })
+        console.log(turnos);        
+        localStorage.setItem('turnos', JSON.stringify(turnos));
+    }
+
+    const asignarTurno = async () => {
 
     }
 
     return {
-        agregarTurno,
+        agregarTurno, confirmarTurno
+
     };
 };
 

@@ -8,6 +8,7 @@ export interface TurnoInterface {
     duracion: string;
     monto?: number;
     tiempo?: number;
+    colaboradorId?:string;
     estado: boolean;
 }
 
@@ -45,5 +46,6 @@ export interface TurnoLista {
     dia: string;
     hora: string;
     duracion: string;
+    colaboradorId?:string;
     estado: boolean;
 }

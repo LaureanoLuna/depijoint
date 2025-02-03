@@ -4,7 +4,6 @@ import App from './App'
 import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Login } from './components/page/auth/Login'
-import ListaPacientes from './components/page/admin/pacientes/ListaPacientes';
 import ListaAsignados from './components/page/admin/asignados/ListaAsignados';
 import ListaColaboradores from './components/page/admin/colaboradores/ListaColaboradores';
 import ListaZonas from './components/page/admin/zonas/ListaZonas';
