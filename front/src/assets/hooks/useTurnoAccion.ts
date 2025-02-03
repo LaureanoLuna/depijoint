@@ -81,6 +81,10 @@ const useTurnoAccion = () => {
         }
     };
 
+    const asignarTurno = async () =>{
+
+    }
+
     return {
         agregarTurno,
     };
