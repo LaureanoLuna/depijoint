@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
-import { Turno, TurnoLista } from "../interfaces/turno";
+import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import { Turno, TurnoAdd, TurnoLista } from "../interfaces/turno";
 import useDateFilter from "../hooks/useDateFilter";
+import useTurnoAccion from "../hooks/useTurnoAccion";
 
 // Define el tipo para el estado que deseas compartir
 interface DepiJointState {
@@ -13,9 +14,10 @@ interface DepiJointState {
 interface DepiJointContextType {
     state: DepiJointState;
     turnosFiltador: TurnoLista[];
-    setState: React.Dispatch<React.SetStateAction<DepiJointState>>;
     dia: Date;
+    setState: React.Dispatch<React.SetStateAction<DepiJointState>>;
     setDia: React.Dispatch<React.SetStateAction<Date>>;
+    addTurno: any;
 }
 
 // Crea el contexto con un valor predeterminado de tipo undefined
@@ -29,12 +31,22 @@ interface DepiJointProviderProps {
 const DepiJointProvider: React.FC<DepiJointProviderProps> = ({ children }) => {
     const [state, setState] = useState<DepiJointState>({}); // Define el estado que deseas compartir
     const [dia, setDia] = useState<Date>(new Date());
-    const { filteredTurnos } = useDateFilter({ fecha: dia });
+    const { filteredTurnos,getTurnos } = useDateFilter({ fecha: dia });
+    const { agregarTurno } = useTurnoAccion();
 
-    
+
+    const addTurno = async (data: any): Promise<boolean> => {
+        if (await agregarTurno(data)) {
+            getTurnos()
+            return true
+        } else {
+            return false
+        }
+
+    }
 
     return (
-        <DepiJointContexto.Provider value={{ state, setState, turnosFiltador: filteredTurnos, dia, setDia }}>
+        <DepiJointContexto.Provider value={{ state, setState, turnosFiltador: filteredTurnos, dia, setDia, addTurno }}>
             {children}
         </DepiJointContexto.Provider>
     );

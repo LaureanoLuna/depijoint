@@ -40,7 +40,7 @@ export default function AddTurno({ funcion, elemento }: { funcion: any; elemento
    */
   function Formulario() {
     // Contexto y estado
-    const { dia, turnosFiltador } = useDepiJoint();
+    const { dia, turnosFiltador, addTurno } = useDepiJoint();
     const { register, handleSubmit, setValue, formState: { errors } } = useForm<TurnoAdd>();
 
     // Hooks personalizados
@@ -81,7 +81,7 @@ export default function AddTurno({ funcion, elemento }: { funcion: any; elemento
      * @param {TurnoAdd} data - Datos del formulario.
      */
     const onSubmit: SubmitHandler<TurnoAdd> = async (data) => {
-      const success = await agregarTurno(data);
+      const success = await addTurno(data);
       funcion(success ? !elemento : elemento);
     };
 
@@ -127,18 +127,14 @@ export default function AddTurno({ funcion, elemento }: { funcion: any; elemento
               <div className="mb-5 col-span-1">
                 <Label>Día</Label>
                 <Input
-                  disabled={!paciente?.consentimiento.tiene}
                   type="date"
+                  disabled={true}
                   value={refactoriDate(dia)}
                   {...register("dia", {
                     required: "Este campo es requerido",
-                    validate: {
-                      isFutureDate: (value) =>
-                        new Date(value) > new Date() || "No se pueden fechas ya pasadas",
-                    },
                   })}
                 />
-                {errors.dia && <p role="alert" className="text-red-500">{errors.dia.message}</p>}
+                {errors.dia && <p role="alert" className="text-xs text-red-500">{errors.dia.message}</p>}
               </div>
               <div className="mb-5 col-span-1">
                 <Label>Hora</Label>
@@ -152,7 +148,7 @@ export default function AddTurno({ funcion, elemento }: { funcion: any; elemento
                     },
                   })}
                 />
-                {errors.hora && <p role="alert" className="text-red-500">{errors.hora.message}</p>}
+                {errors.hora && <p role="alert" className="text-xs text-red-500">{errors.hora.message}</p>}
               </div>
             </div>
 

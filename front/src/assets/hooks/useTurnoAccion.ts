@@ -63,7 +63,7 @@ const useTurnoAccion = () => {
             const costo = contratacion.zonas.reduce((total, zona: Zona) => total + zona.precio, 0);
 
             const turnoNuevo: TurnoInterface = {
-                id: "21", // Considerar generar un ID único dinámicamente
+                id: (getTurnos().length).toFixed(), // Considerar generar un ID único dinámicamente
                 dia: data.dia,
                 hora: data.hora,
                 duracion: tiempo.toFixed(), // Considerar hacer que la duración sea dinámica

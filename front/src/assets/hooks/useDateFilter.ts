@@ -34,13 +34,17 @@ function useDateFilter({ fecha = new Date() }: { fecha?: Date }) {
     return `${year}-${month}-${day}`;
   };
 
-  useEffect(() => {
+  const getTurnos = () => {
     const turnosDesdeLocalStorage = JSON.parse(localStorage.getItem("turnos") || "[]");
     const turnosFiltrados = dateFilter(turnosDesdeLocalStorage, fecha);
     setFilteredTurnos(formatearListaTurnos(turnosFiltrados));
+  }
+
+  useEffect(() => {
+    getTurnos()
   }, [fecha]);
 
-  return { filteredTurnos, refactoriDate, dateFilter };
+  return { filteredTurnos, refactoriDate, dateFilter, getTurnos };
 }
 
 export default useDateFilter;

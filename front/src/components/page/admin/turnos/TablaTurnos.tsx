@@ -41,14 +41,11 @@ export const Columna: ColumnDef<TurnoLista>[] = [
 
 export default function TablaTurnos() {
   const [reset, setReset] = useState<boolean>(false);
+  const { turnosFiltador, setDia, dia } = useDepiJoint();
 
-  const { turnosFiltador, setDia, dia } = useDepiJoint()
-
-
-  useEffect(() => {
-
-
-  }, [dia, setDia]);
+  useEffect(()=>{
+    console.log(turnosFiltador);    
+  },[turnosFiltador])
   return (
     <>
       <Cabecera
