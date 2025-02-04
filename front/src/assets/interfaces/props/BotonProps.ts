@@ -9,6 +9,6 @@ export interface BotonProps<T = any> {
     tamaño: "icon" | "lg" | "sm" | "default";
     variante: "ghost" | "secondary" | "destructive" | "outline" | "link" | "confirm" | "alert" | "delete";
     estilo?: string;
-    onClick: (data: T) => void; // Usamos T aquí
+    onClick?: (data: T) => void; // Usamos T aquí
 }
 

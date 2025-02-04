@@ -16,3 +16,17 @@ export interface PacienteSelect extends Persona {
   apellido: string;
   dni: string;
 }
+
+/* PACIENTE:
+  id,
+  nombre,
+  apellido,
+  documento,
+  telefono,
+  email,
+  fecha_nacimiento,
+  direccion,
+  estado_id,
+  fecha_creacion,
+  fecha_actualizacion
+ */

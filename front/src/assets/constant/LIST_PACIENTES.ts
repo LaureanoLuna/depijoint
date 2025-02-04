@@ -7,8 +7,8 @@ export const LIST_PACIENTE: Paciente[] = [
     nombre: "Laureano Ivan",
     apellido: "Luna",
     email: "wsullens0@yolasite.com",
-    dni: "13579395",
-    telefono: "2552144799",
+    dni: "38232325",
+    telefono: "1126478811",
     direccion: "PO Box 35572",
     fechaNac: new Date("20041018"),
     consentimiento: {

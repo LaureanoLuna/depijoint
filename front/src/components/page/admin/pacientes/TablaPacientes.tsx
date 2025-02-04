@@ -6,16 +6,16 @@ import AddPaciente from "./AddPaciente";
 import { Tabla } from "@/assets/components/dataTable/Tabla";
 import usePacienteAccion from "@/assets/hooks/usePacienteAccion";
 import GrupoBotones from "@/assets/components/GrupoBotones";
-import { FaCheck, FaPencilAlt, FaRegTimesCircle } from "react-icons/fa";
+import { FaEye, FaPencilAlt, FaRegTimesCircle } from "react-icons/fa";
 import { BotonProps } from "@/assets/interfaces/props/BotonProps";
 
 const botonesAccion: BotonProps[] = [
   {
-    variante: "confirm",
-    icono: <FaCheck color="success" />,
+    variante: "ghost",
+    icono: <FaEye color="success" />,
     tamaño: "icon",
     is_tooltip: true,
-    text_tooltip: "confirmar",
+    text_tooltip: "ver",
   },
   {
     variante: "alert",

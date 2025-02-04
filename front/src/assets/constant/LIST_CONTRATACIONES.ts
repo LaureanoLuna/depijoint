@@ -8,7 +8,7 @@ export const LIST_CONTRATACIONES: Contratacion[] = [
     fechaFin: "2023-10-12T10:00:00Z",
     estado: true,
     descripcion: "Contratación de tratamiento facial",
-    pacienteDni: "13579395",
+    pacienteDni: "38232325",
     precioTotal: 1500.5,
     tiempoSesion: 60,
     zonas: [

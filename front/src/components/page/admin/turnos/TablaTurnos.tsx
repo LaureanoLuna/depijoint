@@ -7,21 +7,17 @@ import { TurnoLista } from "@/assets/interfaces/turno";
 import { ColumnDef } from "@tanstack/react-table";
 import AddTurno from "./AddTurno";
 import { useDepiJoint } from "@/assets/context/DepiJointContexto";
-import { BotonProps } from "@/assets/interfaces/props/BotonProps";
 import {
   FaCheck,
-  FaPencilAlt,
   FaRegTimesCircle,
   FaWhatsapp,
-  FaWhatsappSquare,
 } from "react-icons/fa";
 import Seleccion from "@/assets/components/Seleccion";
 import useColaboradorAccion from "@/assets/hooks/useColaboradorAccion";
 import { Colaborador } from "@/assets/interfaces/colaboradores";
-import { Button } from "@/components/ui/button";
 import Boton from "@/assets/components/Boton";
 import usePacienteAccion from "@/assets/hooks/usePacienteAccion";
-import { Link, redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function TablaTurnos() {
   const { turnosFiltador, setDia, dia, asignarTurno, quitarTurno } =
