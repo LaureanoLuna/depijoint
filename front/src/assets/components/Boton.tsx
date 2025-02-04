@@ -20,7 +20,7 @@ const Boton = forwardRef<HTMLButtonElement, { prop: BotonProps }>(
         variant={prop.variante}
         size={prop.tamaño}
         className={`hover:cursor-pointer mx-1 ${prop.estilo} border-4 border-transparent`}
-        type={prop.tipo ?? "text"}
+        type={prop.tipo}
       >
         <div>
           {prop.icono} {prop?.texto}

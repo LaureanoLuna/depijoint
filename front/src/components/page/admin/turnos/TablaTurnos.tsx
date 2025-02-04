@@ -8,96 +8,44 @@ import { ColumnDef } from "@tanstack/react-table";
 import AddTurno from "./AddTurno";
 import { useDepiJoint } from "@/assets/context/DepiJointContexto";
 import { BotonProps } from "@/assets/interfaces/props/BotonProps";
-import { FaCheck, FaPencilAlt, FaRegTimesCircle } from "react-icons/fa";
+import {
+  FaCheck,
+  FaPencilAlt,
+  FaRegTimesCircle,
+  FaWhatsapp,
+  FaWhatsappSquare,
+} from "react-icons/fa";
 import Seleccion from "@/assets/components/Seleccion";
 import useColaboradorAccion from "@/assets/hooks/useColaboradorAccion";
 import { Colaborador } from "@/assets/interfaces/colaboradores";
+import { Button } from "@/components/ui/button";
+import Boton from "@/assets/components/Boton";
+import usePacienteAccion from "@/assets/hooks/usePacienteAccion";
+import { Link, redirect } from "react-router-dom";
 
 export default function TablaTurnos() {
-  const { turnosFiltador, setDia, dia, asignarTurno, quitarTurno } = useDepiJoint();
-  // Funciones para manejar acciones de botones
-  const handleConfirm = (turno: TurnoLista) => {
-    asignarTurno(turno);
-  };
-
-  const handleEdit = (turno: TurnoLista) => {
-    console.log(turno);
-  };
-
-  const handleDelete = (turno: TurnoLista) => {
-    const { quitarTurno } = useDepiJoint();
-    quitarTurno(turno.id);
-  };
-
-  // Definición de botones para acciones
-  const botonesAccion: BotonProps<TurnoLista>[] = [
-    {
-      variante: "confirm",
-      icono: <FaCheck color="success" />,
-      tamaño: "icon",
-      is_tooltip: true,
-      text_tooltip: "confirmar",
-      onClick: handleConfirm,
-    },
-    {
-      variante: "alert",
-      icono: <FaPencilAlt color="alert" />,
-      tamaño: "icon",
-      is_tooltip: true,
-      text_tooltip: "editar",
-      onClick: handleEdit,
-    },
-    {
-      variante: "delete",
-      icono: <FaRegTimesCircle color="delete" />,
-      tamaño: "icon",
-      is_tooltip: true,
-      text_tooltip: "cancelar",
-      onClick: handleDelete,
-    },
-  ];
-
-  // Definición de botones para dropdown
-  const botonesDropdown: BotonProps<TurnoLista>[] = [
-    {
-      variante: "confirm",
-      tamaño: "sm",
-      estilo: "w-full",
-      texto: "confirmar",
-      is_tooltip: false,
-      onClick: handleConfirm,
-    },
-    {
-      variante: "alert",
-      estilo: "w-full",
-      tamaño: "sm",
-      texto: "editar",
-      is_tooltip: false,
-      onClick: handleEdit,
-    },
-    {
-      variante: "delete",
-      estilo: "w-full",
-      tamaño: "sm",
-      texto: "cancelar",
-      is_tooltip: false,
-      onClick: handleDelete,
-    },
-  ];
-
+  const { turnosFiltador, setDia, dia, asignarTurno, quitarTurno } =
+    useDepiJoint();
+  const { getPaciente } = usePacienteAccion();
   // Definición de columnas para la tabla
-  export const Columna: ColumnDef<TurnoLista>[] = [
+  const Columna: ColumnDef<TurnoLista>[] = [
     {
       accessorKey: "nombre",
-      header: ({ column }) => <CabeceraColumna column={column} title="Nombre" />,
+      header: ({ column }) => (
+        <CabeceraColumna column={column} title="Nombre" />
+      ),
     },
     {
       accessorKey: "hora",
-      header: ({ column }) => <CabeceraColumna column={column} title="Horario" />,
+      header: ({ column }) => (
+        <CabeceraColumna column={column} title="Horario" />
+      ),
     },
     {
       accessorKey: "duracion",
-      header: ({ column }) => <CabeceraColumna column={column} title="Duración" />,
+      header: ({ column }) => (
+        <CabeceraColumna column={column} title="Duración" />
+      ),
     },
     {
       id: "colaboradores",
@@ -105,14 +53,15 @@ export default function TablaTurnos() {
       cell: ({ row }) => {
         const { getColaboradores } = useColaboradorAccion();
         const colaborador = getColaboradores().find(
-          (c: Colaborador) => c.colaboradorId.toString() === row.original.colaboradorId
+          (c: Colaborador) =>
+            c.colaboradorId.toString() === row.original.colaboradorId
         );
 
         return row.original.colaboradorId ? (
           <h1>{row.original.colaboradorId}</h1>
         ) : (
           <Seleccion
-            opciones={!colaborador ? getColaboradores() : [colaborador]}
+            opciones={[]}
             funccion={(e: string) => {
               row.original.colaboradorId = e.trim();
             }}
@@ -123,13 +72,84 @@ export default function TablaTurnos() {
       },
     },
     {
+      id: "accionWhatsapp",
+      header: "Whatsapp",
+      cell: ({ row }) => {
+        const dniPaciente = row.original.dni;
+        const paciente = getPaciente(dniPaciente);
+        return (
+          <Boton
+            prop={{
+              tipo: "button",
+              tamaño: "icon",
+              variante: "outline",
+              is_tooltip: true,
+              text_tooltip: "WhatsApp",
+              onClick: () => { },
+              icono: (
+                <Link
+                  to={`https://wa.me/54${paciente?.telefono}?text=I'm%20interested%20in%20your%20car%20for%20sale`}
+                  target={"_blank"}
+                >
+                  {" "}
+                  <FaWhatsapp />
+                </Link>
+              ),
+            }}
+          />
+        );
+      },
+    },
+    {
       id: "acciones",
       cell: ({ row }) => {
         const turno = row.original;
         return (
           <GrupoBotones
-            botonesAccion={botonesAccion}
-            botonesDropdown={botonesDropdown}
+            botonesAccion={[
+              {
+                variante: "confirm",
+                icono: <FaCheck color="success" />,
+                tamaño: "icon",
+                is_tooltip: true,
+                text_tooltip: "confirmar",
+                onClick: () => {
+                  asignarTurno(turno);
+                },
+              },
+              {
+                variante: "delete",
+                icono: <FaRegTimesCircle color="delete" />,
+                tamaño: "icon",
+                is_tooltip: true,
+                text_tooltip: "cancelar",
+                onClick: () => {
+                  quitarTurno(turno.id);
+                },
+              },
+            ]}
+            botonesDropdown={[
+              {
+                variante: "confirm",
+                tamaño: "sm",
+                estilo: "w-full",
+                texto: "confirmar",
+                is_tooltip: false,
+                onClick: () => {
+                  asignarTurno(turno);
+                },
+              },
+              {
+                variante: "delete",
+                estilo: "w-full",
+                tamaño: "sm",
+                texto: "cancelar",
+                is_tooltip: false,
+                onClick: () => {
+                  quitarTurno(turno.id);
+                },
+              },
+            ]}
             key={turno.id}
           />
         );
@@ -138,7 +158,6 @@ export default function TablaTurnos() {
   ];
 
   // Componente principal para la tabla de turnos
-
 
   return (
     <>

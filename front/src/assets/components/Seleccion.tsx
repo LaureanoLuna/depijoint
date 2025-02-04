@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/select"
 import { Colaborador } from "../interfaces/colaboradores"
 
-export default function Seleccion({ opciones, titulo, funccion, name }: { opciones: Colaborador[], titulo: string, funccion: any, name?: string }) {
+export default function Seleccion({ opciones, titulo, funccion, name }: { opciones: string[], titulo: string, funccion: any, name?: string }) {
 
     
     return (
@@ -16,7 +16,7 @@ export default function Seleccion({ opciones, titulo, funccion, name }: { opcion
                 <SelectValue placeholder={titulo} />
             </SelectTrigger>
             <SelectContent>
-                {opciones?.map((o, i) => (<SelectItem className="capitalize" key={i} value={o.dni}>{o.usuario}</SelectItem>))}
+                {opciones?.map((o, i) => (<SelectItem className="capitalize" key={i} value={o}>{o}</SelectItem>))}
             </SelectContent>
         </Select>
 
