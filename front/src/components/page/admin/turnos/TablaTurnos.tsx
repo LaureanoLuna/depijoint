@@ -11,145 +11,147 @@ import { BotonProps } from "@/assets/interfaces/props/BotonProps";
 import { FaCheck, FaPencilAlt, FaRegTimesCircle } from "react-icons/fa";
 import Seleccion from "@/assets/components/Seleccion";
 import useColaboradorAccion from "@/assets/hooks/useColaboradorAccion";
-import useTurnoAccion from "@/assets/hooks/useTurnoAccion";
-
-const botonesAccion: BotonProps<TurnoLista>[] = [
-  {
-    variante: "confirm",
-    icono: <FaCheck color="success" />,
-    tamaño: "icon",
-    is_tooltip: true,
-    text_tooltip: "confirmar",
-    onClick: (turno: TurnoLista) => {
-      // Lógica para confirmar turno
-    },
-  },
-  {
-    variante: "alert",
-    icono: <FaPencilAlt color="alert" />,
-    tamaño: "icon",
-    is_tooltip: true,
-    text_tooltip: "editar",
-    onClick: (turno: TurnoLista) => {
-      console.log(turno);
-    },
-  },
-  {
-    variante: "delete",
-    icono: <FaRegTimesCircle color="delete" />,
-    tamaño: "icon",
-    is_tooltip: true,
-    text_tooltip: "cancelar",
-    onClick: (turno: TurnoLista) => {
-      console.log(turno);
-    },
-  },
-];
-
-const botonesDropdown: BotonProps<TurnoLista>[] = [
-  {
-    variante: "confirm",
-    tamaño: "sm",
-    estilo: "w-full",
-    texto: "confirmar",
-    is_tooltip: false,
-    onClick: (turno: TurnoLista) => {
-      // Lógica para confirmar turno
-    },
-  },
-  {
-    variante: "alert",
-    estilo: "w-full",
-    tamaño: "sm",
-    texto: "editar",
-    is_tooltip: false,
-    onClick: (turno: TurnoLista) => {
-      console.log(turno);
-    },
-  },
-  {
-    variante: "delete",
-    estilo: "w-full",
-    tamaño: "sm",
-    texto: "cancelar",
-    is_tooltip: false,
-    onClick: (turno: TurnoLista) => {
-      console.log(turno);
-    },
-  },
-];
-
-export const Columna: ColumnDef<TurnoLista>[] = [
-  {
-    accessorKey: "nombre",
-    header: ({ column }) => <CabeceraColumna column={column} title="Nombre" />,
-  },
-  {
-    accessorKey: "hora",
-    header: ({ column }) => <CabeceraColumna column={column} title="Horario" />,
-  },
-  {
-    accessorKey: "duracion",
-    header: ({ column }) => <CabeceraColumna column={column} title="Duracion" />,
-  },
-  {
-    id: "colaborador",
-    header: "Colaborador",
-    cell: ({ row }) => {      
-      const { getColaboradores } = useColaboradorAccion();
-      return row.original.colaboradorId ? (
-        <h1>{row.original.colaboradorId}</h1>
-      ) : (
-        <Seleccion
-          opciones={getColaboradores()}
-          funccion={(e: string) => {
-            console.log(row.original);
-            row.original.colaboradorId = e;
-            
-          }}
-          titulo={"Usuarios..."}
-          name={"usuario"}
-        />
-      );
-    },
-  },
-  {
-    id: "acciones",
-    cell: ({ row }) => {
-      const { confirmarTurno } = useTurnoAccion();
-
-      const turno = row.original;
-
-      const botonesConDatos = botonesAccion.map(boton => ({
-        ...boton,
-        onClick: () => confirmarTurno(turno), // Asegúrate de que se llame la función
-      }));
-
-      return (
-        <GrupoBotones
-          botonesAccion={botonesConDatos} // Usar los botones con datos
-          botonesDropdown={botonesDropdown}
-          key={turno.id}
-        />
-      );
-    },
-  }
-];
+import { Colaborador } from "@/assets/interfaces/colaboradores";
 
 export default function TablaTurnos() {
-  const { turnosFiltador, setDia, dia } = useDepiJoint();
+  const { turnosFiltador, setDia, dia, asignarTurno, quitarTurno } = useDepiJoint();
+  // Funciones para manejar acciones de botones
+  const handleConfirm = (turno: TurnoLista) => {
+    asignarTurno(turno);
+  };
+
+  const handleEdit = (turno: TurnoLista) => {
+    console.log(turno);
+  };
+
+  const handleDelete = (turno: TurnoLista) => {
+    const { quitarTurno } = useDepiJoint();
+    quitarTurno(turno.id);
+  };
+
+  // Definición de botones para acciones
+  const botonesAccion: BotonProps<TurnoLista>[] = [
+    {
+      variante: "confirm",
+      icono: <FaCheck color="success" />,
+      tamaño: "icon",
+      is_tooltip: true,
+      text_tooltip: "confirmar",
+      onClick: handleConfirm,
+    },
+    {
+      variante: "alert",
+      icono: <FaPencilAlt color="alert" />,
+      tamaño: "icon",
+      is_tooltip: true,
+      text_tooltip: "editar",
+      onClick: handleEdit,
+    },
+    {
+      variante: "delete",
+      icono: <FaRegTimesCircle color="delete" />,
+      tamaño: "icon",
+      is_tooltip: true,
+      text_tooltip: "cancelar",
+      onClick: handleDelete,
+    },
+  ];
+
+  // Definición de botones para dropdown
+  const botonesDropdown: BotonProps<TurnoLista>[] = [
+    {
+      variante: "confirm",
+      tamaño: "sm",
+      estilo: "w-full",
+      texto: "confirmar",
+      is_tooltip: false,
+      onClick: handleConfirm,
+    },
+    {
+      variante: "alert",
+      estilo: "w-full",
+      tamaño: "sm",
+      texto: "editar",
+      is_tooltip: false,
+      onClick: handleEdit,
+    },
+    {
+      variante: "delete",
+      estilo: "w-full",
+      tamaño: "sm",
+      texto: "cancelar",
+      is_tooltip: false,
+      onClick: handleDelete,
+    },
+  ];
+
+  // Definición de columnas para la tabla
+  export const Columna: ColumnDef<TurnoLista>[] = [
+    {
+      accessorKey: "nombre",
+      header: ({ column }) => <CabeceraColumna column={column} title="Nombre" />,
+    },
+    {
+      accessorKey: "hora",
+      header: ({ column }) => <CabeceraColumna column={column} title="Horario" />,
+    },
+    {
+      accessorKey: "duracion",
+      header: ({ column }) => <CabeceraColumna column={column} title="Duración" />,
+    },
+    {
+      id: "colaboradores",
+      header: "Colaborador",
+      cell: ({ row }) => {
+        const { getColaboradores } = useColaboradorAccion();
+        const colaborador = getColaboradores().find(
+          (c: Colaborador) => c.colaboradorId.toString() === row.original.colaboradorId
+        );
+
+        return row.original.colaboradorId ? (
+          <h1>{row.original.colaboradorId}</h1>
+        ) : (
+          <Seleccion
+            opciones={!colaborador ? getColaboradores() : [colaborador]}
+            funccion={(e: string) => {
+              row.original.colaboradorId = e.trim();
+            }}
+            titulo={"Usuarios..."}
+            name={"usuario"}
+          />
+        );
+      },
+    },
+    {
+      id: "acciones",
+      cell: ({ row }) => {
+        const turno = row.original;
+        return (
+          <GrupoBotones
+            botonesAccion={botonesAccion}
+            botonesDropdown={botonesDropdown}
+            key={turno.id}
+          />
+        );
+      },
+    },
+  ];
+
+  // Componente principal para la tabla de turnos
+
+
   return (
     <>
       <Cabecera
         titulo="Turnos"
-        descripcion="Turnos del dia"
+        descripcion="Turnos del día"
         contenidoMedio={<InputFecha date={dia} funcDate={setDia} />}
         botonAccion={<AddTurno />}
       />
       <Tabla
         columns={Columna}
         data={turnosFiltador}
-        opcionesFilto={["Nombre", "Hora", "Duracion"]}
+        opcionesFilto={["Nombre", "Hora", "Duración"]}
       />
     </>
   );

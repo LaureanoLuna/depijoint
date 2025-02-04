@@ -18,6 +18,8 @@ interface DepiJointContextType {
     setState: React.Dispatch<React.SetStateAction<DepiJointState>>;
     setDia: React.Dispatch<React.SetStateAction<Date>>;
     addTurno: any;
+    asignarTurno: any;
+    quitarTurno: any;
 }
 
 // Crea el contexto con un valor predeterminado de tipo undefined
@@ -32,7 +34,7 @@ const DepiJointProvider: React.FC<DepiJointProviderProps> = ({ children }) => {
     const [state, setState] = useState<DepiJointState>({}); // Define el estado que deseas compartir
     const [dia, setDia] = useState<Date>(new Date());
     const { filteredTurnos, getTurnos } = useDateFilter({ fecha: dia });
-    const { agregarTurno } = useTurnoAccion();
+    const { agregarTurno, confirmarTurno, cancelarTurno } = useTurnoAccion();
 
 
     /**
@@ -60,8 +62,28 @@ const DepiJointProvider: React.FC<DepiJointProviderProps> = ({ children }) => {
         return false;
     };
 
+    const asignarTurno = async (data: TurnoLista): Promise<boolean> => {
+        const confirmacion = await confirmarTurno(data);
+        if (confirmacion) {
+            await getTurnos();
+            return true;
+        }
+        return false;
+    }
+
+    const quitarTurno = async (turnoId: any): Promise<boolean> => {
+        console.log(turnoId);
+        
+        const bool = await cancelarTurno(turnoId);
+        if (bool) {
+            await getTurnos();
+            return true;
+        }
+        return false;
+    }
+
     return (
-        <DepiJointContexto.Provider value={{ state, setState, turnosFiltador: filteredTurnos, dia, setDia, addTurno }}>
+        <DepiJointContexto.Provider value={{ state, setState, turnosFiltador: filteredTurnos, dia, setDia, addTurno, asignarTurno, quitarTurno }}>
             {children}
         </DepiJointContexto.Provider>
     );

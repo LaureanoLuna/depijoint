@@ -22,10 +22,10 @@ const useTurnoAccion = () => {
 
     const getTurno = (turniId: string) => {
         const turnos = getTurnos().find((t, i) => {
-            t.id === turniId && t.estado === false
-        })
+            t.id === turniId && t.estado === false;
+        });
         return turnos;
-    }
+    };
 
     /**
      * Almacena un nuevo turno en el localStorage.
@@ -47,7 +47,7 @@ const useTurnoAccion = () => {
     const validaTurno = (turno: TurnoInterface) => {
         const turnos = getTurnos().filter((t) => t.dia === turno.dia);
         return estaDisponible(turno.hora, Number.parseInt(turno.duracion), turnos);
-    }
+    };
 
     /**
      * Agrega un nuevo turno después de validar la contratación y el paciente.
@@ -66,11 +66,17 @@ const useTurnoAccion = () => {
                 throw new Error("No se encontró el paciente");
             }
 
-            const tiempo = contratacion.zonas.reduce((total, zona: Zona) => total + zona.tiempo, 0);
-            const costo = contratacion.zonas.reduce((total, zona: Zona) => total + zona.precio, 0);
+            const tiempo = contratacion.zonas.reduce(
+                (total, zona: Zona) => total + zona.tiempo,
+                0
+            );
+            const costo = contratacion.zonas.reduce(
+                (total, zona: Zona) => total + zona.precio,
+                0
+            );
 
             const turnoNuevo: TurnoInterface = {
-                id: (getTurnos().length).toFixed(), // Considerar generar un ID único dinámicamente
+                id: getTurnos().length.toFixed(), // Considerar generar un ID único dinámicamente
                 dia: data.dia,
                 hora: data.hora,
                 duracion: tiempo.toFixed(), // Considerar hacer que la duración sea dinámica
@@ -88,25 +94,43 @@ const useTurnoAccion = () => {
         }
     };
 
-    const confirmarTurno = (data: TurnoLista) => {
+    const confirmarTurno = (data: TurnoLista): boolean => {
+        let bool = false;
+        try {
+            const turnos = getTurnos().map((turno) => {
+                if (turno.id === data.id) {
+                    return { ...turno, colaboradorId: data.colaboradorId };
+                }
+                return turno;
+            });
+            localStorage.setItem("turnos", JSON.stringify(turnos));
+            bool = true;
+        } catch (error) {
+            console.log(error);
+            bool = false;
+        } finally {
+            return bool;
+        }
+    };
 
-        const turnos = getTurnos().map((turno) => {
-            if (turno.id === data.id) {
-                return { ...turno, colaboradorId: data.colaboradorId }
-            }
-            return turno;
-        })
-        console.log(turnos);        
-        localStorage.setItem('turnos', JSON.stringify(turnos));
-    }
+    const cancelarTurno = async (idTurno: any): Promise<boolean> => {
+        const turnos = getTurnos();
+        const indiceTurno = turnos.findIndex(turno => turno.id === idTurno);
 
-    const asignarTurno = async () => {
+        if (indiceTurno === -1) return false;
 
-    }
+        turnos.splice(indiceTurno, 1);
+        localStorage.setItem("turnos", JSON.stringify(turnos));
+
+        return true;
+    };
+
+    const asignarTurno = async () => { };
 
     return {
-        agregarTurno, confirmarTurno
-
+        agregarTurno,
+        confirmarTurno,
+        cancelarTurno
     };
 };
 
