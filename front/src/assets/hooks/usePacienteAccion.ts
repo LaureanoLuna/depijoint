@@ -1,4 +1,4 @@
-import { Paciente } from "@/assets/interfaces/paciente";
+import { Consentimiento, Paciente } from "@/assets/interfaces/paciente";
 import { PersonaSearch } from "@/assets/interfaces/persona";
 import { useState } from "react";
 
@@ -25,25 +25,43 @@ const usePacienteAccion = () => {
     return paciente;
   };
 
-  /**Funcion para cargar un nuevo Pacinete
-   * @params objeto con los datos del formulario
-   * @returns Un boolean, el cual indica que se cargo correctamente
-   */
 
-  const cargarPaciente = (data: Paciente) => {
-    const pacienteNuevo = data;
-    if (getPaciente(pacienteNuevo.dni)) return false;
+  interface inputPaciente extends Paciente {
+    file?: File;
+    // Agrega aquí otras propiedades del paciente según sea necesario
+  }
+
+  /**
+   * Función para cargar un nuevo Paciente
+   * @params {Paciente} data - Objeto con los datos del formulario
+   * @returns {boolean} - Indica si se cargó correctamente
+   */
+  const cargarPaciente = (data: inputPaciente): boolean => {
+    const { dni, file, ...pacienteNuevo } = data;
+
+    // Verificar si el paciente ya existe
+    if (getPaciente(dni)) return false;
+
     const pacientesRegistrados: Paciente[] = getPacientes();
-    let pacienteId = pacientesRegistrados.length;
-    pacienteNuevo.pacienteId = pacienteId;
-    let tieneConcentimiento: boolean = pacienteNuevo.consentimiento
-      ? true
-      : false;
-    pacienteNuevo.consentimiento.tiene = tieneConcentimiento;
-    pacientesRegistrados.push(pacienteNuevo);
-    localStorage.setItem('pacientes', JSON.stringify(pacientesRegistrados))
+    pacienteNuevo.pacienteId = asignarPacienteId(pacientesRegistrados.length);
+
+    // Asignar consentimiento
+    pacienteNuevo.consentimiento.tiene = Boolean(file);
+
+    // Agregar nuevo paciente a la lista
+    pacientesRegistrados.push(pacienteNuevo as Paciente);
+    localStorage.setItem('pacientes', JSON.stringify(pacientesRegistrados));
+
     return true;
   };
+
+
+  /**
+   * Asigna un ID único al paciente
+   * @param {number} length - Longitud actual de la lista de pacientes
+   * @returns {number} - Nuevo ID para el paciente
+   */
+  const asignarPacienteId = (length: number): number => length;
 
   /**
    * Busca un paciente por su DNI.
