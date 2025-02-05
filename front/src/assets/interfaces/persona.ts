@@ -3,8 +3,8 @@ export interface Persona {
     nombre: string;
     apellido: string;
     dni: string;
-    telefono?: string; // Considera agregar validación del formato
-    email?: string; // Considera agregar validación del formato
+    telefono: string; // Considera agregar validación del formato
+    email: string; // Considera agregar validación del formato
 }
 
 export interface PersonaSearch{
