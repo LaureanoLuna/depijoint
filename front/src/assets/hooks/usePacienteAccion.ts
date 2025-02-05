@@ -10,6 +10,7 @@ const usePacienteAccion = () => {
   // Estado para almacenar el paciente encontrado
   const [paciente, setPaciente] = useState<Paciente | undefined>(undefined);
 
+
   const getPacientes = () => {
     const localStorageP: Paciente[] = JSON.parse(
       localStorage.getItem("pacientes") || "[]"
@@ -17,10 +18,31 @@ const usePacienteAccion = () => {
     return localStorageP;
   };
 
+  /*  */
   const getPaciente = (dni: string) => {
     const paciente = getPacientes().find((p: Paciente) => p.dni === dni);
     if (!paciente) return undefined;
     return paciente;
+  };
+
+  /**Funcion para cargar un nuevo Pacinete
+   * @params objeto con los datos del formulario
+   * @returns Un boolean, el cual indica que se cargo correctamente
+   */
+
+  const cargarPaciente = (data: Paciente) => {
+    const pacienteNuevo = data;
+    if (getPaciente(pacienteNuevo.dni)) return false;
+    const pacientesRegistrados: Paciente[] = getPacientes();
+    let pacienteId = pacientesRegistrados.length;
+    pacienteNuevo.pacienteId = pacienteId;
+    let tieneConcentimiento: boolean = pacienteNuevo.consentimiento
+      ? true
+      : false;
+    pacienteNuevo.consentimiento.tiene = tieneConcentimiento;
+    pacientesRegistrados.push(pacienteNuevo);
+    localStorage.setItem('pacientes', JSON.stringify(pacientesRegistrados))
+    return true;
   };
 
   /**
@@ -44,7 +66,7 @@ const usePacienteAccion = () => {
   };
 
   // Retorna el paciente y la función de búsqueda
-  return { paciente, buscaPaciente, getPacientes, getPaciente };
+  return { paciente, buscaPaciente, getPacientes, getPaciente, cargarPaciente };
 };
 
 export default usePacienteAccion;

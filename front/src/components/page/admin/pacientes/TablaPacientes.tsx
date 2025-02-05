@@ -1,13 +1,14 @@
+import { useEffect } from "react";
 import Cabecera from "@/assets/components/Cabecera";
 import { CabeceraColumna } from "@/assets/components/dataTable/CabeceraColumna";
-import { PacienteSelect } from "@/assets/interfaces/paciente";
+import { Paciente, PacienteSelect } from "@/assets/interfaces/paciente";
 import { ColumnDef } from "@tanstack/react-table";
 import AddPaciente from "./AddPaciente";
 import { Tabla } from "@/assets/components/dataTable/Tabla";
-import usePacienteAccion from "@/assets/hooks/usePacienteAccion";
 import GrupoBotones from "@/assets/components/GrupoBotones";
 import { FaEye, FaPencilAlt, FaRegTimesCircle } from "react-icons/fa";
 import { BotonProps } from "@/assets/interfaces/props/BotonProps";
+import { useDepiJoint } from "@/assets/context/DepiJointContexto";
 
 const botonesAccion: BotonProps[] = [
   {
@@ -57,7 +58,7 @@ const botonesDropdown: BotonProps[] = [
   },
 ];
 
-export const Columna: ColumnDef<PacienteSelect>[] = [
+export const Columna: ColumnDef<Paciente>[] = [
   {
     accessorKey: "nombre",
     header: ({ column }) => <CabeceraColumna column={column} title="Nom" />,
@@ -71,6 +72,14 @@ export const Columna: ColumnDef<PacienteSelect>[] = [
   {
     accessorKey: "dni",
     header: ({ column }) => <CabeceraColumna column={column} title="DNI" />,
+  },
+  {
+    id:"consentimiento",
+    header:"Consentimiento",
+    cell:({row})=>{
+      const paciente =  row.original;
+      return (paciente.consentimiento.tiene ? <h2>Tiene</h2>: <h2>NO tiene</h2> )
+    }
   },
   {
     id: "actions",
@@ -89,7 +98,11 @@ export const Columna: ColumnDef<PacienteSelect>[] = [
 ];
 
 export default function TablaPacientes() {
-  const { getPacientes } = usePacienteAccion();
+  const { pacientes, allPacientes } = useDepiJoint();
+  useEffect(() => {
+    allPacientes();
+  }, []);
+
   return (
     <>
       <Cabecera
@@ -99,7 +112,7 @@ export default function TablaPacientes() {
       />
       <Tabla
         columns={Columna}
-        data={getPacientes()}
+        data={pacientes}
         opcionesFilto={["Nombre", "Apellido", "DNI"]}
       />
     </>

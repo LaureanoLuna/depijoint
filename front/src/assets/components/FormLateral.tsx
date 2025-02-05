@@ -28,7 +28,7 @@ export function FormLateral({ title, descripcion, formChild, tituloAbrir }: {
       <SheetContent side={"right"}>
         <SheetHeader>
           <SheetTitle>{title}</SheetTitle>
-          <SheetDescription>
+          <SheetDescription className="hidden md:block">
             {descripcion}
           </SheetDescription>
         </SheetHeader>
