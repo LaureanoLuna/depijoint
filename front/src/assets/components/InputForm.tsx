@@ -23,7 +23,7 @@ const InputForm: React.FC<InputFormProps> = ({
   error,
 }) => {
   return (
-    <div>
+    <div className="my-2">
       <Label>
         {label}
         <Input
