@@ -1,6 +1,8 @@
 import { Consentimiento, Paciente } from "@/assets/interfaces/paciente";
 import { PersonaSearch } from "@/assets/interfaces/persona";
 import { useState } from "react";
+import useContratacionAccion from "./useContratacionAccion";
+import { Contratacion } from "../interfaces/contratacion";
 
 /**
  * Hook personalizado para manejar la búsqueda de pacientes.
@@ -9,6 +11,7 @@ import { useState } from "react";
 const usePacienteAccion = () => {
   // Estado para almacenar el paciente encontrado
   const [paciente, setPaciente] = useState<Paciente | undefined>(undefined);
+  const {getContrataciones} = useContratacionAccion()
 
 
   const getPacientes = () => {
@@ -83,8 +86,13 @@ const usePacienteAccion = () => {
     setPaciente(pac);
   };
 
+  const getContratacionesPaciente = (pacienteId:any):Contratacion[] => {
+    const contrataciones:Contratacion[] = getContrataciones().map((c:Contratacion) => c.pacienteDni === pacienteId ? c : und)
+    return contrataciones;
+  }
+
   // Retorna el paciente y la función de búsqueda
-  return { paciente, buscaPaciente, getPacientes, getPaciente, cargarPaciente };
+  return { paciente, buscaPaciente, getPacientes, getPaciente, cargarPaciente, getContratacionesPaciente };
 };
 
 export default usePacienteAccion;

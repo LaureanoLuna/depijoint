@@ -9,6 +9,7 @@ import ListaColaboradores from './components/page/admin/colaboradores/ListaColab
 import ListaZonas from './components/page/admin/zonas/ListaZonas';
 import TablaTurnos from './components/page/admin/turnos/TablaTurnos';
 import TablaPacientes from './components/page/admin/pacientes/TablaPacientes';
+import VistaPaciente from './components/page/admin/pacientes/VistaPaciente';
 
 const router = createBrowserRouter([
   {
@@ -21,7 +22,12 @@ const router = createBrowserRouter([
       },
       {
         path: "/pacientes",
-        element: <TablaPacientes />
+        element: <TablaPacientes />,
+        
+      },
+      {
+        path:"/paciente/:pacienteId",
+        element:<VistaPaciente />
       },
       {
         path: "/asignados",

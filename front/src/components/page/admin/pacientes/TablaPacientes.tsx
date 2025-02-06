@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import Cabecera from "@/assets/components/Cabecera";
 import { CabeceraColumna } from "@/assets/components/dataTable/CabeceraColumna";
-import { Paciente, PacienteSelect } from "@/assets/interfaces/paciente";
+import { Paciente } from "@/assets/interfaces/paciente";
 import { ColumnDef } from "@tanstack/react-table";
 import AddPaciente from "./AddPaciente";
 import { Tabla } from "@/assets/components/dataTable/Tabla";
