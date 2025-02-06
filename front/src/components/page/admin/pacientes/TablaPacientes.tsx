@@ -61,7 +61,7 @@ const botonesDropdown: BotonProps[] = [
 export const Columna: ColumnDef<Paciente>[] = [
   {
     accessorKey: "nombre",
-    header: ({ column }) => <CabeceraColumna column={column} title="Nom" />,
+    header: ({ column }) => <CabeceraColumna column={column} title="Nombre" />,
   },
   {
     accessorKey: "apellido",

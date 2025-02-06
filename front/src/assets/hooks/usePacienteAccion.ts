@@ -1,45 +1,48 @@
-import { Consentimiento, Paciente } from "@/assets/interfaces/paciente";
+import { Paciente } from "@/assets/interfaces/paciente";
 import { PersonaSearch } from "@/assets/interfaces/persona";
 import { useState } from "react";
 import useContratacionAccion from "./useContratacionAccion";
 import { Contratacion } from "../interfaces/contratacion";
 
+export interface InputPacienteInterface extends Paciente {
+  file?: File;
+  // Agrega aquí otras propiedades del paciente según sea necesario
+}
 /**
- * Hook personalizado para manejar la búsqueda de pacientes.
- * @returns Un objeto que contiene el paciente encontrado y la función para buscar un paciente.
+ * Hook personalizado para manejar la búsqueda y gestión de pacientes.
+ * @returns Un objeto que contiene el paciente encontrado y las funciones para buscar y cargar pacientes.
  */
 const usePacienteAccion = () => {
   // Estado para almacenar el paciente encontrado
   const [paciente, setPaciente] = useState<Paciente | undefined>(undefined);
-  const {getContrataciones} = useContratacionAccion()
+  const { getContrataciones } = useContratacionAccion();
 
-
-  const getPacientes = () => {
+  /**
+   * Obtiene la lista de pacientes almacenados en localStorage.
+   * @returns Un array de pacientes.
+   */
+  const getPacientes = (): Paciente[] => {
     const localStorageP: Paciente[] = JSON.parse(
       localStorage.getItem("pacientes") || "[]"
     );
     return localStorageP;
   };
 
-  /*  */
-  const getPaciente = (dni: string) => {
-    const paciente = getPacientes().find((p: Paciente) => p.dni === dni);
-    if (!paciente) return undefined;
-    return paciente;
+  /**
+   * Busca un paciente por su DNI.
+   * @param dni - El DNI del paciente a buscar.
+   * @returns El paciente encontrado o undefined si no se encuentra.
+   */
+  const getPaciente = (dni: string): Paciente | undefined => {
+    return getPacientes().find((p: Paciente) => p.dni === dni);
   };
 
-
-  interface inputPaciente extends Paciente {
-    file?: File;
-    // Agrega aquí otras propiedades del paciente según sea necesario
-  }
-
   /**
-   * Función para cargar un nuevo Paciente
-   * @params {Paciente} data - Objeto con los datos del formulario
-   * @returns {boolean} - Indica si se cargó correctamente
+   * Carga un nuevo paciente en el almacenamiento local.
+   * @param data - Objeto con los datos del nuevo paciente.
+   * @returns {boolean} - Indica si se cargó correctamente.
    */
-  const cargarPaciente = (data: inputPaciente): boolean => {
+  const cargarPaciente = (data: InputPacienteInterface): boolean => {
     const { dni, file, ...pacienteNuevo } = data;
 
     // Verificar si el paciente ya existe
@@ -53,16 +56,14 @@ const usePacienteAccion = () => {
 
     // Agregar nuevo paciente a la lista
     pacientesRegistrados.push(pacienteNuevo as Paciente);
-    localStorage.setItem('pacientes', JSON.stringify(pacientesRegistrados));
-
+    localStorage.setItem("pacientes", JSON.stringify(pacientesRegistrados));
     return true;
   };
 
-
   /**
-   * Asigna un ID único al paciente
-   * @param {number} length - Longitud actual de la lista de pacientes
-   * @returns {number} - Nuevo ID para el paciente
+   * Asigna un ID único al paciente.
+   * @param length - Longitud actual de la lista de pacientes.
+   * @returns Nuevo ID para el paciente.
    */
   const asignarPacienteId = (length: number): number => length;
 
@@ -72,27 +73,35 @@ const usePacienteAccion = () => {
    * @returns Una promesa que resuelve cuando se encuentra el paciente.
    */
   const buscaPaciente = async (dni: PersonaSearch): Promise<void> => {
-    const localStorageP: Paciente[] = JSON.parse(
-      localStorage.getItem("pacientes") || "[]"
-    );
+    const localStorageP: Paciente[] = getPacientes();
 
     // Busca el paciente en la lista usando el DNI
     const pac = localStorageP.find((paciente) => paciente.dni === dni.dni);
 
-    // Si no se encuentra el paciente, se sale de la función
-    if (!pac) setPaciente(undefined);
-
-    // Actualiza el estado con el paciente encontrado
-    setPaciente(pac);
+    // Actualiza el estado con el paciente encontrado o undefined
+    setPaciente(pac || undefined);
   };
 
-  const getContratacionesPaciente = (pacienteId:any):Contratacion[] => {
-    const contrataciones:Contratacion[] = getContrataciones().map((c:Contratacion) => c.pacienteDni === pacienteId ? c : und)
-    return contrataciones;
-  }
+  /**
+   * Obtiene las contrataciones asociadas a un paciente específico.
+   * @param pacienteId - ID del paciente para buscar sus contrataciones.
+   * @returns Un array de contrataciones asociadas al paciente.
+   */
+  const getContratacionesPaciente = (pacienteId: any): Contratacion[] => {
+    return getContrataciones().filter(
+      (c: Contratacion) => c.pacienteDni === pacienteId
+    );
+  };
 
-  // Retorna el paciente y la función de búsqueda
-  return { paciente, buscaPaciente, getPacientes, getPaciente, cargarPaciente, getContratacionesPaciente };
+  // Retorna el paciente y las funciones de búsqueda y carga
+  return {
+    paciente,
+    buscaPaciente,
+    getPacientes,
+    getPaciente,
+    cargarPaciente,
+    getContratacionesPaciente,
+  };
 };
 
 export default usePacienteAccion;

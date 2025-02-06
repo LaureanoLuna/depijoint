@@ -62,7 +62,7 @@ export default function VistaPaciente() {
       <div className="grid grid-cols-2 gap-2">
         <Card>
           <CardHeader>
-            { return getContratacionesPaciente(paciente?.dni).map((c)=>{})}
+
           </CardHeader>
 
         </Card>
