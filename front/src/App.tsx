@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, redirect, useNavigate } from "react-router-dom";
 import "./App.css";
 import { LIST_COLABORADORES } from "./assets/constant/LIST_COLABORADORES";
 import { LIST_PACIENTE } from "./assets/constant/LIST_PACIENTES";
@@ -10,6 +10,7 @@ import { LIST_CONTRATACIONES } from "./assets/constant/LIST_CONTRATACIONES";
 import { DepiJointProvider } from "./assets/context/DepiJointContexto";
 
 function App() {
+  const navegacion = useNavigate()
   useEffect(() => {
     if (!localStorage.getItem('pacientes')) {
       localStorage.setItem('pacientes', JSON.stringify(LIST_PACIENTE));
@@ -22,6 +23,9 @@ function App() {
     }
     if (!localStorage.getItem('contrataciones')) {
       localStorage.setItem('contrataciones', JSON.stringify(LIST_CONTRATACIONES));
+    }
+    if(!localStorage.getItem("login")){
+      navegacion('/login');
     }
   }, []);
   

@@ -25,7 +25,7 @@ export function FormLateral({ title, descripcion, formChild, tituloAbrir }: {
       <SheetTrigger asChild>
         <Button variant="outline">{tituloAbrir}</Button>
       </SheetTrigger>
-      <SheetContent side={"right"}>
+      <SheetContent side={"right"} className="min-h-screen">
         <SheetHeader>
           <SheetTitle>{title}</SheetTitle>
           <SheetDescription className="hidden md:block">
