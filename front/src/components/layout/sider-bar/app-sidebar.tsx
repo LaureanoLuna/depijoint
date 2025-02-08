@@ -18,9 +18,22 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronUp, User2 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Usuario } from "@/assets/interfaces/usuario";
+import useLoginAccion from "@/assets/hooks/useLoginAccion";
+import Boton from "@/assets/components/Boton";
 
 export function AppSidebar() {
+  const { getUsuario, cerrarSesion } = useLoginAccion();
+  const navegar = useNavigate()
+  const [user, setUser] = useState<Usuario | null>(getUsuario());
+
+  const handleCerrarSesion = async ()=>{
+    const bool = await cerrarSesion();
+    if(bool) navegar('/login');
+  }
+
   return (
     <Sidebar variant="floating" collapsible="icon">
       <SidebarContent>
@@ -48,7 +61,7 @@ export function AppSidebar() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton>
-                  <User2 /> Username
+                  <User2 /> {user ? user.usuario : "Usuario"}
                   <ChevronUp className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
@@ -56,14 +69,16 @@ export function AppSidebar() {
                 side="top"
                 className="w-[--radix-popper-anchor-width]"
               >
-                <DropdownMenuItem>
-                  <span>Account</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span>Billing</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span>Sign out</span>
+                <DropdownMenuItem onClick={handleCerrarSesion}>
+                  <Boton
+                    prop={{
+                      is_tooltip: false,
+                      tamaño: "sm",
+                      variante: "ghost",
+                      estilo: "p-0",
+                      texto: "Cerrar Session",
+                    }}
+                  />
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

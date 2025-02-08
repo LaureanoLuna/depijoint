@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Outlet, redirect, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import "./App.css";
 import { LIST_COLABORADORES } from "./assets/constant/LIST_COLABORADORES";
 import { LIST_PACIENTE } from "./assets/constant/LIST_PACIENTES";

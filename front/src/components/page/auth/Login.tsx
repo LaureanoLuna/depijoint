@@ -17,7 +17,7 @@ export function Login() {
 
   const onSubmit: SubmitHandler<LoginUsuario> = async (data: LoginUsuario) => {
     const bool = await loguear(data);
-    if(bool) navegacion("/")
+    if(bool) navegacion("/turnos")
   };
 
   return (

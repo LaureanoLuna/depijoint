@@ -3,21 +3,33 @@ import { CabeceraColumna } from "@/assets/components/dataTable/CabeceraColumna";
 import { Tabla } from "@/assets/components/dataTable/Tabla";
 import GrupoBotones from "@/assets/components/GrupoBotones";
 import useAsignadoAccion from "@/assets/hooks/useAsignadoAccion";
+import useLoginAccion from "@/assets/hooks/useLoginAccion";
 import { Asignado } from "@/assets/interfaces/asignado";
+import { Usuario } from "@/assets/interfaces/usuario";
 import { ColumnDef } from "@tanstack/react-table";
+import { useEffect, useState } from "react";
 import { FaCheck, FaRegTimesCircle } from "react-icons/fa";
-import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function ListaAsignados() {
-  const { colaboradorId } = useParams();
+  const [user, setUser] = useState<Usuario>();
   const { getTurnosAsignados } = useAsignadoAccion()
+  const { isLogin } = useLoginAccion();
+  const navegar = useNavigate()
+
   // Definición de columnas para la tabla
+
+  useEffect(() => {
+    const usuario = isLogin()
+    if (!usuario) navegar("/login");
+    setUser(usuario);
+  }, [])
 
   const Columna: ColumnDef<Asignado>[] = [
     {
       accessorKey: "nombre",
       header: ({ column }) => (
-        <CabeceraColumna column={column} title="pacienteId" />
+        <CabeceraColumna column={column} title="Nombre" />
       ),
     },
     {
@@ -95,7 +107,7 @@ export default function ListaAsignados() {
         descripcion="lista de los turnos asignados"
         botonAccion={<h1>Filtro</h1>}
       />
-      <Tabla columns={Columna} data={getTurnosAsignados(colaboradorId??"")} opcionesFilto={['pacienteId']} />
+      <Tabla columns={Columna} data={getTurnosAsignados(user?.id ?? "")} opcionesFilto={['nombre']} />
     </>
   );
 }

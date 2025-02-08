@@ -31,12 +31,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/asignados",
-        children: [
-          {
-            path: ":colaboradorId",
-            element: <ListaAsignados />
-          }
-        ]
+        element: <ListaAsignados />
       },
       {
         path: "colaboradores",
