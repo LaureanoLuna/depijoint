@@ -1,6 +1,7 @@
 import { estaDisponible } from "../function/funcionesTurnos";
 import { TurnoInterface, TurnoLista } from "../interfaces/turno";
 import { Zona } from "../interfaces/zona";
+import useAsignadoAccion from "./useAsignadoAccion";
 import useContratacionAccion from "./useContratacionAccion";
 import usePacienteAccion from "./usePacienteAccion";
 
@@ -10,6 +11,7 @@ import usePacienteAccion from "./usePacienteAccion";
 const useTurnoAccion = () => {
     const { getContratacion } = useContratacionAccion();
     const { getPaciente } = usePacienteAccion();
+    const { asignarTurno } = useAsignadoAccion();
 
     /**
      * Obtiene todos los turnos almacenados en el localStorage.
@@ -87,6 +89,7 @@ const useTurnoAccion = () => {
             };
 
             if (!validaTurno(turnoNuevo)) return false;
+            
             return setTurnos(turnoNuevo);
         } catch (error) {
             console.error("Error al agregar el turno:", error);
@@ -104,6 +107,10 @@ const useTurnoAccion = () => {
                 return turno;
             });
             localStorage.setItem("turnos", JSON.stringify(turnos));
+            console.log(data);
+            
+            if (asignarTurno(data)) return false; // Considerar manejar la asignación del turno (si es necesario
+
             bool = true;
         } catch (error) {
             console.log(error);
@@ -124,8 +131,6 @@ const useTurnoAccion = () => {
 
         return true;
     };
-
-    const asignarTurno = async () => { };
 
     return {
         agregarTurno,

@@ -18,6 +18,7 @@ import { Colaborador } from "@/assets/interfaces/colaboradores";
 import Boton from "@/assets/components/Boton";
 import usePacienteAccion from "@/assets/hooks/usePacienteAccion";
 import { Link } from "react-router-dom";
+import SeleccionColaboradores from "../colaboradores/SeleccionColaboradores";
 
 export default function TablaTurnos() {
   const { turnosFiltador, setDia, dia, asignarTurno, quitarTurno } =
@@ -56,8 +57,8 @@ export default function TablaTurnos() {
         return row.original.colaboradorId ? (
           <h1>{row.original.colaboradorId}</h1>
         ) : (
-          <Seleccion
-            opciones={[]}
+          <SeleccionColaboradores
+            opciones={getColaboradores()}
             funccion={(e: string) => {
               row.original.colaboradorId = e.trim();
             }}

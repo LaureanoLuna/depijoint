@@ -5,7 +5,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { Colaborador } from "../interfaces/colaboradores"
 
 export default function Seleccion({ opciones, titulo, funccion, name }: { opciones: string[], titulo: string, funccion: any, name?: string }) {
 

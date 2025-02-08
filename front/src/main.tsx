@@ -1,15 +1,16 @@
-import React from 'react'
+import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App'
-import './index.css'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { Login } from './components/page/auth/Login'
+import App from './App';
+import './index.css';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { Login } from './components/page/auth/Login';
 import ListaAsignados from './components/page/admin/asignados/ListaAsignados';
 import ListaColaboradores from './components/page/admin/colaboradores/ListaColaboradores';
 import ListaZonas from './components/page/admin/zonas/ListaZonas';
 import TablaTurnos from './components/page/admin/turnos/TablaTurnos';
 import TablaPacientes from './components/page/admin/pacientes/TablaPacientes';
 import VistaPaciente from './components/page/admin/pacientes/VistaPaciente';
+import ErrorPage from './components/page/ErrorPage';// Asegúrate de importar tu componente de error
 
 const router = createBrowserRouter([
   {
@@ -17,42 +18,44 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: "/turnos",
+        path: "turnos",
         element: <TablaTurnos />
       },
       {
-        path: "/pacientes",
+        path: "pacientes",
         element: <TablaPacientes />,
-        
       },
       {
-        path:"/paciente/:pacienteId",
-        element:<VistaPaciente />
+        path: "/:pacienteId",
+        element: <VistaPaciente />
       },
       {
         path: "/asignados",
-        element: <ListaAsignados />
+        children: [
+          {
+            path: ":colaboradorId",
+            element: <ListaAsignados />
+          }
+        ]
       },
       {
-        path: "/colaboradores",
+        path: "colaboradores",
         element: <ListaColaboradores />
       },
       {
-        path: "/zonas",
+        path: "zonas",
         element: <ListaZonas />
       }
     ]
   },
   { path: "/login", element: <Login /> },
   {
-    errorElement: "nada",
+    errorElement: <ErrorPage />, // Cambiado a un componente de error
   }
-
-])
+]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-
   <React.StrictMode>
     <RouterProvider router={router} />
   </React.StrictMode>,
-)
+);
