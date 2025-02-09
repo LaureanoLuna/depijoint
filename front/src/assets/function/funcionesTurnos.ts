@@ -1,4 +1,4 @@
-import { TurnoInterface, TurnoLista } from "../interfaces/turno";
+import { Turno, TurnoInterface, TurnoLista } from "../interfaces/turno";
 
 const tiempoEnMinutos = (tiempo: string): number => {
   let [h, m] = tiempo.split(":").map(Number);
@@ -8,13 +8,13 @@ const tiempoEnMinutos = (tiempo: string): number => {
 export const estaDisponible = (
   nuevoTurno: string,
   duracion: number,
-  turnos: TurnoInterface[] | TurnoLista[]
+  turnos: TurnoInterface[] | TurnoLista[] | Turno[]
 ): boolean => {
   let bool = true;
   let turnoNuevoInicio = tiempoEnMinutos(nuevoTurno);
   let turnoNuevoFin = turnoNuevoInicio + duracion;
 
-  turnos.forEach((turno: TurnoInterface | TurnoLista) => {
+  turnos.forEach((turno: TurnoInterface | TurnoLista | Turno) => {
     let turnoAgendadoInicio = tiempoEnMinutos(turno.hora);
     let turnoAgendadoFin =
       turnoAgendadoInicio + Number.parseInt(turno.duracion);

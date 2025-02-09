@@ -1,5 +1,5 @@
 import { Asignado } from "../interfaces/asignado";
-import { TurnoLista } from "../interfaces/turno";
+import { Turno, TurnoLista } from "../interfaces/turno";
 
 export default function useAsignadoAccion() {
 
@@ -13,7 +13,7 @@ export default function useAsignadoAccion() {
             );
     };
 
-    const asignarTurno = (turno: TurnoLista): boolean => {
+    const asignarTurno = (turno: any): boolean => {
         let bool = false;
 
         try {

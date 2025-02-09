@@ -22,7 +22,7 @@ const useContratacionAccion = () => {
 
   const getContratacion = (dni: string): Contratacion | undefined => {
     const contratacion = getContrataciones().find(
-      (c: Contratacion) => c.pacienteDni === dni
+      (c: Contratacion) => c.pacienteDni === dni && c.estado === false
     );
 
     if (!contratacion) return undefined;

@@ -6,7 +6,7 @@ const useLoginAccion = () => {
     const { getColaboradores } = useColaboradorAccion();
 
     const getUsuario = (): Usuario | null => {
-        const usuario = localStorage.getItem('logueado');
+        const usuario = sessionStorage.getItem('logueado');
         return usuario ? JSON.parse(usuario) : null;
     }
 
@@ -21,7 +21,7 @@ const useLoginAccion = () => {
     const iniciaSesion = (data: Colaborador): boolean => {
         const { usuario, colaboradorId, dni, nombre, clave } = data;
 
-        if (!localStorage.getItem("logueado")) {
+        if (!sessionStorage.getItem("logueado")) {
             const user: Usuario = {
                 clave: clave,
                 usuario: usuario,
@@ -30,7 +30,7 @@ const useLoginAccion = () => {
                 token: dni,
                 id: colaboradorId.toString(),
             };
-            localStorage.setItem("logueado", JSON.stringify(user));
+            sessionStorage.setItem("logueado", JSON.stringify(user));
         }
         return true;
     };
@@ -56,8 +56,8 @@ const useLoginAccion = () => {
     };
 
     const cerrarSesion = async () => {
-        if (localStorage.getItem('logueado')) {
-            localStorage.removeItem('logueado');
+        if (sessionStorage.getItem('logueado')) {
+            sessionStorage.removeItem('logueado');
             return true
         }
         return false;

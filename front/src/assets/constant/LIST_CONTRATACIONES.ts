@@ -6,10 +6,10 @@ export const LIST_CONTRATACIONES: Contratacion[] = [
     fechaContratacion: "2023-10-01T10:00:00Z",
     fechaInicio: "2023-10-05T10:00:00Z",
     fechaFin: "2023-10-12T10:00:00Z",
-    estado: true,
+    estado: false,
     descripcion: "Contratación de tratamiento facial",
     pacienteDni: "38232325",
-    precioTotal: 1500.5,
+   // precioTotal: 1500.5,
     tiempoSesion: 60,
     zonas: [
       {
@@ -124,7 +124,7 @@ export const LIST_CONTRATACIONES: Contratacion[] = [
     estado: false,
     descripcion: "Contratación de tratamiento corporal",
     pacienteDni: "47064767",
-    precioTotal: 2500.75,
+    //precioTotal: 2500.75,
     tiempoSesion: 90,
     zonas: [
       {

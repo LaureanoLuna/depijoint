@@ -100,6 +100,8 @@ export default function TablaTurnos() {
       id: "acciones",
       cell: ({ row }) => {
         const turno = row.original;
+        console.log(turno);
+        
         return (
           <GrupoBotones
             botonesAccion={[

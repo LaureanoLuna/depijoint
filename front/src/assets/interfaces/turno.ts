@@ -30,7 +30,7 @@ export interface Turno {
     contratacion_id: number; // ID de la contratación asociada
     paciente_dni: string; // ID del paciente
     paciente_nombre: string;
-    paciente?:Paciente,
+    //paciente?:Paciente,
     estado: boolean; // ID del estado del turno
     //colaborador_id?: number; // ID del colaborador asignado
     observaciones?: string; // Observaciones adicionales (opcional)

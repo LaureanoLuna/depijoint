@@ -24,7 +24,7 @@ function App() {
     if (!localStorage.getItem('contrataciones')) {
       localStorage.setItem('contrataciones', JSON.stringify(LIST_CONTRATACIONES));
     }
-    if(!localStorage.getItem("logueado")){
+    if(!sessionStorage.getItem("logueado")){
       navegacion('/login');
     }
   }, []);

@@ -8,7 +8,7 @@ export interface Contratacion {
   estado: boolean;
   descripcion?: string;
   pacienteDni: string;
-  precioTotal: number;
+  //precioTotal: number;
   tiempoSesion: number;
   zonas: Zona[];
 }

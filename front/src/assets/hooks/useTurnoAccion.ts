@@ -1,5 +1,5 @@
 import { estaDisponible } from "../function/funcionesTurnos";
-import { TurnoInterface, TurnoLista } from "../interfaces/turno";
+import { Turno, TurnoInterface, TurnoLista } from "../interfaces/turno";
 import { Zona } from "../interfaces/zona";
 import useAsignadoAccion from "./useAsignadoAccion";
 import useContratacionAccion from "./useContratacionAccion";
@@ -17,7 +17,7 @@ const useTurnoAccion = () => {
      * Obtiene todos los turnos almacenados en el localStorage.
      * @returns Un arreglo de objetos TurnoInterface.
      */
-    const getTurnos = (): TurnoInterface[] => {
+    const getTurnos = (): Turno[] => {
         const turnosJson = localStorage.getItem("turnos") || "[]";
         return JSON.parse(turnosJson);
     };
@@ -34,7 +34,7 @@ const useTurnoAccion = () => {
      * @param turno - El objeto TurnoInterface que se desea almacenar.
      * @returns true si se almacenó con éxito, false en caso contrario.
      */
-    const setTurnos = (turno: TurnoInterface): boolean => {
+    const setTurnos = (turno: Turno): boolean => {
         try {
             const turnos = getTurnos();
             turnos.push(turno);
@@ -46,7 +46,7 @@ const useTurnoAccion = () => {
         }
     };
 
-    const validaTurno = (turno: TurnoInterface) => {
+    const validaTurno = (turno: Turno) => {
         const turnos = getTurnos().filter((t) => t.dia === turno.dia);
         return estaDisponible(turno.hora, Number.parseInt(turno.duracion), turnos);
     };
@@ -77,19 +77,22 @@ const useTurnoAccion = () => {
                 0
             );
 
-            const turnoNuevo: TurnoInterface = {
+            const turnoNuevo: Turno = {
                 id: getTurnos().length.toFixed(), // Considerar generar un ID único dinámicamente
                 dia: data.dia,
                 hora: data.hora,
                 duracion: tiempo.toFixed(), // Considerar hacer que la duración sea dinámica
-                tiempo: tiempo ?? 0,
-                paciente: paciente,
-                monto: costo ?? 0,
+                precio: costo ?? 0,
+                contratacion_id: contratacion.contratacionId,
+                paciente_dni: paciente.dni,
+                paciente_nombre: paciente.nombre,
                 estado: false,
+                fecha_creacion: new Date(),
+
             };
 
             if (!validaTurno(turnoNuevo)) return false;
-            
+
             return setTurnos(turnoNuevo);
         } catch (error) {
             console.error("Error al agregar el turno:", error);
@@ -97,19 +100,22 @@ const useTurnoAccion = () => {
         }
     };
 
-    const confirmarTurno = (data: TurnoLista): boolean => {
+    const confirmarTurno = (data: any): boolean => {
         let bool = false;
         try {
+            if (!asignarTurno(data)) {
+                throw new Error("No se pudo asignar el turno")
+            }; // Considerar manejar la asignación del turno (si es necesario
+
             const turnos = getTurnos().map((turno) => {
                 if (turno.id === data.id) {
-                    return { ...turno, colaboradorId: data.colaboradorId };
+                    return { ...turno, estado: !turno.estado };
                 }
                 return turno;
             });
             localStorage.setItem("turnos", JSON.stringify(turnos));
             console.log(data);
-            
-            if (asignarTurno(data)) return false; // Considerar manejar la asignación del turno (si es necesario
+
 
             bool = true;
         } catch (error) {

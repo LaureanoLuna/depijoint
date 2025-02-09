@@ -72,6 +72,8 @@ const DepiJointProvider: React.FC<DepiJointProviderProps> = ({ children }) => {
     };
 
     const asignarTurno = async (data: TurnoLista): Promise<boolean> => {
+        console.log(data);
+        
         const confirmacion = await confirmarTurno(data);
         if (confirmacion) {
             await getTurnos();
