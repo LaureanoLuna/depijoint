@@ -36,7 +36,7 @@ export default function ListaAsignados() {
     {
       accessorKey: "hora",
       header: ({ column }) => (
-        <CabeceraColumna column={column} title="Tiempo" />
+        <CabeceraColumna column={column} title="Hora" />
       ),
     },
     {

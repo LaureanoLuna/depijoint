@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { TurnoInterface, TurnoLista } from "../interfaces/turno";
+import { Turno, TurnoInterface, TurnoLista } from "../interfaces/turno";
 //import { LIST_TURNOS } from "../constant/LIST_TURNOS"; // Asegúrate de que LIST_TURNOS se use correctamente
 import { formatearListaTurnos } from "../function/formatearListaTurnos";
 
@@ -9,15 +9,15 @@ import { formatearListaTurnos } from "../function/formatearListaTurnos";
  * @returns {Object} - Objeto con los turnos filtrados y la función para formatear fechas.
  */
 function useDateFilter({ fecha = new Date() }: { fecha?: Date }) {
-  const [filteredTurnos, setFilteredTurnos] = useState<TurnoLista[]>([]);
+  const [filteredTurnos, setFilteredTurnos] = useState<Turno[]>([]);
 
   /**
    * Filtra los turnos basados en la fecha proporcionada.
-   * @param {TurnoInterface[]} turnos - Lista de turnos a filtrar.
+   * @param {Turno[]} turnos - Lista de turnos a filtrar.
    * @param {Date} fecha - Fecha para filtrar los turnos.
-   * @returns {TurnoInterface[]} - Lista de turnos filtrados.
+   * @returns {Turno[]} - Lista de turnos filtrados.
    */
-  const dateFilter = (turnos: TurnoInterface[], fecha: Date) => {
+  const dateFilter = (turnos: Turno[], fecha: Date) => {
     const dia = refactoriDate(fecha);
     return turnos.filter((turno) => turno.dia === dia);
   };
@@ -37,7 +37,8 @@ function useDateFilter({ fecha = new Date() }: { fecha?: Date }) {
   const getTurnos = () => {
     const turnosDesdeLocalStorage = JSON.parse(localStorage.getItem("turnos") || "[]");
     const turnosFiltrados = dateFilter(turnosDesdeLocalStorage, fecha);
-    setFilteredTurnos(formatearListaTurnos(turnosFiltrados));
+    //setFilteredTurnos(formatearListaTurnos(turnosFiltrados));
+    setFilteredTurnos(turnosFiltrados);
   }
 
   useEffect(() => {

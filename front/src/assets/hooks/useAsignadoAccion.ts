@@ -13,21 +13,32 @@ export default function useAsignadoAccion() {
             );
     };
 
-    const asignarTurno = (turno: any): boolean => {
+    const getAsignados = ():Asignado[] | undefined =>{
+        const asignados = localStorage.getItem('asignados');
+        if(!asignados) return 
+        return JSON.parse(asignados);
+    }
+
+    const getAsinado = (turnoId:string):Asignado | undefined => {
+        const turno = getAsignados()?.find((t)=> t.turnoId === turnoId) || undefined;
+        return turno
+    }
+
+    const asignarTurno = (turno: any, colaborador:string): boolean => {
         let bool = false;
 
         try {
-            if (!turno || !turno.colaboradorId) {
+            if (!turno || !colaborador) {
                 throw new Error("Faltan datos: turno o colaboradorId");
             }
 
-            const { id, colaboradorId, duracion, hora, nombre } = turno;
+            const { id, duracion, hora, nombre } = turno;
             const asignacion: Asignado = {
                 id: "1", // Considera usar un ID único real
                 turnoId: id,
                 nombre: nombre,
                 hora: hora,
-                colaboradorId: colaboradorId,
+                colaboradorId: colaborador,
                 tiempo: duracion,
                 estado: false,
                 fechaAlta: new Date(),
@@ -47,5 +58,5 @@ export default function useAsignadoAccion() {
     };
 
 
-    return { asignarTurno, getTurnosAsignados };
+    return { asignarTurno, getTurnosAsignados,getAsinado,getAsignados };
 }

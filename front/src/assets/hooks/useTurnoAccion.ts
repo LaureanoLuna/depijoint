@@ -35,6 +35,8 @@ const useTurnoAccion = () => {
      * @returns true si se almacenó con éxito, false en caso contrario.
      */
     const setTurnos = (turno: Turno): boolean => {
+        console.log(turno);
+        
         try {
             const turnos = getTurnos();
             turnos.push(turno);
@@ -84,8 +86,8 @@ const useTurnoAccion = () => {
                 duracion: tiempo.toFixed(), // Considerar hacer que la duración sea dinámica
                 precio: costo ?? 0,
                 contratacion_id: contratacion.contratacionId,
-                paciente_dni: paciente.dni,
-                paciente_nombre: paciente.nombre,
+                dni: paciente.dni,
+                nombre: paciente.nombre,
                 estado: false,
                 fecha_creacion: new Date(),
 
@@ -103,9 +105,7 @@ const useTurnoAccion = () => {
     const confirmarTurno = (data: any): boolean => {
         let bool = false;
         try {
-            if (!asignarTurno(data)) {
-                throw new Error("No se pudo asignar el turno")
-            }; // Considerar manejar la asignación del turno (si es necesario
+            // Considerar manejar la asignación del turno (si es necesario
 
             const turnos = getTurnos().map((turno) => {
                 if (turno.id === data.id) {

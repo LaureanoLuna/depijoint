@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
-import { TurnoLista } from "../interfaces/turno";
+import { Turno, TurnoLista } from "../interfaces/turno";
 import useDateFilter from "../hooks/useDateFilter";
 import useTurnoAccion from "../hooks/useTurnoAccion";
 import usePacienteAccion from "../hooks/usePacienteAccion";
@@ -14,12 +14,12 @@ interface DepiJointState {
 // Define el tipo para el contexto
 interface DepiJointContextType {
     state: DepiJointState;
-    turnosFiltador: TurnoLista[];
+    turnosFiltador: Turno[];
     dia: Date;
     setState: React.Dispatch<React.SetStateAction<DepiJointState>>;
     setDia: React.Dispatch<React.SetStateAction<Date>>;
     addTurno: any;
-    asignarTurno: any;
+    turnoAsignado: any;
     quitarTurno: any;
     addPaciente: any;
     allPacientes: any;
@@ -71,7 +71,7 @@ const DepiJointProvider: React.FC<DepiJointProviderProps> = ({ children }) => {
         return false;
     };
 
-    const asignarTurno = async (data: TurnoLista): Promise<boolean> => {
+    const turnoAsignado = async (data: TurnoLista): Promise<boolean> => {
         console.log(data);
         
         const confirmacion = await confirmarTurno(data);
@@ -118,7 +118,7 @@ const DepiJointProvider: React.FC<DepiJointProviderProps> = ({ children }) => {
                 dia,
                 setDia,
                 addTurno,
-                asignarTurno,
+                turnoAsignado,
                 quitarTurno,
                 addPaciente,
                 allPacientes,

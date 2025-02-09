@@ -12,14 +12,16 @@ export default function SeleccionColaboradores({
   titulo,
   funccion,
   name,
+  deshabilitado = false
 }: {
   opciones: Colaborador[];
   titulo: string;
   funccion: any;
   name?: string;
+  deshabilitado:boolean
 }) {
   return (
-    <Select onValueChange={funccion} name={name}>
+    <Select onValueChange={funccion} name={name} disabled={deshabilitado}>
       <SelectTrigger className="w-[120px]">
         <SelectValue placeholder={titulo} />
       </SelectTrigger>

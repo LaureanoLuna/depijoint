@@ -28,8 +28,8 @@ export interface Turno {
     duracion: string; // Tiempo en minutos (duración del turno)
     precio: number; // Precio de la sesion
     contratacion_id: number; // ID de la contratación asociada
-    paciente_dni: string; // ID del paciente
-    paciente_nombre: string;
+    dni: string; // ID del paciente
+    nombre: string;
     //paciente?:Paciente,
     estado: boolean; // ID del estado del turno
     //colaborador_id?: number; // ID del colaborador asignado

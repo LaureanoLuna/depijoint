@@ -79,6 +79,8 @@ export default function AddTurno() {
      * @param {TurnoAdd} data - Datos del formulario.
      */
     const onSubmit: SubmitHandler<TurnoAdd> = async (data) => {
+      console.log(data);
+      
       const success = await addTurno(data);
     };
 
