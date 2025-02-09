@@ -28,11 +28,11 @@ export interface Turno {
     duracion: string; // Tiempo en minutos (duración del turno)
     precio: number; // Precio de la sesion
     contratacion_id: number; // ID de la contratación asociada
-    paciente_dni: number; // ID del paciente
+    paciente_dni: string; // ID del paciente
     paciente_nombre: string;
-    paciente:Paciente,
+    paciente?:Paciente,
     estado: boolean; // ID del estado del turno
-    colaborador_id?: number; // ID del colaborador asignado
+    //colaborador_id?: number; // ID del colaborador asignado
     observaciones?: string; // Observaciones adicionales (opcional)
     fecha_creacion: Date; // Fecha de creación del turno (por ejemplo, '2023-10-30T12:00:00Z')
     fecha_actualizacion?: Date; // Fecha de la última actualización del turno

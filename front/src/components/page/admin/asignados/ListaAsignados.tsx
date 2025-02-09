@@ -10,6 +10,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
 import { FaCheck, FaRegTimesCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import ModalObsevaciones from "./ModalObsevaciones";
 
 export default function ListaAsignados() {
   const [user, setUser] = useState<Usuario>();
@@ -43,6 +44,15 @@ export default function ListaAsignados() {
       header: ({ column }) => (
         <CabeceraColumna column={column} title="Duración" />
       ),
+    },
+    {
+      id:"detallePaciente",
+      cell:({row}) =>{
+        const paciente = row.original;
+        return (
+          <ModalObsevaciones id={paciente.id} />
+        )
+      }
     },
     {
       id: "acciones",

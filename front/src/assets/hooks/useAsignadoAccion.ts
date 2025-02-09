@@ -2,6 +2,8 @@ import { Asignado } from "../interfaces/asignado";
 import { TurnoLista } from "../interfaces/turno";
 
 export default function useAsignadoAccion() {
+
+
     const getTurnosAsignados = (colaboradorId: string): Asignado[] => {
         const asignados = localStorage.getItem("asignados");
         return !asignados
@@ -43,6 +45,7 @@ export default function useAsignadoAccion() {
 
         return bool;
     };
+
 
     return { asignarTurno, getTurnosAsignados };
 }

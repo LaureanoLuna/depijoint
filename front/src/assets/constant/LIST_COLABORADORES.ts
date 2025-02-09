@@ -9,8 +9,8 @@ export const LIST_COLABORADORES: Colaborador[] = [
     dni: " 18418268",
     telefono: "5966858270",
     email: "fhatrick0@indiatimes.com",
-    usuario: "fhatrick0",
-    clave: "gE7{H",
+    usuario: "laureano",
+    clave: "luna",
   },
   {
     personaId: 12,

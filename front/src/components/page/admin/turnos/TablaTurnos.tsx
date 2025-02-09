@@ -12,7 +12,6 @@ import {
   FaRegTimesCircle,
   FaWhatsapp,
 } from "react-icons/fa";
-import Seleccion from "@/assets/components/Seleccion";
 import useColaboradorAccion from "@/assets/hooks/useColaboradorAccion";
 import { Colaborador } from "@/assets/interfaces/colaboradores";
 import Boton from "@/assets/components/Boton";
