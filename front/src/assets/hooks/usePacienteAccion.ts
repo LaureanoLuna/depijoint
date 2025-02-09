@@ -43,16 +43,18 @@ const usePacienteAccion = () => {
    * @returns {boolean} - Indica si se cargó correctamente.
    */
   const cargarPaciente = (data: InputPacienteInterface): boolean => {
-    const { dni, file, ...pacienteNuevo } = data;
+    
+    const { file, ...pacienteNuevo } = data;
 
     // Verificar si el paciente ya existe
-    if (getPaciente(dni)) return false;
+    if (getPaciente(pacienteNuevo.dni)) return false;
 
     const pacientesRegistrados: Paciente[] = getPacientes();
     pacienteNuevo.pacienteId = asignarPacienteId(pacientesRegistrados.length);
 
     // Asignar consentimiento
     pacienteNuevo.consentimiento.tiene = Boolean(file);
+    console.log(pacienteNuevo);
 
     // Agregar nuevo paciente a la lista
     pacientesRegistrados.push(pacienteNuevo as Paciente);

@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { Colaborador } from "../interfaces/colaboradores";
 import { LoginUsuario, Usuario } from "../interfaces/usuario";
 import useColaboradorAccion from "./useColaboradorAccion";
