@@ -40,3 +40,7 @@ export const refactoriDate = (date: Date): string => {
   const year = date.getFullYear();
   return `${year}-${month}-${day}`;
 };
+
+export const formatearFecha = (fecha: string): string => {
+  return fecha.split("-").reverse().join("-");
+}

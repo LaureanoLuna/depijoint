@@ -28,6 +28,12 @@ export default function ListaAsignados() {
 
   const Columna: ColumnDef<Asignado>[] = [
     {
+      accessorKey: "dia",
+      header: ({ column }) => (
+        <CabeceraColumna column={column} title="Dia" />
+      ),
+    },
+    {
       accessorKey: "nombre",
       header: ({ column }) => (
         <CabeceraColumna column={column} title="Nombre" />
@@ -50,7 +56,7 @@ export default function ListaAsignados() {
       cell:({row}) =>{
         const paciente = row.original;
         return (
-          <ModalObsevaciones id={paciente.id} />
+          <ModalObsevaciones id={paciente.dni} />
         )
       }
     },

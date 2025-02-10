@@ -22,54 +22,53 @@ import SeleccionColaboradores from "../colaboradores/SeleccionColaboradores";
 import useAsignadoAccion from "@/assets/hooks/useAsignadoAccion";
 import { useEffect, useState } from "react";
 
-export default function TablaTurnos() {
-  const { turnosFiltador, setDia, dia, turnoAsignado, quitarTurno } =
-    useDepiJoint();
+const TablaTurnos = () => {
+  const { turnosFiltador, setDia, dia, turnoAsignado, quitarTurno } = useDepiJoint();
   const { getPaciente } = usePacienteAccion();
+  
   // Definición de columnas para la tabla
-  const Columna: ColumnDef<Turno>[] = [
+  const columnas: ColumnDef<Turno>[] = [
     {
       accessorKey: "nombre",
-      header: ({ column }) => (
-        <CabeceraColumna column={column} title="Nombre" />
-      ),
+      header: ({ column }) => <CabeceraColumna column={column} title="Nombre" />,
     },
     {
       accessorKey: "hora",
-      header: ({ column }) => (
-        <CabeceraColumna column={column} title="Horario" />
-      ),
+      header: ({ column }) => <CabeceraColumna column={column} title="Horario" />,
     },
     {
       accessorKey: "duracion",
-      header: ({ column }) => (
-        <CabeceraColumna column={column} title="Duración" />
-      ),
+      header: ({ column }) => <CabeceraColumna column={column} title="Duración" />,
     },
     {
       id: "colaboradores",
       header: "Colaborador",
       cell: ({ row }) => {
+        
         const { getColaboradores } = useColaboradorAccion();
         const { asignarTurno, getAsinado } = useAsignadoAccion();
         const [col, setCol] = useState<Colaborador[]>([]);
 
         useEffect(() => {
-          const estaAsignado = () => {
-            if (row.original.estado) {
-              const turnoA = getAsinado(row.original.id);
-              const colaborador = getColaboradores().find(
-                (c) => c.colaboradorId.toString() === turnoA?.colaboradorId
-              );
-              setCol(colaborador ? [colaborador] : getColaboradores());
-            } else {
-              setCol(getColaboradores());
+          const estaAsignado = async () => {
+            try {
+              if (row.original.estado) {
+                const turnoA = await getAsinado(row.original.id);
+                const colaborador = getColaboradores().find(
+                  (c) => c.colaboradorId.toString() === turnoA?.colaboradorId
+                );
+                setCol(colaborador ? [colaborador] : getColaboradores());
+              } else {
+                setCol(getColaboradores());
+              }
+            } catch (error) {
+              console.error("Error al obtener colaboradores:", error);
+              setCol(getColaboradores()); // Fallback en caso de error
             }
           };
-
           estaAsignado();
         }, [row.original.estado, row.original.id]);
-
+        
         return (
           <SeleccionColaboradores
             deshabilitado={row.original.estado ?? false}
@@ -77,7 +76,7 @@ export default function TablaTurnos() {
             funccion={(e: string) => {
               asignarTurno(row.original, e);
             }}
-            titulo={`${col.length === 1 ? col[0].nombre:'Colaborador'}`}
+            titulo={`${col.length === 1 ? col[0].nombre : 'Colaborador'}`}
             name={"usuario"}
           />
         );
@@ -102,8 +101,8 @@ export default function TablaTurnos() {
                 <Link
                   to={`https://wa.me/54${paciente?.telefono}?text=I'm%20interested%20in%20your%20car%20for%20sale`}
                   target={"_blank"}
+                  aria-label={`Enviar WhatsApp a ${paciente?.nombre}`}
                 >
-                  {" "}
                   <FaWhatsapp />
                 </Link>
               ),
@@ -158,7 +157,6 @@ export default function TablaTurnos() {
                 variante: "confirm",
                 tamaño: "sm",
                 estilo: `${turno.estado ? "hidden" : "flex"} w-full`,
-
                 texto: "confirmar",
                 is_tooltip: false,
                 onClick: () => {
@@ -169,7 +167,6 @@ export default function TablaTurnos() {
                 variante: "outline",
                 tamaño: "sm",
                 estilo: `${!turno.estado ? "hidden" : "flex"} w-full`,
-
                 texto: "Abonar",
                 is_tooltip: false,
                 onClick: () => {
@@ -179,7 +176,6 @@ export default function TablaTurnos() {
               {
                 variante: "delete",
                 estilo: `${turno.estado ? "hidden" : "flex"} w-full`,
-
                 tamaño: "sm",
                 texto: "cancelar",
                 is_tooltip: false,
@@ -196,7 +192,6 @@ export default function TablaTurnos() {
   ];
 
   // Componente principal para la tabla de turnos
-
   return (
     <>
       <Cabecera
@@ -206,10 +201,12 @@ export default function TablaTurnos() {
         botonAccion={<AddTurno />}
       />
       <Tabla
-        columns={Columna}
+        columns={columnas}
         data={turnosFiltador}
         opcionesFilto={["Nombre", "Hora", "Duración"]}
       />
     </>
   );
-}
+};
+
+export default TablaTurnos;

@@ -1,7 +1,6 @@
 import { estaDisponible } from "../function/funcionesTurnos";
-import { Turno, TurnoInterface, TurnoLista } from "../interfaces/turno";
+import { Turno} from "../interfaces/turno";
 import { Zona } from "../interfaces/zona";
-import useAsignadoAccion from "./useAsignadoAccion";
 import useContratacionAccion from "./useContratacionAccion";
 import usePacienteAccion from "./usePacienteAccion";
 
@@ -11,7 +10,6 @@ import usePacienteAccion from "./usePacienteAccion";
 const useTurnoAccion = () => {
     const { getContratacion } = useContratacionAccion();
     const { getPaciente } = usePacienteAccion();
-    const { asignarTurno } = useAsignadoAccion();
 
     /**
      * Obtiene todos los turnos almacenados en el localStorage.
@@ -23,11 +21,16 @@ const useTurnoAccion = () => {
     };
 
     const getTurno = (turniId: string) => {
-        const turnos = getTurnos().find((t, i) => {
+        const turno = getTurnos().find((t) => {
             t.id === turniId && t.estado === false;
         });
-        return turnos;
+        return turno;
     };
+
+    const getTurnosPaciente = (dni: string): Turno[] => {
+        const turnos = getTurnos().filter((turno) => turno.dni === dni);
+        return turnos;
+    }
 
     /**
      * Almacena un nuevo turno en el localStorage.
@@ -141,7 +144,9 @@ const useTurnoAccion = () => {
     return {
         agregarTurno,
         confirmarTurno,
-        cancelarTurno
+        cancelarTurno,
+        getTurno,
+        getTurnosPaciente
     };
 };
 
