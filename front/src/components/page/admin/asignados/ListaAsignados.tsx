@@ -14,7 +14,7 @@ import ModalObsevaciones from "./ModalObsevaciones";
 
 export default function ListaAsignados() {
   const [user, setUser] = useState<Usuario>();
-  const { getTurnosAsignados } = useAsignadoAccion()
+  const { getTurnosAsignados, quitarAsignacion } = useAsignadoAccion()
   const { isLogin } = useLoginAccion();
   const navegar = useNavigate()
 
@@ -84,7 +84,7 @@ export default function ListaAsignados() {
                 is_tooltip: true,
                 text_tooltip: "cancelar",
                 onClick: () => {
-                  console.log(asignado)
+                  quitarAsignacion(asignado.turnoId)
                 },
               },
             ]}

@@ -146,7 +146,9 @@ const useTurnoAccion = () => {
         confirmarTurno,
         cancelarTurno,
         getTurno,
-        getTurnosPaciente
+        getTurnos,
+        getTurnosPaciente,
+        setTurnos
     };
 };
 

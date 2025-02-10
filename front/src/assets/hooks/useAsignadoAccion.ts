@@ -1,6 +1,8 @@
 import { Asignado } from "../interfaces/asignado";
+import useTurnoAccion from "./useTurnoAccion";
 
 export default function useAsignadoAccion() {
+  const { getTurnos,setTurnos } = useTurnoAccion();
   const getTurnosAsignados = (colaboradorId: string): Asignado[] => {
     const asignados = localStorage.getItem("asignados");
     return !asignados
@@ -57,5 +59,37 @@ export default function useAsignadoAccion() {
     return bool;
   };
 
-  return { asignarTurno, getTurnosAsignados, getAsinado, getAsignados };
+  const quitarAsignacion = (turnoId: string): boolean => {
+    let bool = false;
+
+    try {
+      const asignados = getAsignados();
+      if (!asignados) {
+        throw new Error("No hay asignaciones");
+      }
+
+      const index = asignados.findIndex((a) => a.turnoId === turnoId);
+      const turno = getTurnos().find((t) => t.id === turnoId);
+      if (!turno) {
+        throw new Error("No se encontró el turno");
+      }
+
+      if (index === -1) {
+        throw new Error("No se encontró la asignación");
+      }
+      turno.estado = false;
+      setTurnos(turno);
+      asignados[index].fechaBaja = new Date();
+      asignados[index].estado = true;
+      localStorage.setItem("asignados", JSON.stringify(asignados));
+      bool = true;
+    } catch (error) {
+      console.error("Error al quitar asignación:", error);
+      bool = false;
+    }
+
+    return bool;
+  };
+
+  return { asignarTurno, getTurnosAsignados, getAsinado, getAsignados, quitarAsignacion };
 }
