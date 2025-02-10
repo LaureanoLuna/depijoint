@@ -3,7 +3,7 @@ import { CabeceraColumna } from "@/assets/components/dataTable/CabeceraColumna";
 import { Tabla } from "@/assets/components/dataTable/Tabla";
 import GrupoBotones from "@/assets/components/GrupoBotones";
 import { InputFecha } from "@/assets/components/InputFecha";
-import { Turno, TurnoLista } from "@/assets/interfaces/turno";
+import { Turno } from "@/assets/interfaces/turno";
 import { ColumnDef } from "@tanstack/react-table";
 import AddTurno from "./AddTurno";
 import { useDepiJoint } from "@/assets/context/DepiJointContexto";
@@ -77,7 +77,7 @@ export default function TablaTurnos() {
             funccion={(e: string) => {
               asignarTurno(row.original, e);
             }}
-            titulo={"Usuarios..."}
+            titulo={`${col.length === 1 ? col[0].nombre:'Colaborador'}`}
             name={"usuario"}
           />
         );

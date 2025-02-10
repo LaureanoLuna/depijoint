@@ -28,6 +28,7 @@ export default function SeleccionColaboradores({
       <SelectContent>
         {opciones?.map((o, i) => (
           <SelectItem
+          
             className="capitalize"
             key={i}
             value={o.colaboradorId.toString()}
