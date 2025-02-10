@@ -2,7 +2,7 @@ import { Asignado } from "../interfaces/asignado";
 import useTurnoAccion from "./useTurnoAccion";
 
 export default function useAsignadoAccion() {
-  const { getTurnos,setTurnos } = useTurnoAccion();
+  const { getTurnos, setTurnos, cancelarTurno } = useTurnoAccion();
   const getTurnosAsignados = (colaboradorId: string): Asignado[] => {
     const asignados = localStorage.getItem("asignados");
     return !asignados
@@ -12,9 +12,9 @@ export default function useAsignadoAccion() {
         );
   };
 
-  const getAsignados = (): Asignado[] | undefined => {
+  const getAsignados = (): Asignado[] => {
     const asignados = localStorage.getItem("asignados");
-    if (!asignados) return;
+    if (!asignados) return [];
     return JSON.parse(asignados);
   };
 
@@ -59,37 +59,64 @@ export default function useAsignadoAccion() {
     return bool;
   };
 
-  const quitarAsignacion = (turnoId: string): boolean => {
-    let bool = false;
-
+  const quitarAsignacion = async (turnoId: string): Promise<boolean> => {
     try {
       const asignados = getAsignados();
-      if (!asignados) {
+      if (!asignados || asignados.length === 0) {
         throw new Error("No hay asignaciones");
       }
 
-      const index = asignados.findIndex((a) => a.turnoId === turnoId);
+      const asignacionIndex = asignados.findIndex((a) => a.turnoId === turnoId);
       const turno = getTurnos().find((t) => t.id === turnoId);
+
       if (!turno) {
         throw new Error("No se encontró el turno");
       }
-
-      if (index === -1) {
+      if (asignacionIndex === -1) {
         throw new Error("No se encontró la asignación");
       }
+
+      // Actualizar el estado del turno
       turno.estado = false;
       setTurnos(turno);
-      asignados[index].fechaBaja = new Date();
-      asignados[index].estado = true;
-      localStorage.setItem("asignados", JSON.stringify(asignados));
-      bool = true;
+
+      // Eliminar la asignación y cancelar el turno
+      const asignacionEliminada = await eliminarAsignacion(
+        asignados[asignacionIndex].id
+      );
+      const turnoCancelado = await cancelarTurno(turno.id);
+
+      return asignacionEliminada && turnoCancelado;
     } catch (error) {
       console.error("Error al quitar asignación:", error);
-      bool = false;
+      return false;
     }
-
-    return bool;
   };
 
-  return { asignarTurno, getTurnosAsignados, getAsinado, getAsignados, quitarAsignacion };
+  const eliminarAsignacion = async (asignacionId: string): Promise<boolean> => {
+    const asignados = getAsignados();
+    try {
+      const indice = asignados.findIndex((a) => a.id === asignacionId);
+      if (indice === -1) {
+        throw new Error("No se encontró la asignación");
+      }
+
+      // Eliminar la asignación del array
+      asignados.splice(indice, 1);
+      localStorage.setItem("asignados", JSON.stringify(asignados));
+
+      return true;
+    } catch (error) {
+      console.error("Error al eliminar asignación:", error);
+      return false;
+    }
+  };
+
+  return {
+    asignarTurno,
+    getTurnosAsignados,
+    getAsinado,
+    getAsignados,
+    quitarAsignacion,
+  };
 }

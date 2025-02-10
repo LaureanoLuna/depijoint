@@ -7,7 +7,7 @@ export default function SiderBar({ children }: { children: React.ReactNode }) {
     <SidebarProvider>
       <AppSidebar />
       <main className="w-full">
-        <SidebarTrigger />
+        <SidebarTrigger className="flex ml-auto border" />
         {children}
       </main>
     </SidebarProvider>

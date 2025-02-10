@@ -11,4 +11,5 @@ export interface Zona {
   deshabilitado: boolean; // falso;
   sexo: string; // true = es mujer; false = es hombre;
   tamaño: string; // C = chico | M  = medio | G = grande
+  zonaPadreId?:string;
 }

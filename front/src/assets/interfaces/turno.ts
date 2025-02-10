@@ -29,10 +29,8 @@ export interface Turno {
     precio: number; // Precio de la sesion
     contratacion_id: number; // ID de la contratación asociada
     dni: string; // ID del paciente
-    nombre: string;
-    //paciente?:Paciente,
-    estado: boolean; // ID del estado del turno
-    //colaborador_id?: number; // ID del colaborador asignado
+    nombre: string;  //Nombre del Paciente 
+    estado: boolean; // ID del estado del turno    
     observaciones?: string; // Observaciones adicionales (opcional)
     fecha_creacion: Date; // Fecha de creación del turno (por ejemplo, '2023-10-30T12:00:00Z')
     fecha_actualizacion?: Date; // Fecha de la última actualización del turno
