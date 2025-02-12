@@ -6,18 +6,21 @@ import { Card } from "@/components/ui/card";
 import { useDepiJoint } from "@/assets/context/DepiJointContexto";
 
 const Formulario = () => {
-    const { addPaciente } = useDepiJoint()
+  const { addPaciente } = useDepiJoint();
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<Paciente>();
 
   const onSubmit: SubmitHandler<Paciente> = async (data) => {
-    console.log(data);
-    const x = await addPaciente(data);
-    console.log(x ? "cargo" : "no cargo");
-  };
+   
+    const success = await addPaciente(data);
+    if (success) {      
+      reset();
+    } 
+    };
 
   return (
     <Card className="mt-3 pb-4 px-2">
@@ -37,6 +40,7 @@ const Formulario = () => {
           }
           error={errors.nombre}
         />
+        
         <InputForm
           label="Apellido"
           type="text"

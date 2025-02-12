@@ -21,7 +21,7 @@ export function FormLateral({ title, descripcion, formChild, tituloAbrir }: {
 
   return (
 
-    <Sheet>
+    <Sheet >
       <SheetTrigger asChild>
         <Button variant="outline">{tituloAbrir}</Button>
       </SheetTrigger>

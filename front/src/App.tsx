@@ -8,35 +8,39 @@ import { LIST_TURNOS } from "./assets/constant/LIST_TURNOS";
 import SiderBar from "./components/layout/sider-bar/SiderBar";
 import { LIST_CONTRATACIONES } from "./assets/constant/LIST_CONTRATACIONES";
 import { DepiJointProvider } from "./assets/context/DepiJointContexto";
+import { Toaster } from "./components/ui/toaster";
+
 
 function App() {
-  const navegacion = useNavigate()
+  const navegacion = useNavigate();
   useEffect(() => {
-    if (!localStorage.getItem('pacientes')) {
-      localStorage.setItem('pacientes', JSON.stringify(LIST_PACIENTE));
+    if (!localStorage.getItem("pacientes")) {
+      localStorage.setItem("pacientes", JSON.stringify(LIST_PACIENTE));
     }
-    if (!localStorage.getItem('colaboradores')) {
-      localStorage.setItem('colaboradores', JSON.stringify(LIST_COLABORADORES));
+    if (!localStorage.getItem("colaboradores")) {
+      localStorage.setItem("colaboradores", JSON.stringify(LIST_COLABORADORES));
     }
-    if (!localStorage.getItem('turnos')) {
-      localStorage.setItem('turnos', JSON.stringify(LIST_TURNOS));
+    if (!localStorage.getItem("turnos")) {
+      localStorage.setItem("turnos", JSON.stringify(LIST_TURNOS));
     }
-    if (!localStorage.getItem('contrataciones')) {
-      localStorage.setItem('contrataciones', JSON.stringify(LIST_CONTRATACIONES));
+    if (!localStorage.getItem("contrataciones")) {
+      localStorage.setItem(
+        "contrataciones",
+        JSON.stringify(LIST_CONTRATACIONES)
+      );
     }
-    if(!sessionStorage.getItem("logueado")){
-      navegacion('/login');
+    if (!sessionStorage.getItem("logueado")) {
+      navegacion("/login");
     }
   }, []);
-  
 
-  
   return (
     <>
       <DepiJointProvider>
         <SiderBar>
           <Outlet />
         </SiderBar>
+        <Toaster />
       </DepiJointProvider>
     </>
   );

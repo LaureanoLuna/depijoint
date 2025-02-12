@@ -79,7 +79,6 @@ export default function AddTurno() {
      * @param {TurnoAdd} data - Datos del formulario.
      */
     const onSubmit: SubmitHandler<TurnoAdd> = async (data) => {
-      console.log(data);
       
       const success = await addTurno(data);
     };
@@ -152,7 +151,7 @@ export default function AddTurno() {
             </div>
 
             {/* Duración y precio de la sesión */}
-            <div className="grid grid-cols-2 gap-2">
+            <div className="md:grid grid-cols-2 gap-2">
               <div className="mb-5">
                 <Label>Duración</Label>
                 <Input disabled={true} value={tiempo} />

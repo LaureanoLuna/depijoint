@@ -1,9 +1,16 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, {
+    createContext,
+    useContext,
+    useState,
+    ReactNode,
+    useEffect,
+} from "react";
 import { Turno, TurnoLista } from "../interfaces/turno";
 import useDateFilter from "../hooks/useDateFilter";
 import useTurnoAccion from "../hooks/useTurnoAccion";
 import usePacienteAccion from "../hooks/usePacienteAccion";
 import { Paciente } from "../interfaces/paciente";
+import { useToast } from "@/hooks/use-toast";
 
 // Define el tipo para el estado que deseas compartir
 interface DepiJointState {
@@ -18,11 +25,11 @@ interface DepiJointContextType {
     dia: Date;
     setState: React.Dispatch<React.SetStateAction<DepiJointState>>;
     setDia: React.Dispatch<React.SetStateAction<Date>>;
-    addTurno: any;
-    turnoAsignado: any;
-    quitarTurno: any;
-    addPaciente: any;
-    allPacientes: any;
+    addTurno: (data: any) => Promise<boolean>;
+    turnoAsignado: (data: TurnoLista) => Promise<boolean>;
+    quitarTurno: (turnoId: any) => Promise<boolean>;
+    addPaciente: (data: any) => Promise<boolean>;
+    allPacientes: () => Promise<void>;
     pacientes: Paciente[];
 }
 
@@ -41,71 +48,75 @@ const DepiJointProvider: React.FC<DepiJointProviderProps> = ({ children }) => {
     const [dia, setDia] = useState<Date>(new Date());
     const { filteredTurnos, getTurnos } = useDateFilter({ fecha: dia });
     const { agregarTurno, confirmarTurno, cancelarTurno } = useTurnoAccion();
-    const { getPacientes, paciente, cargarPaciente } = usePacienteAccion();
+    const { getPacientes, cargarPaciente } = usePacienteAccion();
     const [pacientes, setPacientes] = useState<Paciente[]>([]);
+    const { toast } = useToast();
+
+    useEffect(() => {
+        allPacientes();
+    }, []);
+
+    /* ----------------------------------------------------------------------------------------------------- */
+
+    /* Acciones para las notificaciones */
+
+    const getNotificacion = (mensaje: string, tipo: "default" | "destructive") => {
+        toast({ description: mensaje, variant: tipo });
+    };
+
+    /* -------------------------------------------------------- */
 
     /* ----------------------------------------------------------------------------------------------------- */
     //TURNOS
-    /**
-     * Agrega un nuevo turno.
-     *
-     * Esta función intenta agregar un nuevo turno utilizando la función `agregarTurno`.
-     * Si la operación es exitosa, se actualizan los turnos y se devuelve `true`.
-     * En caso contrario, se devuelve `false`.
-     *
-     * @param data - Los datos del turno que se desea agregar.
-     * @returns Una promesa que resuelve a `true` si el turno fue agregado exitosamente, o `false` en caso contrario.
-     */
     const addTurno = async (data: any): Promise<boolean> => {
-        // Intenta agregar el nuevo turno
         const isAdded = await agregarTurno(data);
-
-        // Si el turno fue agregado exitosamente
         if (isAdded) {
-            // Actualiza la lista de turnos
             await getTurnos();
+            await getNotificacion("Turno agregado correctamente", "default");
             return true;
         }
-
-        // Si no se pudo agregar el turno, retorna false
+        getNotificacion("Error al agregar el turno", "destructive");
         return false;
     };
 
     const turnoAsignado = async (data: TurnoLista): Promise<boolean> => {
-        console.log(data);
-        
         const confirmacion = await confirmarTurno(data);
         if (confirmacion) {
             await getTurnos();
+            getNotificacion("Turno confirmado correctamente", "default");
             return true;
         }
+        getNotificacion("Error al confirmar el turno", "destructive");
         return false;
     };
 
     const quitarTurno = async (turnoId: any): Promise<boolean> => {
-        console.log(turnoId);
-
         const bool = await cancelarTurno(turnoId);
         if (bool) {
             await getTurnos();
+            getNotificacion("Turno eliminado correctamente", "default");
             return true;
         }
+        getNotificacion("Error al eliminar el turno", "destructive");
         return false;
     };
 
     /* ----------------------------------------------------------------------------------------------------------------------- */
 
     /* PACIENTES */
-
-    const allPacientes = async () => {
-        const pacientes: Paciente[] = await getPacientes();        
+    const allPacientes = async (): Promise<void> => {
+        const pacientes: Paciente[] = await getPacientes();
         setPacientes(pacientes);
     };
 
     const addPaciente = async (data: any): Promise<boolean> => {
         const isAdd = await cargarPaciente(data);
-        if (!isAdd) return false;
+        if (!isAdd) {
+            getNotificacion("Error al agregar el paciente", "destructive");
+            return false
+        };
         await allPacientes();
+        getNotificacion("Paciente agregado correctamente", "default");
         return true;
     };
 
@@ -129,6 +140,8 @@ const DepiJointProvider: React.FC<DepiJointProviderProps> = ({ children }) => {
         </DepiJointContexto.Provider>
     );
 };
+
+/* -------------------------------------------------------- */
 
 // Hook para usar el contexto
 const useDepiJoint = (): DepiJointContextType => {
