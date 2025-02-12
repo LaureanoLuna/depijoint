@@ -60,7 +60,7 @@ const DepiJointProvider: React.FC<DepiJointProviderProps> = ({ children }) => {
 
     /* Acciones para las notificaciones */
 
-    const getNotificacion = (mensaje: string, tipo: "default" | "destructive") => {
+    const getNotificacion = (mensaje: string, tipo: "default" | "destructive" | "sussess") => {
         toast({ description: mensaje, variant: tipo });
     };
 
@@ -72,7 +72,7 @@ const DepiJointProvider: React.FC<DepiJointProviderProps> = ({ children }) => {
         const isAdded = await agregarTurno(data);
         if (isAdded) {
             await getTurnos();
-            await getNotificacion("Turno agregado correctamente", "default");
+            await getNotificacion("Turno agregado correctamente", "sussess");
             return true;
         }
         getNotificacion("Error al agregar el turno", "destructive");
@@ -83,7 +83,7 @@ const DepiJointProvider: React.FC<DepiJointProviderProps> = ({ children }) => {
         const confirmacion = await confirmarTurno(data);
         if (confirmacion) {
             await getTurnos();
-            getNotificacion("Turno confirmado correctamente", "default");
+            getNotificacion("Turno confirmado correctamente", "sussess");
             return true;
         }
         getNotificacion("Error al confirmar el turno", "destructive");
@@ -94,7 +94,7 @@ const DepiJointProvider: React.FC<DepiJointProviderProps> = ({ children }) => {
         const bool = await cancelarTurno(turnoId);
         if (bool) {
             await getTurnos();
-            getNotificacion("Turno eliminado correctamente", "default");
+            getNotificacion("Turno eliminado correctamente", "sussess");
             return true;
         }
         getNotificacion("Error al eliminar el turno", "destructive");
@@ -116,7 +116,7 @@ const DepiJointProvider: React.FC<DepiJointProviderProps> = ({ children }) => {
             return false
         };
         await allPacientes();
-        getNotificacion("Paciente agregado correctamente", "default");
+        getNotificacion("Paciente agregado correctamente", "sussess");
         return true;
     };
 
