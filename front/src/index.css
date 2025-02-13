@@ -86,7 +86,8 @@
 }
 
 #section-login-img {
-  background-image: url('https://st3.depositphotos.com/3632179/36314/i/450/depositphotos_363142364-stock-photo-trend-dark-blue-background-leaves.jpg');
+  background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTNzPbJj2xiuyVmxu-I6ROQgQOvnLI7v6j2A&s');
+  background-size: cover;
 }
 
 #section-login-img::before {

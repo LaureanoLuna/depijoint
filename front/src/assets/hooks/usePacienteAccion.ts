@@ -104,9 +104,10 @@ const usePacienteAccion = () => {
     const pacientes = getPacientes(); // busco todos los pacientes
     const paciente = pacientes.find((p) => p.dni === dniPaciente); // Obtengo el paciente por su dni
     if (!paciente) return false; // si no se encuentra el paciente, retorno false
-    await pacientes.splice(paciente.pacienteId, 1); // Elimino el paciente de la lista
-    paciente.deshabilitado = true; // Deshabilito el paciente
-    pacientes.push(paciente); // Agrego el paciente deshabilitado a la lista
+    /* await pacientes.splice(paciente.pacienteId, 1); // Elimino el paciente de la lista */
+    pacientes[paciente.pacienteId].deshabilitado = true; // Deshabilito el paciente
+    //paciente.deshabilitado = true; // Deshabilito el paciente
+    //pacientes.push(paciente); // Agrego el paciente deshabilitado a la lista
     localStorage.setItem("pacientes", JSON.stringify(pacientes)); // Actualizo la lista de pacientes
     return true; // Retorno true si se deshabilitó correctamente
   };
