@@ -1,9 +1,9 @@
 import React, {
-    createContext,
-    useContext,
-    useState,
-    ReactNode,
-    useEffect,
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
 } from "react";
 import { Turno, TurnoLista } from "../interfaces/turno";
 import useDateFilter from "../hooks/useDateFilter";
@@ -14,144 +14,161 @@ import { useToast } from "@/hooks/use-toast";
 
 // Define el tipo para el estado que deseas compartir
 interface DepiJointState {
-    // Aquí puedes definir las propiedades que necesites
-    exampleProperty?: string;
+  // Aquí puedes definir las propiedades que necesites
+  exampleProperty?: string;
 }
 
 // Define el tipo para el contexto
 interface DepiJointContextType {
-    state: DepiJointState;
-    turnosFiltador: Turno[];
-    dia: Date;
-    setState: React.Dispatch<React.SetStateAction<DepiJointState>>;
-    setDia: React.Dispatch<React.SetStateAction<Date>>;
-    addTurno: (data: any) => Promise<boolean>;
-    turnoAsignado: (data: TurnoLista) => Promise<boolean>;
-    quitarTurno: (turnoId: any) => Promise<boolean>;
-    addPaciente: (data: any) => Promise<boolean>;
-    allPacientes: () => Promise<void>;
-    pacientes: Paciente[];
+  state: DepiJointState;
+  turnosFiltador: Turno[];
+  dia: Date;
+  setState: React.Dispatch<React.SetStateAction<DepiJointState>>;
+  setDia: React.Dispatch<React.SetStateAction<Date>>;
+  addTurno: (data: any) => Promise<boolean>;
+  turnoAsignado: (data: TurnoLista) => Promise<boolean>;
+  quitarTurno: (turnoId: any) => Promise<boolean>;
+  addPaciente: (data: any) => Promise<boolean>;
+  deletePaciente: (pacienteId: any) => Promise<boolean>;
+  allPacientes: (conDesabilitado:boolean) => Promise<void>;
+  pacientes: Paciente[];
 }
 
 // Crea el contexto con un valor predeterminado de tipo undefined
 const DepiJointContexto = createContext<DepiJointContextType | undefined>(
-    undefined
+  undefined
 );
 
 // Define el tipo para las propiedades del proveedor
 interface DepiJointProviderProps {
-    children: ReactNode;
+  children: ReactNode;
 }
 
 const DepiJointProvider: React.FC<DepiJointProviderProps> = ({ children }) => {
-    const [state, setState] = useState<DepiJointState>({}); // Define el estado que deseas compartir
-    const [dia, setDia] = useState<Date>(new Date());
-    const { filteredTurnos, getTurnos } = useDateFilter({ fecha: dia });
-    const { agregarTurno, confirmarTurno, cancelarTurno } = useTurnoAccion();
-    const { getPacientes, cargarPaciente } = usePacienteAccion();
-    const [pacientes, setPacientes] = useState<Paciente[]>([]);
-    const { toast } = useToast();
+  const [state, setState] = useState<DepiJointState>({}); // Define el estado que deseas compartir
+  const [dia, setDia] = useState<Date>(new Date());
+  const { filteredTurnos, getTurnos } = useDateFilter({ fecha: dia });
+  const { agregarTurno, confirmarTurno, cancelarTurno } = useTurnoAccion();
+  const { getPacientes, cargarPaciente, deshabilitarPaciente } =
+    usePacienteAccion();
+  const [pacientes, setPacientes] = useState<Paciente[]>([]);
+  const { toast } = useToast();
 
-    useEffect(() => {
-        allPacientes();
-    }, []);
+  useEffect(() => {
+    allPacientes();
+  }, []);
 
-    /* ----------------------------------------------------------------------------------------------------- */
+  /* ----------------------------------------------------------------------------------------------------- */
 
-    /* Acciones para las notificaciones */
+  /* Acciones para las notificaciones */
 
-    const getNotificacion = (mensaje: string, tipo: "default" | "destructive" | "sussess") => {
-        toast({ description: mensaje, variant: tipo });
-    };
+  const getNotificacion = (
+    mensaje: string,
+    tipo: "default" | "destructive" | "sussess"
+  ) => {
+    toast({ description: mensaje, variant: tipo });
+  };
 
-    /* -------------------------------------------------------- */
+  /* -------------------------------------------------------- */
 
-    /* ----------------------------------------------------------------------------------------------------- */
-    //TURNOS
-    const addTurno = async (data: any): Promise<boolean> => {
-        const isAdded = await agregarTurno(data);
-        if (isAdded) {
-            await getTurnos();
-            await getNotificacion("Turno agregado correctamente", "sussess");
-            return true;
-        }
-        getNotificacion("Error al agregar el turno", "destructive");
-        return false;
-    };
+  /* ----------------------------------------------------------------------------------------------------- */
+  //TURNOS
+  const addTurno = async (data: any): Promise<boolean> => {
+    const isAdded = await agregarTurno(data);
+    if (isAdded) {
+      await getTurnos();
+      await getNotificacion("Turno agregado correctamente", "sussess");
+      return true;
+    }
+    getNotificacion("Error al agregar el turno", "destructive");
+    return false;
+  };
 
-    const turnoAsignado = async (data: TurnoLista): Promise<boolean> => {
-        const confirmacion = await confirmarTurno(data);
-        if (confirmacion) {
-            await getTurnos();
-            getNotificacion("Turno confirmado correctamente", "sussess");
-            return true;
-        }
-        getNotificacion("Error al confirmar el turno", "destructive");
-        return false;
-    };
+  const turnoAsignado = async (data: TurnoLista): Promise<boolean> => {
+    const confirmacion = await confirmarTurno(data);
+    if (confirmacion) {
+      await getTurnos();
+      getNotificacion("Turno confirmado correctamente", "sussess");
+      return true;
+    }
+    getNotificacion("Error al confirmar el turno", "destructive");
+    return false;
+  };
 
-    const quitarTurno = async (turnoId: any): Promise<boolean> => {
-        const bool = await cancelarTurno(turnoId);
-        if (bool) {
-            await getTurnos();
-            getNotificacion("Turno eliminado correctamente", "sussess");
-            return true;
-        }
-        getNotificacion("Error al eliminar el turno", "destructive");
-        return false;
-    };
+  const quitarTurno = async (turnoId: any): Promise<boolean> => {
+    const bool = await cancelarTurno(turnoId);
+    if (bool) {
+      await getTurnos();
+      getNotificacion("Turno eliminado correctamente", "sussess");
+      return true;
+    }
+    getNotificacion("Error al eliminar el turno", "destructive");
+    return false;
+  };
 
-    /* ----------------------------------------------------------------------------------------------------------------------- */
+  /* ----------------------------------------------------------------------------------------------------------------------- */
 
-    /* PACIENTES */
-    const allPacientes = async (): Promise<void> => {
-        const pacientes: Paciente[] = await getPacientes();
-        setPacientes(pacientes);
-    };
+  /* PACIENTES */
+  const allPacientes = async (conDesabilitado:boolean = false): Promise<void> => {
+    const pacientes: Paciente[] = await getPacientes(conDesabilitado);
+    setPacientes(pacientes);
+  };
 
-    const addPaciente = async (data: any): Promise<boolean> => {
-        const isAdd = await cargarPaciente(data);
-        if (!isAdd) {
-            getNotificacion("Error al agregar el paciente", "destructive");
-            return false
-        };
-        await allPacientes();
-        getNotificacion("Paciente agregado correctamente", "sussess");
-        return true;
-    };
+  const addPaciente = async (data: any): Promise<boolean> => {
+    const isAdd = await cargarPaciente(data);
+    if (!isAdd) {
+      getNotificacion("Error al agregar el paciente", "destructive");
+      return false;
+    }
+    await allPacientes();
+    getNotificacion("Paciente agregado correctamente", "sussess");
+    return true;
+  };
 
-    return (
-        <DepiJointContexto.Provider
-            value={{
-                state,
-                setState,
-                turnosFiltador: filteredTurnos,
-                dia,
-                setDia,
-                addTurno,
-                turnoAsignado,
-                quitarTurno,
-                addPaciente,
-                allPacientes,
-                pacientes,
-            }}
-        >
-            {children}
-        </DepiJointContexto.Provider>
-    );
+  const deletePaciente = async (pacienteId: any): Promise<boolean> => {
+    const bool = await deshabilitarPaciente(pacienteId);
+    if (bool) {
+      await allPacientes();
+      getNotificacion("Paciente eliminado correctamente", "sussess");
+      return true;
+    }
+    getNotificacion("Error al eliminar el paciente", "destructive");
+    return false;
+  };
+
+  return (
+    <DepiJointContexto.Provider
+      value={{
+        state,
+        setState,
+        turnosFiltador: filteredTurnos,
+        dia,
+        setDia,
+        addTurno,
+        turnoAsignado,
+        quitarTurno,
+        addPaciente,
+        deletePaciente,
+        allPacientes,
+        pacientes,
+      }}
+    >
+      {children}
+    </DepiJointContexto.Provider>
+  );
 };
 
 /* -------------------------------------------------------- */
 
 // Hook para usar el contexto
 const useDepiJoint = (): DepiJointContextType => {
-    const context = useContext(DepiJointContexto);
-    if (!context) {
-        throw new Error(
-            "useDepiJoint debe ser usado dentro de un DepiJointProvider"
-        );
-    }
-    return context;
+  const context = useContext(DepiJointContexto);
+  if (!context) {
+    throw new Error(
+      "useDepiJoint debe ser usado dentro de un DepiJointProvider"
+    );
+  }
+  return context;
 };
 
 export { DepiJointProvider, useDepiJoint };

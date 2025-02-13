@@ -5,6 +5,7 @@ export interface Persona {
     dni: string;
     telefono: string; // Considera agregar validación del formato
     email: string; // Considera agregar validación del formato
+    deshabilitado?: boolean;
 }
 
 export interface PersonaSearch{

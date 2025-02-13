@@ -21,11 +21,11 @@ const usePacienteAccion = () => {
    * Obtiene la lista de pacientes almacenados en localStorage.
    * @returns Un array de pacientes.
    */
-  const getPacientes = (): Paciente[] => {
+  const getPacientes = (estaDeshabilitado: boolean = false): Paciente[] => {
     const localStorageP: Paciente[] = JSON.parse(
       localStorage.getItem("pacientes") || "[]"
     );
-    return localStorageP;
+    return estaDeshabilitado ? localStorageP.filter((p) => !p.deshabilitado) : localStorageP;
   };
 
   /**
@@ -43,7 +43,6 @@ const usePacienteAccion = () => {
    * @returns {boolean} - Indica si se cargó correctamente.
    */
   const cargarPaciente = (data: InputPacienteInterface): boolean => {
-    
     const { file, ...pacienteNuevo } = data;
 
     // Verificar si el paciente ya existe
@@ -95,6 +94,23 @@ const usePacienteAccion = () => {
     );
   };
 
+  /**
+   * Deshabilita un paciente.
+   * @param dniPaciente - DNI del paciente a deshabilitar.
+   * @returns {boolean} - Indica si se deshabilitó correctamente.
+   */
+
+  const deshabilitarPaciente = async (dniPaciente: string): Promise<boolean> => {
+    const pacientes = getPacientes(); // busco todos los pacientes
+    const paciente = pacientes.find((p) => p.dni === dniPaciente); // Obtengo el paciente por su dni
+    if (!paciente) return false; // si no se encuentra el paciente, retorno false
+    await pacientes.splice(paciente.pacienteId, 1); // Elimino el paciente de la lista
+    paciente.deshabilitado = true; // Deshabilito el paciente
+    pacientes.push(paciente); // Agrego el paciente deshabilitado a la lista
+    localStorage.setItem("pacientes", JSON.stringify(pacientes)); // Actualizo la lista de pacientes
+    return true; // Retorno true si se deshabilitó correctamente
+  };
+
   // Retorna el paciente y las funciones de búsqueda y carga
   return {
     paciente,
@@ -103,6 +119,7 @@ const usePacienteAccion = () => {
     getPaciente,
     cargarPaciente,
     getContratacionesPaciente,
+    deshabilitarPaciente
   };
 };
 
