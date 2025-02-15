@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/popover"
 import { PacienteSelect } from "../interfaces/paciente"
 
-export const SeleccionComponente = React.forwardRef<HTMLDivElement, { lista: PacienteSelect[], clave?: string, onClick: any, titulo: string }>(({ lista, onClick, titulo }, ref) => {
+export const SeleccionComponente = React.forwardRef<HTMLDivElement, { lista: PacienteSelect[], clave?: string, onClick: any, titulo: string }>(({ lista, onClick, titulo }) => {
     const [open, setOpen] = React.useState(false)
     const [value, setValue] = React.useState("")
 

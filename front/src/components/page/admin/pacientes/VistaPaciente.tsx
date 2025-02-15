@@ -12,7 +12,7 @@ import { FaMap, FaWhatsapp } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 
 export default function VistaPaciente() {
-  const { getPaciente, getContratacionesPaciente } = usePacienteAccion();
+  const { getPaciente } = usePacienteAccion();
   const [paciente, setPaciente] = useState<Paciente>();
   const { pacienteId } = useParams();
 

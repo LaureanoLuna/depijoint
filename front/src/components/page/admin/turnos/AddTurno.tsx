@@ -12,11 +12,14 @@ import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import ListContrataciones from "./ListContrataciones";
 import useContratacionAccion from "@/assets/hooks/useContratacionAccion";
 import { useDepiJoint } from "@/assets/context/DepiJointContexto";
-import { estaDisponible, refactoriDate } from '../../../../assets/function/funcionesTurnos';
+import {
+  estaDisponible,
+  refactoriDate,
+} from "../../../../assets/function/funcionesTurnos";
 
 /**
  * Componente principal para agregar un turno.
- * 
+ *
  * @param {Object} props - Propiedades del componente.
  * @param {Function} props.funcion - Función para manejar el estado externo (por ejemplo, cerrar un modal).
  * @param {boolean} props.elemento - Estado externo que controla la visibilidad o comportamiento del componente.
@@ -34,17 +37,23 @@ export default function AddTurno() {
 
   /**
    * Componente interno que contiene el formulario para agregar un turno.
-   * 
+   *
    * @returns {TSX.Element} - Formulario para agregar un turno.
    */
   function Formulario() {
     // Contexto y estado
     const { dia, turnosFiltador, addTurno } = useDepiJoint();
-    const { register, handleSubmit, setValue, formState: { errors } } = useForm<TurnoAdd>();
+    const {
+      register,
+      handleSubmit,
+      setValue,
+      formState: { errors },
+    } = useForm<TurnoAdd>();
 
     // Hooks personalizados
     const { paciente, buscaPaciente } = usePacienteAccion();
-    const { calcularTiempoSesion, calcularPrecioSesion } = useContratacionAccion();
+    const { calcularTiempoSesion, calcularPrecioSesion } =
+      useContratacionAccion();
 
     // Estado local
     const [tiempo, setTiempo] = useState<number>(0);
@@ -62,25 +71,24 @@ export default function AddTurno() {
 
     /**
      * Función para calcular la duración y el precio de la sesión del paciente.
-     * 
+     *
      * @param {string} dni - DNI del paciente.
      */
     const calcularDatosPaciente = async (dni: string) => {
       const tiempo = await calcularTiempoSesion(dni);
       const precio = await calcularPrecioSesion(dni);
-      
+
       setTiempo(tiempo ?? 0);
       setPrecioSesion(precio?.toString() ?? "0");
     };
 
     /**
      * Función para manejar el envío del formulario.
-     * 
+     *
      * @param {TurnoAdd} data - Datos del formulario.
      */
     const onSubmit: SubmitHandler<TurnoAdd> = async (data) => {
-      
-      const success = await addTurno(data);
+      await addTurno(data);
     };
 
     return (
@@ -103,8 +111,19 @@ export default function AddTurno() {
                 </CardDescription>
               </CardTitle>
               <div className="text-center">
-                <p className={`text-sm ${paciente.consentimiento.tiene ? 'text-green-600' : 'text-red-600'} capitalize`}>
-                  Legajo {paciente.consentimiento.tiene ? <strong>completo</strong> : <strong>Sin consentimiento</strong>}
+                <p
+                  className={`text-sm ${
+                    paciente.consentimiento.tiene
+                      ? "text-green-600"
+                      : "text-red-600"
+                  } capitalize`}
+                >
+                  Legajo{" "}
+                  {paciente.consentimiento.tiene ? (
+                    <strong>completo</strong>
+                  ) : (
+                    <strong>Sin consentimiento</strong>
+                  )}
                 </p>
               </div>
             </Card>
@@ -132,7 +151,11 @@ export default function AddTurno() {
                     required: "Este campo es requerido",
                   })}
                 />
-                {errors.dia && <p role="alert" className="text-xs text-red-500">{errors.dia.message}</p>}
+                {errors.dia && (
+                  <p role="alert" className="text-xs text-red-500">
+                    {errors.dia.message}
+                  </p>
+                )}
               </div>
               <div className="mb-5 col-span-1">
                 <Label>Hora</Label>
@@ -142,11 +165,17 @@ export default function AddTurno() {
                   {...register("hora", {
                     required: "La hora es requerida",
                     validate: {
-                      onchange: (value) => estaDisponible(value, tiempo, turnosFiltador) || "Horario Ocupado",
+                      onchange: (value) =>
+                        estaDisponible(value, tiempo, turnosFiltador) ||
+                        "Horario Ocupado",
                     },
                   })}
                 />
-                {errors.hora && <p role="alert" className="text-xs text-red-500">{errors.hora.message}</p>}
+                {errors.hora && (
+                  <p role="alert" className="text-xs text-red-500">
+                    {errors.hora.message}
+                  </p>
+                )}
               </div>
             </div>
 

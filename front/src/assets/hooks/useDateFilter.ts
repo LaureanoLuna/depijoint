@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { Turno, TurnoInterface, TurnoLista } from "../interfaces/turno";
+import { Turno } from "../interfaces/turno";
 //import { LIST_TURNOS } from "../constant/LIST_TURNOS"; // Asegúrate de que LIST_TURNOS se use correctamente
-import { formatearListaTurnos } from "../function/formatearListaTurnos";
 
 /**
  * Hook para filtrar turnos por fecha.

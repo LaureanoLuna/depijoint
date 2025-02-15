@@ -1,4 +1,4 @@
-import { Turno, TurnoInterface } from "../interfaces/turno";
+import { Turno } from "../interfaces/turno";
 
 export const LIST_TURNOS: Turno[] = [
   {

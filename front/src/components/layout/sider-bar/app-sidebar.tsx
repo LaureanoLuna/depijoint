@@ -27,7 +27,7 @@ import Boton from "@/assets/components/Boton";
 export function AppSidebar() {
   const { getUsuario, cerrarSesion } = useLoginAccion();
   const navegar = useNavigate()
-  const [user, setUser] = useState<Usuario | null>(getUsuario());
+  const [user] = useState<Usuario | null>(getUsuario());
 
   const handleCerrarSesion = async ()=>{
     const bool = await cerrarSesion();

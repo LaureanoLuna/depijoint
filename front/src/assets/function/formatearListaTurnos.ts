@@ -1,5 +1,5 @@
 import { Paciente, PacienteSelect } from "../interfaces/paciente";
-import { Turno, TurnoInterface, TurnoLista } from "../interfaces/turno";
+import { Turno, TurnoLista } from "../interfaces/turno";
 
 export function formatearListaTurnos(turnos: Turno[]): TurnoLista[] {
   const arr: TurnoLista[] = []; // Inicializa un array para almacenar los turnos formateados
