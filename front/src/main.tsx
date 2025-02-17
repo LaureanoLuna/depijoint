@@ -10,12 +10,13 @@ import ListaZonas from './components/page/admin/zonas/ListaZonas';
 import TablaTurnos from './components/page/admin/turnos/TablaTurnos';
 import TablaPacientes from './components/page/admin/pacientes/TablaPacientes';
 import VistaPaciente from './components/page/admin/pacientes/VistaPaciente';
-import ErrorPage from './components/page/ErrorPage';// Asegúrate de importar tu componente de error
+import ErrorPage from './components/page/ErrorPage'; // Asegúrate de importar tu componente de error
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <ErrorPage />, // Mueve el errorElement aquí
     children: [
       {
         path: "turnos",
@@ -26,11 +27,11 @@ const router = createBrowserRouter([
         element: <TablaPacientes />,
       },
       {
-        path: "/:pacienteId",
+        path: "pacientes/:pacienteId", // Corrige la ruta para que sea relativa a "pacientes"
         element: <VistaPaciente />
       },
       {
-        path: "/asignados",
+        path: "asignados",
         element: <ListaAsignados />
       },
       {
@@ -43,10 +44,7 @@ const router = createBrowserRouter([
       }
     ]
   },
-  { path: "/login", element: <Login /> },
-  {
-    errorElement: <ErrorPage />, // Cambiado a un componente de error
-  }
+  { path: "/login", element: <Login /> }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
