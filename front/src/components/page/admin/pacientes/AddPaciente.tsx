@@ -7,7 +7,7 @@ export default function AddPaciente() {
     <FormLateral
       title="Alta Paciente"
       descripcion="Formulario para agendar un nuevo paciente"
-      tituloAbrir="Agendar Paciente"
+      tituloAbrir="Agendar"
       formChild={<Formulario />}
     />
   );

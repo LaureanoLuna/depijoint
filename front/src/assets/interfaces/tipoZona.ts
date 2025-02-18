@@ -4,3 +4,5 @@ export interface TipoZona {
   descripcion: string;
   deshabilitado: boolean;
 }
+
+export interface TipoZonaLista extends Omit<TipoZona, "deshabilitado">{}

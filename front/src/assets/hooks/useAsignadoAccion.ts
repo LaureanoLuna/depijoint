@@ -8,8 +8,8 @@ export default function useAsignadoAccion() {
     return !asignados
       ? []
       : JSON.parse(asignados).filter(
-          (a: Asignado) => a.colaboradorId === colaboradorId
-        );
+        (a: Asignado) => a.colaboradorId === colaboradorId
+      );
   };
 
   const getAsignados = (): Asignado[] => {
@@ -26,6 +26,7 @@ export default function useAsignadoAccion() {
 
   const asignarTurno = (turno: any, colaborador: string): boolean => {
     let bool = false;
+    let x;
 
     try {
       if (!turno || !colaborador) {
@@ -33,8 +34,13 @@ export default function useAsignadoAccion() {
       }
 
       const { id, dia, dni, duracion, hora, nombre } = turno;
+
+      if ( x = getAsinado(id)) {      
+        eliminarAsignacion(x.id)
+      }
+
       const asignacion: Asignado = {
-        id: "1", // Considera usar un ID único real
+        id: getAsignados().length.toString(), // Considera usar un ID único real
         turnoId: id,
         dia: dia,
         nombre: nombre,
