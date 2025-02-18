@@ -4,6 +4,7 @@ import InputForm from "@/assets/components/InputForm";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useDepiJoint } from "@/assets/context/DepiJointContexto";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const Formulario = () => {
   const { addPaciente } = useDepiJoint();
@@ -15,20 +16,19 @@ const Formulario = () => {
   } = useForm<Paciente>();
 
   const onSubmit: SubmitHandler<Paciente> = async (data) => {
-   
     const success = await addPaciente(data);
-    if (success) {      
+    if (success) {
       reset();
-    } 
-    };
+    }
+  };
 
   return (
-    <Card className="mt-3 pb-4 px-2">
-      <form
-        id="formAddPaciente"
-        onSubmit={handleSubmit(onSubmit)}
-        className="px-2"
-      >
+    <form
+      id="formAddPaciente"
+      onSubmit={handleSubmit(onSubmit)}
+      className=""
+    >
+      <ScrollArea className="h-[500px] lg:h-svh">
         <InputForm
           label="Nombre"
           type="text"
@@ -40,7 +40,7 @@ const Formulario = () => {
           }
           error={errors.nombre}
         />
-        
+
         <InputForm
           label="Apellido"
           type="text"
@@ -110,8 +110,8 @@ const Formulario = () => {
         >
           Cargar
         </Button>
-      </form>
-    </Card>
+      </ScrollArea>
+    </form>
   );
 };
 

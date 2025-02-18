@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Sheet,
   SheetContent,
@@ -8,37 +9,37 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
-  SheetTrigger
+  SheetTrigger,
 } from "@/components/ui/sheet";
 
-export function FormLateral({ title, descripcion, formChild, tituloAbrir }: {
-  title: string,
-  descripcion: string,
-  formChild: React.ReactNode,
-  tituloAbrir: string,
+export function FormLateral({
+  title,
+  descripcion,
+  formChild,
+  tituloAbrir,
+}: {
+  title: string;
+  descripcion: string;
+  formChild: React.ReactNode;
+  tituloAbrir: string;
 }) {
-
-
   return (
-
-    <Sheet >
+    <Sheet>
       <SheetTrigger asChild>
         <Button variant="outline">{tituloAbrir}</Button>
       </SheetTrigger>
-      <SheetContent side={"right"} className="min-h-screen">
-        <SheetHeader>
-          <SheetTitle>{title}</SheetTitle>
-          <SheetDescription className="hidden md:block">
-            {descripcion}
-          </SheetDescription>
-        </SheetHeader>
-        {formChild}
-        <SheetFooter>
-
-        </SheetFooter>
-      </SheetContent>
+      <ScrollArea className="max-h-52">
+        <SheetContent side={"right"}>
+          <SheetHeader>
+            <SheetTitle>{title}</SheetTitle>
+            <SheetDescription className="hidden md:block">
+              {descripcion}
+            </SheetDescription>
+          </SheetHeader>
+          {formChild}
+          <SheetFooter></SheetFooter>
+        </SheetContent>
+      </ScrollArea>
     </Sheet>
-
-
   );
 }

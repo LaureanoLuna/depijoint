@@ -35,14 +35,14 @@ function App() {
   }, []);
 
   return (
-    <>
+    <div>
       <DepiJointProvider>
         <SiderBar>
           <Outlet />
         </SiderBar>
         <Toaster />
       </DepiJointProvider>
-    </>
+    </div>
   );
 }
 
