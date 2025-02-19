@@ -25,7 +25,7 @@ export function CabeceraColumna<TData, TValue>({
     if (!column.getCanSort()) {
         return <div className={cn(className)}>{title}</div>
     }
-
+    
     return (
         <div className={cn("flex items-center space-x-2", className)}>
             <DropdownMenu>
@@ -36,7 +36,7 @@ export function CabeceraColumna<TData, TValue>({
                         className="-ml-3 h-8 data-[state=open]:bg-accent"
                     >
                         <span>{title}</span>
-                        {column.getIsSorted() === "desc" ? (
+                        {column.getIsSorted() === "asc" ? (
                             <ArrowDown />
                         ) : (
                             <ArrowUp />

@@ -19,7 +19,7 @@ export default function GrupoBotones({
 }) {
   return (
     <div className="w-fit ml-auto">
-      <div className="md:block hidden">
+      <div className="md:flex hidden ">
         {botonesAccion?.map((boton, index) => (
           <Boton key={index} prop={boton} />
         ))}

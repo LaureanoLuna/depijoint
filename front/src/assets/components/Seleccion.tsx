@@ -11,10 +11,10 @@ export default function Seleccion({ opciones, titulo, funccion, name }: { opcion
     
     return (
         <Select onValueChange={funccion} name={name}>
-            <SelectTrigger className="w-[120px]">
+            <SelectTrigger className="max-w-[120px] w-auto">
                 <SelectValue placeholder={titulo} />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="w-auto">
                 {opciones?.map((o, i) => (<SelectItem className="capitalize" key={i} value={o}>{o}</SelectItem>))}
             </SelectContent>
         </Select>

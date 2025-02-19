@@ -203,7 +203,7 @@ const TablaTurnos = () => {
       <Tabla
         columns={columnas}
         data={turnosFiltador}
-        opcionesFilto={["Nombre", "Hora", "Duración"]}
+        opcionesFilto={["Nombre", "Hora", "Duracion"]}
       />
     </>
   );
