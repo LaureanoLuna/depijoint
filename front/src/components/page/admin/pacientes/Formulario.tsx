@@ -2,7 +2,6 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Paciente } from "@/assets/interfaces/paciente";
 import InputForm from "@/assets/components/InputForm";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { useDepiJoint } from "@/assets/context/DepiJointContexto";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -52,6 +51,7 @@ const Formulario = () => {
           }
           error={errors.apellido}
         />
+        <div className="md:flex items-center justify-center gap-2">
         <InputForm
           label="Dni"
           type="text"
@@ -69,6 +69,8 @@ const Formulario = () => {
           required={true}
           error={errors.fechaNac}
         />
+        </div>
+        <div className="md:grid grid-cols-3 gap-2 ">
         <InputForm
           label="Teléfono"
           type="tel"
@@ -80,6 +82,7 @@ const Formulario = () => {
         />
         <InputForm
           label="Email"
+          estilo="col-span-2"
           type="email"
           register={register}
           name="email"
@@ -89,6 +92,7 @@ const Formulario = () => {
           }
           error={errors.email}
         />
+        </div>
         <InputForm
           label="Dirección"
           type="text"

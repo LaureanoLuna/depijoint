@@ -6,6 +6,7 @@ import { FieldError, UseFormRegister } from "react-hook-form";
 interface InputFormProps {
   label: string;
   type: string;
+  estilo?:string;
   register: UseFormRegister<any>;
   name: string;
   required?: boolean;
@@ -18,12 +19,13 @@ const InputForm: React.FC<InputFormProps> = ({
   type,
   register,
   name,
+  estilo,
   required = false,
   validation,
   error,
 }) => {
   return (
-    <div className="my-2">
+    <div className={`${estilo} my-2`}>
       <Label>
         {label}
         <Input
