@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
 
@@ -19,14 +20,16 @@ export default function Formulario() {
     formState: { errors },
     control,
     setValue,
-    watch
+    watch,
     //reset,
   } = useForm<Zona>();
 
   const onSubmit: SubmitHandler<Zona> = async (data) => {
-    if(!tipo) return 
-    
-    setValue('tipoId',tipo)
+    console.log(data);
+
+    if (!tipo) return;
+
+    setValue("tipoId", tipo);
     console.log(watch());
 
     //const success = await AddZona(data);
@@ -51,29 +54,34 @@ export default function Formulario() {
             </h2>
           )}
         </div>
-        <InputForm
-          label="Codigo"
-          type="text"
-          register={register}
-          name="codigo"
-          required={true}
-          error={errors.codigo}
-        />
-        <InputForm
-          label="Nombre"
-          type="text"
-          register={register}
-          name="nombre"
-          required={true}
-          error={errors.nombre}
-        />
-        <InputForm
-          label="Descripcion"
-          type="text"
-          register={register}
+        <div className="md:grid grid-cols-3 gap-2">
+          <InputForm
+            label="Codigo"
+            type="text"
+            register={register}
+            name="codigo"
+            required={true}
+            error={errors.codigo}
+          />
+          <InputForm
+            label="Nombre"
+            estilo="col-span-2"
+            type="text"
+            register={register}
+            name="nombre"
+            required={true}
+            error={errors.nombre}
+          />
+        </div>
+        <Controller
           name="descripcion"
-          required={true}
-          error={errors.descripcion}
+          control={control}
+          render={({ field }) => (
+            <Label htmlFor="descripcionArticulo">
+              Descripcion
+              <Textarea id="descripcionArticulo" className="resize-none" {...field} />
+            </Label>
+          )}
         />
         <div className="flex justify-between items-center gap-2">
           <InputForm
@@ -96,6 +104,7 @@ export default function Formulario() {
         <div className="flex items-start justify-around">
           <Controller
             name="sexo"
+            defaultValue="M"
             control={control}
             rules={{ required: true }}
             render={({ field }) => (
@@ -127,6 +136,7 @@ export default function Formulario() {
           />
           <Controller
             name="tamaño"
+            defaultValue="C"
             control={control}
             rules={{ required: true }}
             render={({ field }) => (

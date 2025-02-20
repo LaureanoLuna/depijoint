@@ -31,11 +31,12 @@ export default function TablaZonas() {
       maxSize: 100,
       header: ({ column }) => {
         return <CabeceraColumna column={column} title="Descripcion" />;
-      },
-    },
-    {
-      accessorKey: "precio",
-      header: ({ column }) => {
+            },
+            cell: (info) => (info.getValue() as string).slice(0, 25) + "..."
+          },
+          {
+            accessorKey: "precio",
+            header: ({ column }) => {
         return <CabeceraColumna column={column} title="Precio" />;
       },
       cell: (info) => "$" + info.getValue(),
