@@ -12,6 +12,7 @@ import usePacienteAccion from "../hooks/usePacienteAccion";
 import { Paciente } from "../interfaces/paciente";
 import { useToast } from "@/hooks/use-toast";
 
+
 // Define el tipo para el estado que deseas compartir
 interface DepiJointState {
   // Aquí puedes definir las propiedades que necesites
@@ -30,7 +31,7 @@ interface DepiJointContextType {
   quitarTurno: (turnoId: any) => Promise<boolean>;
   addPaciente: (data: any) => Promise<boolean>;
   deletePaciente: (pacienteId: any) => Promise<boolean>;
-  allPacientes: (conDesabilitado:boolean) => Promise<void>;
+  allPacientes: (conDesabilitado: boolean) => Promise<void>;
   pacientes: Paciente[];
 }
 
@@ -109,7 +110,9 @@ const DepiJointProvider: React.FC<DepiJointProviderProps> = ({ children }) => {
   /* ----------------------------------------------------------------------------------------------------------------------- */
 
   /* PACIENTES */
-  const allPacientes = async (conDesabilitado:boolean = false): Promise<void> => {
+  const allPacientes = async (
+    conDesabilitado: boolean = false
+  ): Promise<void> => {
     const pacientes: Paciente[] = await getPacientes(conDesabilitado);
     setPacientes(pacientes);
   };
@@ -136,6 +139,12 @@ const DepiJointProvider: React.FC<DepiJointProviderProps> = ({ children }) => {
     return false;
   };
 
+  /* ----------------------------------------------------------------------------------------------------------------------- */
+  /* ZONAS */
+
+
+  /* ----------------------------------------------------------------------------------------------------------------------- */
+
   return (
     <DepiJointContexto.Provider
       value={{
@@ -151,6 +160,7 @@ const DepiJointProvider: React.FC<DepiJointProviderProps> = ({ children }) => {
         deletePaciente,
         allPacientes,
         pacientes,
+        
       }}
     >
       {children}

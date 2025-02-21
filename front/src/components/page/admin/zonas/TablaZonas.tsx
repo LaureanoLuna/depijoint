@@ -1,18 +1,22 @@
 import Cabecera from "@/assets/components/Cabecera";
 import AddZona from "./AddZona";
 import { Tabla } from "@/assets/components/dataTable/Tabla";
-import useZonaAccion from "@/assets/hooks/useZonaAccion";
 import { ColumnDef } from "@tanstack/react-table";
 import { CabeceraColumna } from "@/assets/components/dataTable/CabeceraColumna";
 import { Zona } from "@/assets/interfaces/zona";
 import { FaCheck, FaEye, FaPen, FaRegTimesCircle } from "react-icons/fa";
 import GrupoBotones from "@/assets/components/GrupoBotones";
 import Boton from "@/assets/components/Boton";
+import { useEffect } from "react";
+import { useZonaContext } from "./context/ZonaContext";
 
 export default function TablaZonas() {
-  const { zonas } = useZonaAccion();
+  const {z, deleteZona} = useZonaContext()
+  useEffect(()=>{
+    console.log("se renderiza");    
+  },[])
 
-  const Columna: ColumnDef<Zona>[] = [
+  const Columnas: ColumnDef<Zona>[] = [
     {
       accessorKey: "codigo",
       header: ({ column }) => {
@@ -32,11 +36,11 @@ export default function TablaZonas() {
       header: ({ column }) => {
         return <CabeceraColumna column={column} title="Descripcion" />;
             },
-            cell: (info) => (info.getValue() as string).slice(0, 25) + "..."
-          },
-          {
-            accessorKey: "precio",
-            header: ({ column }) => {
+            cell: (info) => (info.getValue() as string)?.slice(0, 25) + "..."
+    },
+    {
+      accessorKey: "precio",
+      header: ({ column }) => {
         return <CabeceraColumna column={column} title="Precio" />;
       },
       cell: (info) => "$" + info.getValue(),
@@ -49,10 +53,11 @@ export default function TablaZonas() {
       cell: (info) => info.getValue() + " min",
     },
     {
-      id: "verDetalle",
+      id: "zonaVerDetalle",
       header: "Detelles",
       cell: ({ row }) => {
         const {zonaId} = row.original;
+        
         return (
           <Boton
             prop={{
@@ -61,16 +66,20 @@ export default function TablaZonas() {
               icono: <FaEye/>,
               is_tooltip:true,
               text_tooltip:"Ver Mas",
-              tipo:"button"
+              tipo:"button",
+              onClick() {
+                console.log(zonaId);                
+              },
             }}
           />
         );
       },
     },
     {
-      id: "acciones",
+      id: "zonaAcciones",
       cell: ({ row }) => {
         const zona = row.original;
+        
         return (
           <GrupoBotones
             botonesAccion={[
@@ -89,7 +98,9 @@ export default function TablaZonas() {
                 tamaño: "icon",
                 is_tooltip: true,
                 text_tooltip: "Habilitar",
-                onClick: () => {},
+                onClick: (e) => {
+                  alert(e)  
+                },
               },
 
               {
@@ -99,7 +110,9 @@ export default function TablaZonas() {
                 tamaño: "icon",
                 is_tooltip: true,
                 text_tooltip: "Deshabilitar",
-                onClick: () => {},
+                onClick: () => {
+                  deleteZona(zona.zonaId)
+                },
               },
             ]}
             botonesDropdown={[
@@ -141,8 +154,8 @@ export default function TablaZonas() {
         botonAccion={<AddZona />}
       />
       <Tabla
-        columns={Columna}
-        data={zonas}
+        columns={Columnas}
+        data={z}
         opcionesFilto={["Codigo", "Nombre", "Precio", "Tiempo"]}
       />
     </>

@@ -1,8 +1,6 @@
 import InputForm from "@/assets/components/InputForm";
 import Seleccion from "@/assets/components/Seleccion";
 import { LIST_TIPO } from "@/assets/constant/LIST_TIPOZONA";
-import { useDepiJoint } from "@/assets/context/DepiJointContexto";
-import useZonaAccion from "@/assets/hooks/useZonaAccion";
 import { Zona } from "@/assets/interfaces/zona";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -11,10 +9,11 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
+import { useZonaContext } from "./context/ZonaContext";
 
 export default function Formulario() {
   const [tipo, setTipo] = useState<string | undefined>(undefined);
-  const { getZonas, agregarZona } = useZonaAccion();
+  const { addZona } = useZonaContext();
   const {
     register,
     handleSubmit,
@@ -22,7 +21,7 @@ export default function Formulario() {
     control,
     setValue,
     watch,
-    //reset,
+    reset,
   } = useForm<Zona>();
 
   const onSubmit: SubmitHandler<Zona> = async () => {
@@ -30,8 +29,9 @@ export default function Formulario() {
     if (!tipo) return;
     setValue("tipoId", tipo);
     console.log(watch());
-    let x = await agregarZona(watch());
-    if (x) await getZonas();
+    
+    addZona(watch());
+    reset();
 
     //const success = await AddZona(data);
     //if (success) reset();

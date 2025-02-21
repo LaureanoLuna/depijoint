@@ -6,16 +6,13 @@ const useZonaAccion = () => {
   /*  const [loading, setLoading] = useState<boolean>(false);
      const [error, setError] = useState<string | null>(null); */
 
-  useEffect(() => {
-    getZonas();
-    //fetchZonas();
-  }, []);
-
-  const getZonas = async (): Promise<void> => {
+  
+  const getZonas = async (): Promise<Zona[] | undefined> => {
     const x: Zona[] = localStorage.getItem("zonas")
-      ? JSON.parse(localStorage.getItem("zonas") || "{}")
+      ? JSON.parse(localStorage.getItem("zonas") || "[]")
       : [];
     setZonas(x);
+    return x;
   };
 
   const getZona = async (id: number): Promise<Zona | undefined> => {
@@ -33,32 +30,51 @@ const useZonaAccion = () => {
 
   const agregarZona = async (data: Zona): Promise<boolean> => {
     try {
-      if (!data) throw new Error("Datos requeridos");
-
-      const z = zonas.find(
-        (y) => y.codigo === data.codigo && y.tipoId === data.tipoId
-      );
-      if (z) throw new Error("Codigo ya registrado");
-
-      const nuevaZona: Zona = {
-        ...data,
-        codigo: (data.tipoId + data.codigo).trim(),
-        zonaId: zonas.length + 1,
-      };
-
-      // Actualiza el estado de zonas
-      await setZonas((prevZonas) => {
-        const updatedZonas = [...prevZonas, nuevaZona];
+        if (!data) throw new Error("Datos requeridos");
+        const z = zonas.find(
+            (y) => y.codigo === data.codigo && y.tipoId === data.tipoId
+        );
+        if (z) throw new Error("Código ya registrado");
+        const nuevaZona: Zona = {
+            ...data,
+            codigo: (data.tipoId + data.codigo).trim(),
+            zonaId: zonas.length + 1, // Considera cambiar esto a un ID único
+        };
+        const updatedZonas = [...zonas, nuevaZona];
         localStorage.setItem("zonas", JSON.stringify(updatedZonas));
-        return updatedZonas;
-      });
-
-      return true;
+        // Actualiza el estado de zonas
+        setZonas(updatedZonas)
+        return true;
     } catch (error) {
-      console.log(error);
-      return false;
+        console.log(error);
+        return false;
     }
-  };
+};
+
+  const deshabilitarZona = async (zonaId:number):Promise<boolean> => {
+    console.log(zonaId);
+    
+    try {
+      if(!zonaId) throw new Error("Dato Requerido");
+      const indice = zonas.findIndex((f) => f.zonaId === zonaId);
+      if(!indice) throw new Error('Zona no encontrada');
+      const zonasActualizadas = [...zonas];
+      zonasActualizadas[indice].deshabilitado = true;
+      localStorage.setItem("zonas",JSON.stringify(zonasActualizadas));
+      setZonas(zonasActualizadas)
+      return true;
+    } catch (err)    
+    {
+      return false;      
+    }
+  }
+
+  useEffect(() => {
+    getZonas();
+    console.log("se renderiza el hook");    
+    //fetchZonas();
+  }, []);
+
 
   /*  const fetchZonas = async () => {
          setLoading(true);
@@ -114,6 +130,7 @@ const useZonaAccion = () => {
     getZonas,
     getZona,
     agregarZona,
+    deshabilitarZona
     /* loading,
         error,
         fetchZonas,

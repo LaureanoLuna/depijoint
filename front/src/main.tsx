@@ -10,7 +10,7 @@ import TablaTurnos from './components/page/admin/turnos/TablaTurnos';
 import TablaPacientes from './components/page/admin/pacientes/TablaPacientes';
 import VistaPaciente from './components/page/admin/pacientes/VistaPaciente';
 import ErrorPage from './components/page/ErrorPage'; // Asegúrate de importar tu componente de error
-import TablaZonas from './components/page/admin/zonas/TablaZonas';
+import Zona from './components/page/admin/zonas/Zona';
 
 const router = createBrowserRouter([
   {
@@ -40,7 +40,7 @@ const router = createBrowserRouter([
       },
       {
         path: "zonas",
-        element: <TablaZonas />
+        element: <Zona />
       }
     ]
   },
