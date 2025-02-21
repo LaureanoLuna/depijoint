@@ -2,6 +2,7 @@ import InputForm from "@/assets/components/InputForm";
 import Seleccion from "@/assets/components/Seleccion";
 import { LIST_TIPO } from "@/assets/constant/LIST_TIPOZONA";
 import { useDepiJoint } from "@/assets/context/DepiJointContexto";
+import useZonaAccion from "@/assets/hooks/useZonaAccion";
 import { Zona } from "@/assets/interfaces/zona";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -13,7 +14,7 @@ import { SubmitHandler, useForm, Controller } from "react-hook-form";
 
 export default function Formulario() {
   const [tipo, setTipo] = useState<string | undefined>(undefined);
-  const {} = useDepiJoint();
+  const { getZonas, agregarZona } = useZonaAccion();
   const {
     register,
     handleSubmit,
@@ -24,13 +25,13 @@ export default function Formulario() {
     //reset,
   } = useForm<Zona>();
 
-  const onSubmit: SubmitHandler<Zona> = async (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<Zona> = async () => {
 
     if (!tipo) return;
-
     setValue("tipoId", tipo);
     console.log(watch());
+    let x = await agregarZona(watch());
+    if (x) await getZonas();
 
     //const success = await AddZona(data);
     //if (success) reset();

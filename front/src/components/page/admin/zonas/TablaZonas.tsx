@@ -10,7 +10,7 @@ import GrupoBotones from "@/assets/components/GrupoBotones";
 import Boton from "@/assets/components/Boton";
 
 export default function TablaZonas() {
-  const { getZonas, zonas } = useZonaAccion();
+  const { zonas } = useZonaAccion();
 
   const Columna: ColumnDef<Zona>[] = [
     {
@@ -52,7 +52,7 @@ export default function TablaZonas() {
       id: "verDetalle",
       header: "Detelles",
       cell: ({ row }) => {
-        const zona = row.original;
+        const {zonaId} = row.original;
         return (
           <Boton
             prop={{
