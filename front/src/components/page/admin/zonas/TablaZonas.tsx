@@ -9,9 +9,11 @@ import GrupoBotones from "@/assets/components/GrupoBotones";
 import Boton from "@/assets/components/Boton";
 import { useEffect } from "react";
 import { useZonaContext } from "./context/ZonaContext";
+import { InputCheckBox } from "@/assets/components/InputCheckBox";
 
 export default function TablaZonas() {
-  const {z, deleteZona} = useZonaContext()
+  const {z, deleteZona,handleConDeshabilitado, conDesabilitado} = useZonaContext();
+  
   useEffect(()=>{
     console.log("se renderiza");    
   },[])
@@ -77,6 +79,14 @@ export default function TablaZonas() {
     },
     {
       id: "zonaAcciones",
+      header:()=> (
+              <InputCheckBox
+                id="inputCheckDeshabilitadosZona"
+                label={"Deshabilitados"}
+                marcado={conDesabilitado}
+                onChange={handleConDeshabilitado}
+              />
+            ),
       cell: ({ row }) => {
         const zona = row.original;
         

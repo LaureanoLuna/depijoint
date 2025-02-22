@@ -36,12 +36,8 @@ export default function Formulario() {
     if (!tipo) return;
     setValue("tipoId", tipo);
     console.log(watch());
-
     addZona(watch());
     reset();
-
-    //const success = await AddZona(data);
-    //if (success) reset();
   };
 
   return (

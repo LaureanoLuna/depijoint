@@ -48,7 +48,8 @@ export default function TablaPacientes() {
       },
     },
     {
-      id: "actions",
+      id: "pacienteActions",
+      
       header:()=> (
         <InputCheckBox
           id="inputCheckDeshabilitadosPacientes"

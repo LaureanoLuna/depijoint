@@ -11,18 +11,34 @@ interface ZonaContextProps {
   z: Zona[];
   addZona: (zona: Zona) => void;
   deleteZona: (zonaId: number) => void;
+  handleConDeshabilitado:any
+  conDesabilitado:boolean
 }
 const ZonaContext = createContext<ZonaContextProps | undefined>(undefined);
 
 const ZonaProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { getZonas, agregarZona, deshabilitarZona } = useZonaAccion();
+  const [conDesabilitado,setConDesabilitado] = useState<boolean>(true);
   const [z, setZ] = useState<Zona[]>([]);
 
   const allZonas = async (): Promise<void> => {
     const x = await getZonas();
     if (!x) return;
-    setZ(x);
+    if(conDesabilitado){
+      const sinDeshabilitado = x.filter((z)=>{
+        return z.deshabilitado === false
+      })
+      setZ(sinDeshabilitado);
+    }else{
+      setZ(x);
+    }
   };
+
+  const handleConDeshabilitado = () => {
+    console.log(conDesabilitado);
+    
+    setConDesabilitado(!conDesabilitado);
+  }
 
   const addZona = async (data: Zona): Promise<boolean> => {
     const success = await agregarZona(data);
@@ -51,10 +67,10 @@ const ZonaProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   useEffect(() => {
     allZonas();
-  }, []);
+  }, [conDesabilitado]);
 
   return (
-    <ZonaContext.Provider value={{ z, addZona, deleteZona }}>
+    <ZonaContext.Provider value={{ z, addZona, deleteZona, handleConDeshabilitado, conDesabilitado }}>
       {children}
     </ZonaContext.Provider>
   );
