@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Zona } from "../interfaces/zona";
+import { formatearCodigo } from "../function/funcionesZonas";
 
 const useZonaAccion = () => {
   const [zonas, setZonas] = useState<Zona[]>([]);
@@ -28,6 +29,19 @@ const useZonaAccion = () => {
     }
   };
 
+  const getNuevoCodigo = (tipo: string): string => {
+    console.log(tipo);
+    
+    const codigo = zonas.filter((z) => z.tipoId === tipo).reverse()[0];
+    
+    if (!codigo || !codigo.codigo || codigo.codigo.length < 2) {
+      throw new Error("Código no encontrado o no válido.");
+    }
+    const x = Number(codigo.codigo.slice(2)) + 1;
+    console.log(x);
+    return formatearCodigo(x.toString());
+}
+
   const agregarZona = async (data: Zona): Promise<boolean> => {
     try {
         if (!data) throw new Error("Datos requeridos");
@@ -37,7 +51,7 @@ const useZonaAccion = () => {
         if (z) throw new Error("Código ya registrado");
         const nuevaZona: Zona = {
             ...data,
-            codigo: (data.tipoId + data.codigo).trim(),
+            codigo: (data.codigo).trim(),
             zonaId: zonas.length + 1, // Considera cambiar esto a un ID único
         };
         const updatedZonas = [...zonas, nuevaZona];
@@ -130,7 +144,8 @@ const useZonaAccion = () => {
     getZonas,
     getZona,
     agregarZona,
-    deshabilitarZona
+    deshabilitarZona,
+    getNuevoCodigo
     /* loading,
         error,
         fetchZonas,

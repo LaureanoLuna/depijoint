@@ -32,7 +32,7 @@ export default function TablaZonas() {
     },
     {
       accessorKey: "descripcion",
-      maxSize: 100,
+      maxSize: 25,
       header: ({ column }) => {
         return <CabeceraColumna column={column} title="Descripcion" />;
             },

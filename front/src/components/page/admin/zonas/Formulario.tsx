@@ -10,9 +10,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { useZonaContext } from "./context/ZonaContext";
+import useZonaAccion from "@/assets/hooks/useZonaAccion";
+import { Input } from "@/components/ui/input";
 
 export default function Formulario() {
   const [tipo, setTipo] = useState<string | undefined>(undefined);
+  const { getNuevoCodigo } = useZonaAccion();
   const { addZona } = useZonaContext();
   const {
     register,
@@ -22,14 +25,18 @@ export default function Formulario() {
     setValue,
     watch,
     reset,
-  } = useForm<Zona>();
+  } = useForm<Zona>({
+    defaultValues: {
+      codigo: tipo,
+    },
+    
+  });
 
   const onSubmit: SubmitHandler<Zona> = async () => {
-
     if (!tipo) return;
     setValue("tipoId", tipo);
     console.log(watch());
-    
+
     addZona(watch());
     reset();
 
@@ -56,14 +63,23 @@ export default function Formulario() {
           )}
         </div>
         <div className="md:grid grid-cols-3 gap-2">
-          <InputForm
-            label="Codigo"
-            type="text"
-            register={register}
-            name="codigo"
-            required={true}
-            error={errors.codigo}
-          />
+          <div className={`col-span-1 my-2`}>
+            <Label>
+              Codigo
+              <Input
+                type="text"
+                value={tipo ? (getNuevoCodigo(tipo)): ""}
+                {...register("codigo", {
+                  required: true,
+                })}
+              />
+              {errors.codigo && (
+                <p role="alert" className="text-xs text-red-500">
+                  {errors.codigo.message}
+                </p>
+              )}
+            </Label>
+          </div>
           <InputForm
             label="Nombre"
             estilo="col-span-2"
@@ -80,7 +96,11 @@ export default function Formulario() {
           render={({ field }) => (
             <Label htmlFor="descripcionArticulo">
               Descripcion
-              <Textarea id="descripcionArticulo" className="resize-none" {...field} />
+              <Textarea
+                id="descripcionArticulo"
+                className="resize-none"
+                {...field}
+              />
             </Label>
           )}
         />
