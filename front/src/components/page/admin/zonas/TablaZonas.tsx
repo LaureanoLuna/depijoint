@@ -12,7 +12,7 @@ import { useZonaContext } from "./context/ZonaContext";
 import { InputCheckBox } from "@/assets/components/InputCheckBox";
 
 export default function TablaZonas() {
-  const {z, deleteZona,handleConDeshabilitado, conDesabilitado} = useZonaContext();
+  const {z, handleEstadoZona,handleConDeshabilitado, conDesabilitado} = useZonaContext();
   
   useEffect(()=>{
     console.log("se renderiza");    
@@ -108,8 +108,8 @@ export default function TablaZonas() {
                 tamaño: "icon",
                 is_tooltip: true,
                 text_tooltip: "Habilitar",
-                onClick: (e) => {
-                  alert(e)  
+                onClick: () => {
+                  handleEstadoZona(zona.zonaId, 'habilita')
                 },
               },
 
@@ -121,19 +121,12 @@ export default function TablaZonas() {
                 is_tooltip: true,
                 text_tooltip: "Deshabilitar",
                 onClick: () => {
-                  deleteZona(zona.zonaId)
+                  handleEstadoZona(zona.zonaId, 'deshabilita')
                 },
               },
             ]}
             botonesDropdown={[
-              {
-                variante: "confirm",
-                tamaño: "sm",
-                estilo: `${zona.deshabilitado ? "hidden" : "flex"} w-full`,
-                texto: "Habilitar",
-                is_tooltip: false,
-                onClick: () => {},
-              },
+              
               {
                 variante: "alert",
                 tamaño: "sm",
@@ -142,12 +135,24 @@ export default function TablaZonas() {
                 onClick: () => {},
               },
               {
+                variante: "confirm",
+                tamaño: "sm",
+                estilo: `${zona.deshabilitado ? "hidden" : "flex"} w-full`,
+                texto: "Habilitar",
+                is_tooltip: false,
+                onClick: () => {
+                  handleEstadoZona(zona.zonaId, 'habilita')
+                },
+              },
+              {
                 variante: "delete",
                 estilo: `${zona.deshabilitado ? "hidden" : "flex"} w-full`,
                 tamaño: "sm",
                 texto: "Deshabilitar",
                 is_tooltip: false,
-                onClick: () => {},
+                onClick: () => {
+                  handleEstadoZona(zona.zonaId, 'deshabilita')
+                },
               },
             ]}
             key={zona.zonaId}

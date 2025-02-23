@@ -10,35 +10,36 @@ import React, {
 interface ZonaContextProps {
   z: Zona[];
   addZona: (zona: Zona) => void;
-  deleteZona: (zonaId: number) => void;
-  handleConDeshabilitado:any
-  conDesabilitado:boolean
+  handleEstadoZona: (zonaId: number, tipo:'habilita' | 'deshabilita') => void;
+  handleConDeshabilitado: any;
+  conDesabilitado: boolean;
 }
 const ZonaContext = createContext<ZonaContextProps | undefined>(undefined);
 
 const ZonaProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const { getZonas, agregarZona, deshabilitarZona } = useZonaAccion();
-  const [conDesabilitado,setConDesabilitado] = useState<boolean>(true);
+  const { getZonas, agregarZona, deshabilitarZona, habilitarZona } =
+    useZonaAccion();
+  const [conDesabilitado, setConDesabilitado] = useState<boolean>(true);
   const [z, setZ] = useState<Zona[]>([]);
 
   const allZonas = async (): Promise<void> => {
     const x = await getZonas();
     if (!x) return;
-    if(conDesabilitado){
-      const sinDeshabilitado = x.filter((z)=>{
-        return z.deshabilitado === false
-      })
+    if (conDesabilitado) {
+      const sinDeshabilitado = x.filter((z) => {
+        return z.deshabilitado === false;
+      });
       setZ(sinDeshabilitado);
-    }else{
+    } else {
       setZ(x);
     }
   };
 
   const handleConDeshabilitado = () => {
     console.log(conDesabilitado);
-    
+
     setConDesabilitado(!conDesabilitado);
-  }
+  };
 
   const addZona = async (data: Zona): Promise<boolean> => {
     const success = await agregarZona(data);
@@ -52,16 +53,25 @@ const ZonaProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     return true;
   };
 
-  const deleteZona = async (zonaId: number): Promise<void> => {
+  const handleEstadoZona = async (
+    zonaId: number,
+    tipo: "habilita" | "deshabilita"
+  ): Promise<void> => {
+    let bool = false;
     try {
-      const success = await deshabilitarZona(zonaId);
-      if (!success) {
-        throw new Error("No se deshabilito")
+      if (tipo === "deshabilita") {
+         bool = await deshabilitarZona(zonaId);
+      } else {
+         bool = await habilitarZona(zonaId);
+      }
+
+      if (!bool) {
+        throw new Error("No se deshabilito");
       }
       console.log("Se cargo");
       await allZonas();
     } catch (error) {
-      console.error(error);      
+      console.error(error);
     }
   };
 
@@ -70,7 +80,15 @@ const ZonaProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   }, [conDesabilitado]);
 
   return (
-    <ZonaContext.Provider value={{ z, addZona, deleteZona, handleConDeshabilitado, conDesabilitado }}>
+    <ZonaContext.Provider
+      value={{
+        z,
+        addZona,
+        handleEstadoZona,
+        handleConDeshabilitado,
+        conDesabilitado,
+      }}
+    >
       {children}
     </ZonaContext.Provider>
   );

@@ -29,7 +29,6 @@ export default function Formulario() {
     defaultValues: {
       codigo: tipo,
     },
-    
   });
 
   const onSubmit: SubmitHandler<Zona> = async () => {
@@ -64,7 +63,7 @@ export default function Formulario() {
               Codigo
               <Input
                 type="text"
-                value={tipo ? (getNuevoCodigo(tipo)): ""}
+                value={tipo ? getNuevoCodigo(tipo) : ""}
                 {...register("codigo", {
                   required: true,
                 })}

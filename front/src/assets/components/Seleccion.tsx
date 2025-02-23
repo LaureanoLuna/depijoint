@@ -10,7 +10,7 @@ export default function Seleccion({ opciones, titulo, funccion, name }: { opcion
 
     
     return (
-        <Select onValueChange={funccion} name={name}>
+        <Select  onValueChange={funccion} name={name}>
             <SelectTrigger className="max-w-[120px] w-auto">
                 <SelectValue placeholder={titulo} />
             </SelectTrigger>

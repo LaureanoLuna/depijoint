@@ -29,6 +29,16 @@ const useZonaAccion = () => {
     }
   };
 
+  const getZonaPorTipo = async (): Promise<Zona[] | undefined> => {
+    try {
+      const zonas = await getZonas();
+      if(!zonas) throw new Error("no se cargaron las zonas");
+      return zonas.filter((z) => z.tipoId === "Z" && z.deshabilitado === false);
+    } catch (error) {
+      console.log(error);      
+    }
+  }
+
   const getNuevoCodigo = (tipo: string): string => {
     console.log(tipo);
     
@@ -74,6 +84,24 @@ const useZonaAccion = () => {
       if(!indice) throw new Error('Zona no encontrada');
       const zonasActualizadas = [...zonas];
       zonasActualizadas[indice].deshabilitado = true;
+      localStorage.setItem("zonas",JSON.stringify(zonasActualizadas));
+      setZonas(zonasActualizadas)
+      return true;
+    } catch (err)    
+    {
+      return false;      
+    }
+  }
+
+  const habilitarZona = async (zonaId:number):Promise<boolean> => {
+    console.log(zonaId);
+    
+    try {
+      if(!zonaId) throw new Error("Dato Requerido");
+      const indice = zonas.findIndex((f) => f.zonaId === zonaId);
+      if(!indice) throw new Error('Zona no encontrada');
+      const zonasActualizadas = [...zonas];
+      zonasActualizadas[indice].deshabilitado = false;
       localStorage.setItem("zonas",JSON.stringify(zonasActualizadas));
       setZonas(zonasActualizadas)
       return true;
@@ -145,7 +173,9 @@ const useZonaAccion = () => {
     getZona,
     agregarZona,
     deshabilitarZona,
-    getNuevoCodigo
+    getNuevoCodigo,
+    getZonaPorTipo,
+    habilitarZona
     /* loading,
         error,
         fetchZonas,
