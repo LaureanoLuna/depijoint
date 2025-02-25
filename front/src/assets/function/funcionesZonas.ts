@@ -18,7 +18,7 @@ export function formatearCodigo(codigo: string): string {
  * @return 
  */
 export function calcularTiempo(zonas:Zona[]) {
-    return zonas.reduce((total,zona:Zona ) => total + zona.tiempo,0)
+    return zonas.reduce((total,zona:Zona ) => total + Number(zona.tiempo),0)
 }
 
 /**
@@ -28,6 +28,6 @@ export function calcularTiempo(zonas:Zona[]) {
  * @param zonas 
  * @return 
  */
-export function calcularPrecio(zonas:Zona[]) {
-    return zonas.reduce((total,zona:Zona ) => total + zona.tiempo,0)
+export function calcularPrecio(zonas:Zona[]) {    
+    return zonas.reduce((total,zona:Zona ) => total + Number(zona.precio),0)
 }

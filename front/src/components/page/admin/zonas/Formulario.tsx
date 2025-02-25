@@ -13,12 +13,14 @@ import { useZonaContext } from "./context/ZonaContext";
 import useZonaAccion from "@/assets/hooks/useZonaAccion";
 import { Input } from "@/components/ui/input";
 import ModalCombo from "./ModalCombo";
-import { calcularPrecio } from "@/assets/function/funcionesZonas";
-
+import {
+  calcularPrecio,
+  calcularTiempo,
+} from "@/assets/function/funcionesZonas";
 export default function Formulario() {
   const [tipo, setTipo] = useState<string | undefined>(undefined);
-  const [precio,setPrecio] = useState<number>(0);
-  const [tiempo,setTiempo] = useState(0);
+  const [precio, setPrecio] = useState<number>(0);
+  const [tiempo, setTiempo] = useState<number>(0);
   const { getNuevoCodigo, getZonas } = useZonaAccion();
   const { addZona } = useZonaContext();
   const {
@@ -29,72 +31,70 @@ export default function Formulario() {
     setValue,
     watch,
     reset,
-  } = useForm<Zona>({
-    defaultValues: {
-      codigo: tipo,
-    },
-  });
-
+  } = useForm<Zona>({ defaultValues: { codigo: tipo } });
   const onSubmit: SubmitHandler<Zona> = async () => {
     if (!tipo) return;
     setValue("tipo", tipo);
-    setValue('precio',precio);
+    if (tipo && tipo === "C") {
+      setValue("precio", precio);
+      setValue("tiempo", tiempo);
+    }
     addZona(watch());
     reset();
   };
-
   const agregarZonasAlCombo = (zonasElegidas: string[]) => {
-    console.log(zonasElegidas);
     setValue("zonaPadreId", JSON.stringify(zonasElegidas));
   };
-
+  
   const handlePrecio = async () => {
     if (tipo !== "C") return;
-    // Llamar a getZonas una vez y almacenar el resultado
     const allZonas = await getZonas();
-    const indexZonas = JSON.parse(watch('zonaPadreId') || "[]");
-    // Obtener las zonas correspondientes
-    const zonas = indexZonas.map((i) => {
-        return allZonas.find((z) => z.zonaId === i);
-    }).filter(Boolean); // Filtrar para eliminar los undefined
-    // Calcular el precio solo si hay zonas válidas
+    const indexZonas = JSON.parse(watch("zonaPadreId") || "[]");
+    const zonas = indexZonas
+      .map((i: number) => allZonas.find((z) => z.zonaId === i))
+      .filter(Boolean);
     if (zonas.length > 0) {
-        setPrecio(calcularPrecio(zonas));
+      setPrecio(calcularPrecio(zonas));
     }
-};
-
-  useEffect(()=> {
-    handlePrecio()
-  },[agregarZonasAlCombo])
-
+  };
+  const handleTiempo = async () => {
+    if (tipo !== "C") return;
+    const allZonas = await getZonas();
+    const indexZonas = JSON.parse(watch("zonaPadreId") || "[]");
+    const zonas = indexZonas
+      .map((i: number) => allZonas.find((z) => z.zonaId === i))
+      .filter(Boolean);
+    if (zonas.length > 0) {
+      setTiempo(calcularTiempo(zonas));
+    }
+  };
+  useEffect(() => {
+    Promise.all([handlePrecio(), handleTiempo()]);
+  }, [watch("zonaPadreId"), tipo]); // Observa cambios en zonaPadreId y tipo
   return (
     <Card className="mt-3 py-4 px-2">
-      <form action="" onSubmit={handleSubmit(onSubmit)} className="px-2">
+      <form onSubmit={handleSubmit(onSubmit)} className="px-2">
         <div className="flex items-center gap-1 uppercase ">
           <Seleccion
             opciones={LIST_TIPO.map((tipo) => tipo.tipo)}
             titulo="Tipo"
             name="tipozona"
-            funccion={(w: any) => {
-              setTipo(w);
-            }}
+            funccion={setTipo}
           />
           {tipo && (
             <h2 className="tracking-widest italic w-full text-center">
-              {LIST_TIPO.find((f) => f.tipo === tipo)?.descripcion}{" "}
+              {LIST_TIPO.find((f) => f.tipo === tipo)?.descripcion}
             </h2>
           )}
         </div>
         <div className="md:grid grid-cols-3 gap-2">
-          <div className={`col-span-1 my-2`}>
+          <div className="col-span-1 my-2">
             <Label>
               Codigo
               <Input
                 type="text"
                 value={tipo ? getNuevoCodigo(tipo) : ""}
-                {...register("codigo", {
-                  required: true,
-                })}
+                {...register("codigo", { required: true })}
               />
               {errors.codigo && (
                 <p role="alert" className="text-xs text-red-500">
@@ -103,7 +103,6 @@ export default function Formulario() {
               )}
             </Label>
           </div>
-
           <InputForm
             label="Nombre"
             estilo="col-span-2"
@@ -114,7 +113,6 @@ export default function Formulario() {
             error={errors.nombre}
           />
         </div>
-
         <Controller
           name="descripcion"
           control={control}
@@ -129,18 +127,25 @@ export default function Formulario() {
             </Label>
           )}
         />
-
         {tipo === "C" ? (
           <>
             <ModalCombo agregarZonas={agregarZonasAlCombo} />
             <div className="flex justify-between items-center gap-2">
               <div>
                 <Label>Precio</Label>
-                <Input  placeholder={precio.toString()} onChange={(e) => {setPrecio(Number(e.target.value))}} />
+                <Input
+                  type="number"
+                  value={precio}
+                  onChange={(e) => setPrecio(Number(e.target.value))}
+                />
               </div>
               <div>
                 <Label>Duración</Label>
-                <Input />
+                <Input
+                  type="number"
+                  value={tiempo}
+                  onChange={(e) => setTiempo(Number(e.target.value))}
+                />
               </div>
             </div>
           </>
@@ -231,7 +236,6 @@ export default function Formulario() {
             </div>
           </>
         )}
-
         <Button
           className="border p-2 rounded-md hover:bg-gray-500 hover:text-black hover:font-semibold w-full mt-5"
           type="submit"
