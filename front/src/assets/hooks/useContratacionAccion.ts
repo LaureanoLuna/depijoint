@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Contratacion } from "../interfaces/contratacion";
 import { Zona } from "../interfaces/zona";
+import { calcularTiempo } from "../function/funcionesZonas";
 
 const useContratacionAccion = () => {
   // Estado para almacenar la contratacion seleccionada
@@ -64,10 +65,7 @@ const useContratacionAccion = () => {
     if (!contratacion) return;
 
     // Calcular la suma del tiempo de todas las zonas
-    const suma: number = contratacion.zonas.reduce(
-      (total, zona: Zona) => total + zona.tiempo,
-      0
-    );
+    const suma: number = calcularTiempo(contratacion.zonas);
 
     return suma;
   };

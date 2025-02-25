@@ -3,7 +3,7 @@ import { Zona } from "../interfaces/zona";
 export const LIST_ZONAS: Zona[] = [
   {
     "zonaId": 1,
-    "tipoId": "C",
+    "tipo": "C",
     "codigo": "C001",
     "nombre": "Zona de Aventura",
     "descripcion": "Área destinada a actividades de aventura al aire libre.",
@@ -16,7 +16,7 @@ export const LIST_ZONAS: Zona[] = [
   },
   {
     "zonaId": 2,
-    "tipoId": "Z",
+    "tipo": "Z",
     "codigo": "Z002",
     "nombre": "Zona de Estudio",
     "descripcion": "Espacio tranquilo para el estudio y la concentración.",
@@ -29,7 +29,7 @@ export const LIST_ZONAS: Zona[] = [
   },
   {
     "zonaId": 3,
-    "tipoId": "C",
+    "tipo": "C",
     "codigo": "C003",
     "nombre": "Zona de Juegos",
     "descripcion": "Área destinada para juegos infantiles y actividades recreativas.",
@@ -42,7 +42,7 @@ export const LIST_ZONAS: Zona[] = [
   },
   {
     "zonaId": 4,
-    "tipoId": "Z",
+    "tipo": "Z",
     "codigo": "Z004",
     "nombre": "Zona de Relajación",
     "descripcion": "Espacio para la relajación, meditación y descanso.",
@@ -55,7 +55,7 @@ export const LIST_ZONAS: Zona[] = [
   },
   {
     "zonaId": 5,
-    "tipoId": "C",
+    "tipo": "C",
     "codigo": "C005",
     "nombre": "Zona de Fitness",
     "descripcion": "Área equipada para hacer ejercicio y actividades físicas.",
@@ -68,7 +68,7 @@ export const LIST_ZONAS: Zona[] = [
   },
   {
     "zonaId": 6,
-    "tipoId": "Z",
+    "tipo": "Z",
     "codigo": "Z006",
     "nombre": "Zona de Eventos",
     "descripcion": "Espacio para la realización de eventos, conferencias y reuniones.",
@@ -81,7 +81,7 @@ export const LIST_ZONAS: Zona[] = [
   },
   {
     "zonaId": 7,
-    "tipoId": "C",
+    "tipo": "C",
     "codigo": "C007",
     "nombre": "Zona de Comida",
     "descripcion": "Área con opciones de comida y bebida para los visitantes.",
@@ -94,7 +94,7 @@ export const LIST_ZONAS: Zona[] = [
   },
   {
     "zonaId": 8,
-    "tipoId": "Z",
+    "tipo": "Z",
     "codigo": "Z008",
     "nombre": "Zona de Arte",
     "descripcion": "Espacio dedicado a actividades artísticas, exposiciones y talleres.",
@@ -107,7 +107,7 @@ export const LIST_ZONAS: Zona[] = [
   },
   {
     "zonaId": 9,
-    "tipoId": "C",
+    "tipo": "C",
     "codigo": "C009",
     "nombre": "Zona de Mascotas",
     "descripcion": "Área donde se permite la entrada de mascotas y actividades relacionadas.",
@@ -120,7 +120,7 @@ export const LIST_ZONAS: Zona[] = [
   },
   {
     "zonaId": 10,
-    "tipoId": "Z",
+    "tipo": "Z",
     "codigo": "Z010",
     "nombre": "Zona de Tecnología",
     "descripcion": "Espacio equipado con tecnología avanzada para actividades interactivas.",

@@ -7,15 +7,19 @@ import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { useZonaContext } from "./context/ZonaContext";
 import useZonaAccion from "@/assets/hooks/useZonaAccion";
 import { Input } from "@/components/ui/input";
+import ModalCombo from "./ModalCombo";
+import { calcularPrecio } from "@/assets/function/funcionesZonas";
 
 export default function Formulario() {
   const [tipo, setTipo] = useState<string | undefined>(undefined);
-  const { getNuevoCodigo } = useZonaAccion();
+  const [precio,setPrecio] = useState<number>(0);
+  const [tiempo,setTiempo] = useState(0);
+  const { getNuevoCodigo, getZonas } = useZonaAccion();
   const { addZona } = useZonaContext();
   const {
     register,
@@ -33,11 +37,35 @@ export default function Formulario() {
 
   const onSubmit: SubmitHandler<Zona> = async () => {
     if (!tipo) return;
-    setValue("tipoId", tipo);
-    console.log(watch());
+    setValue("tipo", tipo);
+    setValue('precio',precio);
     addZona(watch());
     reset();
   };
+
+  const agregarZonasAlCombo = (zonasElegidas: string[]) => {
+    console.log(zonasElegidas);
+    setValue("zonaPadreId", JSON.stringify(zonasElegidas));
+  };
+
+  const handlePrecio = async () => {
+    if (tipo !== "C") return;
+    // Llamar a getZonas una vez y almacenar el resultado
+    const allZonas = await getZonas();
+    const indexZonas = JSON.parse(watch('zonaPadreId') || "[]");
+    // Obtener las zonas correspondientes
+    const zonas = indexZonas.map((i) => {
+        return allZonas.find((z) => z.zonaId === i);
+    }).filter(Boolean); // Filtrar para eliminar los undefined
+    // Calcular el precio solo si hay zonas válidas
+    if (zonas.length > 0) {
+        setPrecio(calcularPrecio(zonas));
+    }
+};
+
+  useEffect(()=> {
+    handlePrecio()
+  },[agregarZonasAlCombo])
 
   return (
     <Card className="mt-3 py-4 px-2">
@@ -75,6 +103,7 @@ export default function Formulario() {
               )}
             </Label>
           </div>
+
           <InputForm
             label="Nombre"
             estilo="col-span-2"
@@ -85,6 +114,7 @@ export default function Formulario() {
             error={errors.nombre}
           />
         </div>
+
         <Controller
           name="descripcion"
           control={control}
@@ -99,89 +129,109 @@ export default function Formulario() {
             </Label>
           )}
         />
-        <div className="flex justify-between items-center gap-2">
-          <InputForm
-            label="Precio"
-            type="text"
-            register={register}
-            name="precio"
-            required={true}
-            error={errors.precio}
-          />
-          <InputForm
-            label="Tiempo"
-            type="text"
-            register={register}
-            name="tiempo"
-            required={true}
-            error={errors.tiempo}
-          />
-        </div>
-        <div className="flex items-start justify-around">
-          <Controller
-            name="sexo"
-            defaultValue="M"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <Label htmlFor="contentCheckGeneroZona" className="my-2">
-                Genero
-                <RadioGroup
-                  onValueChange={field.onChange}
-                  defaultValue={"M"}
-                  id="contentCheckGeneroZona"
-                  className="p-2"
-                  {...field}
-                >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="M" id="checkZonaGM" />
-                    <Label htmlFor="checkZonaGM">Mujer</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="H" id="checkZonaH" />
-                    <Label htmlFor="checkZonaH">Hombre</Label>
-                  </div>
-                </RadioGroup>
-                {errors.sexo && (
-                  <p role="alert" className="text-xs text-red-500">
-                    {errors.sexo.message}
-                  </p>
+
+        {tipo === "C" ? (
+          <>
+            <ModalCombo agregarZonas={agregarZonasAlCombo} />
+            <div className="flex justify-between items-center gap-2">
+              <div>
+                <Label>Precio</Label>
+                <Input  placeholder={precio.toString()} onChange={(e) => {setPrecio(Number(e.target.value))}} />
+              </div>
+              <div>
+                <Label>Duración</Label>
+                <Input />
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="flex justify-between items-center gap-2">
+              <InputForm
+                label="Precio"
+                type="text"
+                register={register}
+                name="precio"
+                required={true}
+                error={errors.precio}
+              />
+              <InputForm
+                label="Tiempo"
+                type="text"
+                register={register}
+                name="tiempo"
+                required={true}
+                error={errors.tiempo}
+              />
+            </div>
+            <div className="flex items-start justify-around">
+              <Controller
+                name="sexo"
+                defaultValue="M"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <Label htmlFor="contentCheckGeneroZona" className="my-2">
+                    Genero
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={"M"}
+                      id="contentCheckGeneroZona"
+                      className="p-2"
+                      {...field}
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="M" id="checkZonaGM" />
+                        <Label htmlFor="checkZonaGM">Mujer</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="H" id="checkZonaH" />
+                        <Label htmlFor="checkZonaH">Hombre</Label>
+                      </div>
+                    </RadioGroup>
+                    {errors.sexo && (
+                      <p role="alert" className="text-xs text-red-500">
+                        {errors.sexo.message}
+                      </p>
+                    )}
+                  </Label>
                 )}
-              </Label>
-            )}
-          />
-          <Controller
-            name="tamaño"
-            defaultValue="C"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <Label htmlFor="contentCheckTamaZona" className="my-2">
-                Tamaño
-                <RadioGroup
-                  onValueChange={field.onChange}
-                  defaultValue={"C"}
-                  id="contentCheckTamaZona"
-                  className="p-2"
-                  {...field}
-                >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="C" id="checkZonaTC" />
-                    <Label htmlFor="checkZonaC">Chico</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="M" id="checkZonaTM" />
-                    <Label htmlFor="checkZonaTM">Medio</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="G" id="checkZonaTG" />
-                    <Label htmlFor="checkZonaTG">Grande</Label>
-                  </div>
-                </RadioGroup>
-              </Label>
-            )}
-          />
-        </div>
+              />
+              <Controller
+                name="tamaño"
+                defaultValue="C"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <Label htmlFor="contentCheckTamaZona" className="my-2">
+                    Tamaño
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={"C"}
+                      id="contentCheckTamaZona"
+                      className="p-2"
+                      {...field}
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="C" id="checkZonaTC" />
+                        <Label htmlFor="checkZonaC">Chico</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="M" id="checkZonaTM" />
+                        <Label htmlFor="checkZonaTM">Medio</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="G" id="checkZonaTG" />
+                        <Label htmlFor="checkZonaTG">Grande</Label>
+                      </div>
+                    </RadioGroup>
+                  </Label>
+                )}
+              />
+            </div>
+          </>
+        )}
+
         <Button
           className="border p-2 rounded-md hover:bg-gray-500 hover:text-black hover:font-semibold w-full mt-5"
           type="submit"

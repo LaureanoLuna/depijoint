@@ -71,12 +71,6 @@ export function Tabla<TData, TValue>({
           placeholder="..."
           value={(table.getColumn(seleccion)?.getFilterValue() as string) ?? ""}
           onChange={(event) =>{
-            let x = event.target.value;
-            if(typeof x === "number"){
-              
-            }
-            console.log(typeof table.getColumn(seleccion)?.getFilterValue())
-
             table.getColumn(seleccion)?.setFilterValue(event.target.value)}
           }
           className="max-w-xs"

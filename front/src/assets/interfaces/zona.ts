@@ -14,7 +14,7 @@ export interface CreateZonaDto {
 
 export interface Zona {
   zonaId: number; // identificador unico 
-  tipoId: string; // identificador del tipo de zona // "C" = combo, "Z" = simple
+  tipo: string; // identificador del tipo de zona // "C" = combo, "Z" = simple
   codigo: string; // codigo de la zona identificatorio para el usuario y unico
   nombre: string; // nombre de la zona
   descripcion: string; // descripcion de la zona
@@ -23,7 +23,7 @@ export interface Zona {
   deshabilitado: boolean; // si la zona esta deshabilitada
   sexo: "M" | "H"; // sexo de a la cual corresponde 
   tamaño: string; // tamaño de la zona a cubrir
-  zonaPadreId?: number; // id de la zona padre, si codigo de la zona es un combo, los items contendran el cogido identificador del combo 
+  zonaPadreId?: string; // id de la zona padre, si codigo de la zona es un combo, los items contendran el cogido identificador del combo 
 }
 
 export interface UpdateZonaDto {

@@ -1,3 +1,4 @@
+import useNotificacionAccion from "@/assets/hooks/useNotificacionAccion";
 import useZonaAccion from "@/assets/hooks/useZonaAccion";
 import { Zona } from "@/assets/interfaces/zona";
 import React, {
@@ -19,6 +20,7 @@ const ZonaContext = createContext<ZonaContextProps | undefined>(undefined);
 const ZonaProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { getZonas, agregarZona, deshabilitarZona, habilitarZona } =
     useZonaAccion();
+  const {getNotificacion} = useNotificacionAccion()
   const [conDesabilitado, setConDesabilitado] = useState<boolean>(true);
   const [z, setZ] = useState<Zona[]>([]);
 
@@ -36,8 +38,6 @@ const ZonaProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   const handleConDeshabilitado = () => {
-    console.log(conDesabilitado);
-
     setConDesabilitado(!conDesabilitado);
   };
 

@@ -53,24 +53,11 @@ const DepiJointProvider: React.FC<DepiJointProviderProps> = ({ children }) => {
   const { getPacientes, cargarPaciente, deshabilitarPaciente } =
     usePacienteAccion();
   const [pacientes, setPacientes] = useState<Paciente[]>([]);
-  const { toast } = useToast();
 
   useEffect(() => {
     allPacientes();
   }, []);
 
-  /* ----------------------------------------------------------------------------------------------------- */
-
-  /* Acciones para las notificaciones */
-
-  const getNotificacion = (
-    mensaje: string,
-    tipo: "default" | "destructive" | "sussess"
-  ) => {
-    toast({ description: mensaje, variant: tipo });
-  };
-
-  /* -------------------------------------------------------- */
 
   /* ----------------------------------------------------------------------------------------------------- */
   //TURNOS
@@ -78,10 +65,10 @@ const DepiJointProvider: React.FC<DepiJointProviderProps> = ({ children }) => {
     const isAdded = await agregarTurno(data);
     if (isAdded) {
       await getTurnos();
-      await getNotificacion("Turno agregado correctamente", "sussess");
+      //await getNotificacion("Turno agregado correctamente", "sussess");
       return true;
     }
-    getNotificacion("Error al agregar el turno", "destructive");
+    //getNotificacion("Error al agregar el turno", "destructive");
     return false;
   };
 
@@ -89,10 +76,10 @@ const DepiJointProvider: React.FC<DepiJointProviderProps> = ({ children }) => {
     const confirmacion = await confirmarTurno(data);
     if (confirmacion) {
       await getTurnos();
-      getNotificacion("Turno confirmado correctamente", "sussess");
+      //getNotificacion("Turno confirmado correctamente", "sussess");
       return true;
     }
-    getNotificacion("Error al confirmar el turno", "destructive");
+    //getNotificacion("Error al confirmar el turno", "destructive");
     return false;
   };
 
@@ -100,10 +87,10 @@ const DepiJointProvider: React.FC<DepiJointProviderProps> = ({ children }) => {
     const bool = await cancelarTurno(turnoId);
     if (bool) {
       await getTurnos();
-      getNotificacion("Turno eliminado correctamente", "sussess");
+      //getNotificacion("Turno eliminado correctamente", "sussess");
       return true;
     }
-    getNotificacion("Error al eliminar el turno", "destructive");
+    //getNotificacion("Error al eliminar el turno", "destructive");
     return false;
   };
 
@@ -120,11 +107,11 @@ const DepiJointProvider: React.FC<DepiJointProviderProps> = ({ children }) => {
   const addPaciente = async (data: any): Promise<boolean> => {
     const isAdd = await cargarPaciente(data);
     if (!isAdd) {
-      getNotificacion("Error al agregar el paciente", "destructive");
+      //getNotificacion("Error al agregar el paciente", "destructive");
       return false;
     }
     await allPacientes();
-    getNotificacion("Paciente agregado correctamente", "sussess");
+    //getNotificacion("Paciente agregado correctamente", "sussess");
     return true;
   };
 
@@ -132,10 +119,10 @@ const DepiJointProvider: React.FC<DepiJointProviderProps> = ({ children }) => {
     const bool = await deshabilitarPaciente(pacienteId);
     if (bool) {
       await allPacientes();
-      getNotificacion("Paciente eliminado correctamente", "sussess");
+      //getNotificacion("Paciente eliminado correctamente", "sussess");
       return true;
     }
-    getNotificacion("Error al eliminar el paciente", "destructive");
+    //getNotificacion("Error al eliminar el paciente", "destructive");
     return false;
   };
 

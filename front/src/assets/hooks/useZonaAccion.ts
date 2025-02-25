@@ -1,172 +1,70 @@
 import { useState, useEffect } from "react";
 import { Zona } from "../interfaces/zona";
 import { formatearCodigo } from "../function/funcionesZonas";
-
 const useZonaAccion = () => {
   const [zonas, setZonas] = useState<Zona[]>([]);
-  /*  const [loading, setLoading] = useState<boolean>(false);
-     const [error, setError] = useState<string | null>(null); */
-
   
-  const getZonas = async (): Promise<Zona[] | undefined> => {
-    const x: Zona[] = localStorage.getItem("zonas")
-      ? JSON.parse(localStorage.getItem("zonas") || "[]")
-      : [];
-    setZonas(x);
-    return x;
+  const cargarZonasDesdeLocalStorage = () => {
+    const zonasGuardadas = localStorage.getItem("zonas");
+    const zonasParseadas = zonasGuardadas ? JSON.parse(zonasGuardadas) : [];
+    setZonas(zonasParseadas);
+    return zonasParseadas;
   };
-
+  const guardarZonasEnLocalStorage = (zonasActualizadas: Zona[]) => {
+    localStorage.setItem("zonas", JSON.stringify(zonasActualizadas));
+  };
+  const getZonas = async (): Promise<Zona[]> => {
+    return cargarZonasDesdeLocalStorage();
+  };
   const getZona = async (id: number): Promise<Zona | undefined> => {
-    try {
-      const zona = zonas.find((z) => z.zonaId === id) || undefined;
-      if (!zona) {
-        throw new Error("No se encontro la zona");
-      }
-      return zona;
-    } catch (err) {
-      console.log(err);
-      return;
+    const zona = zonas.find((z) => z.zonaId === id);
+    if (!zona) {
+      throw new Error("No se encontró la zona");
     }
+    return zona;
   };
-
-  const getZonaPorTipo = async (): Promise<Zona[] | undefined> => {
-    try {
-      const zonas = await getZonas();
-      if(!zonas) throw new Error("no se cargaron las zonas");
-      return zonas.filter((z) => z.tipoId === "Z" && z.deshabilitado === false);
-    } catch (error) {
-      console.log(error);      
-    }
-  }
-
+  const getZonaPorTipo = async (): Promise<Zona[]> => {
+    const zonas = await getZonas();
+    return zonas.filter((z) => z.tipo === "Z" && !z.deshabilitado);
+  };
   const getNuevoCodigo = (tipo: string): string => {
-    console.log(tipo);
-    
-    const codigo = zonas.filter((z) => z.tipoId === tipo).reverse()[0];
-    
+    const codigo = zonas.filter((z) => z.tipo === tipo).reverse()[0];
     if (!codigo || !codigo.codigo || codigo.codigo.length < 2) {
       throw new Error("Código no encontrado o no válido.");
     }
     const x = Number(codigo.codigo.slice(2)) + 1;
-    console.log(x);
     return formatearCodigo(x.toString());
-}
-
+  };
+  const modificarZona = async (zonaId: number, habilitar: boolean): Promise<boolean> => {
+    const indice = zonas.findIndex((f) => f.zonaId === zonaId);
+    if (indice === -1) throw new Error('Zona no encontrada');
+    
+    const zonasActualizadas = [...zonas];
+    zonasActualizadas[indice].deshabilitado = !habilitar;
+    guardarZonasEnLocalStorage(zonasActualizadas);
+    setZonas(zonasActualizadas);
+    return true;
+  };
   const agregarZona = async (data: Zona): Promise<boolean> => {
-    try {
-        if (!data) throw new Error("Datos requeridos");
-        const z = zonas.find(
-            (y) => y.codigo === data.codigo && y.tipoId === data.tipoId
-        );
-        if (z) throw new Error("Código ya registrado");
-        const nuevaZona: Zona = {
-            ...data,
-            codigo: (data.codigo).trim(),
-            zonaId: zonas.length + 1, // Considera cambiar esto a un ID único
-        };
-        const updatedZonas = [...zonas, nuevaZona];
-        localStorage.setItem("zonas", JSON.stringify(updatedZonas));
-        // Actualiza el estado de zonas
-        setZonas(updatedZonas)
-        return true;
-    } catch (error) {
-        console.log(error);
-        return false;
-    }
-};
-
-  const deshabilitarZona = async (zonaId:number):Promise<boolean> => {
-    console.log(zonaId);
-    
-    try {
-      if(!zonaId) throw new Error("Dato Requerido");
-      const indice = zonas.findIndex((f) => f.zonaId === zonaId);
-      if(!indice) throw new Error('Zona no encontrada');
-      const zonasActualizadas = [...zonas];
-      zonasActualizadas[indice].deshabilitado = true;
-      localStorage.setItem("zonas",JSON.stringify(zonasActualizadas));
-      setZonas(zonasActualizadas)
-      return true;
-    } catch (err)    
-    {
-      return false;      
-    }
-  }
-
-  const habilitarZona = async (zonaId:number):Promise<boolean> => {
-    console.log(zonaId);
-    
-    try {
-      if(!zonaId) throw new Error("Dato Requerido");
-      const indice = zonas.findIndex((f) => f.zonaId === zonaId);
-      if(!indice) throw new Error('Zona no encontrada');
-      const zonasActualizadas = [...zonas];
-      zonasActualizadas[indice].deshabilitado = false;
-      localStorage.setItem("zonas",JSON.stringify(zonasActualizadas));
-      setZonas(zonasActualizadas)
-      return true;
-    } catch (err)    
-    {
-      return false;      
-    }
-  }
-
+    if (!data) throw new Error("Datos requeridos");
+    const z = zonas.find((y) => y.codigo === data.codigo && y.tipo === data.tipo);
+    if (z) throw new Error("Código ya registrado");
+    const nuevaZona: Zona = {
+      ...data,
+      codigo: data.codigo.trim(),
+      zonaId: zonas.length + 1,
+      deshabilitado: false,
+    };
+    const updatedZonas = [...zonas, nuevaZona];
+    guardarZonasEnLocalStorage(updatedZonas);
+    setZonas(updatedZonas);
+    return true;
+  };
+  const deshabilitarZona = (zonaId: number): Promise<boolean> => modificarZona(zonaId, false);
+  const habilitarZona = (zonaId: number): Promise<boolean> => modificarZona(zonaId, true);
   useEffect(() => {
-    getZonas();
-    console.log("se renderiza el hook");    
-    //fetchZonas();
+    cargarZonasDesdeLocalStorage();
   }, []);
-
-
-  /*  const fetchZonas = async () => {
-         setLoading(true);
-         try {
-             const response = await axios.get('/api/zonas');
-             setZonas(response.data);
-         } catch (err) {
-             setError('Error fetching zonas');
-         } finally {
-             setLoading(false);
-         }
-     };
- 
-     const createZona = async (zona: Zona) => {
-         setLoading(true);
-         try {
-             const response = await axios.post('/api/zonas', zona);
-             setZonas([...zonas, response.data]);
-         } catch (err) {
-             setError('Error creating zona');
-         } finally {
-             setLoading(false);
-         }
-     };
- 
-     const updateZona = async (id: number, updatedZona: Zona) => {
-         setLoading(true);
-         try {
-             const response = await axios.put(`/api/zonas/${id}`, updatedZona);
-             setZonas(zonas.map(zona => (zona.id === id ? response.data : zona)));
-         } catch (err) {
-             setError('Error updating zona');
-         } finally {
-             setLoading(false);
-         }
-     };
- 
-     const deleteZona = async (id: number) => {
-         setLoading(true);
-         try {
-             await axios.delete(`/api/zonas/${id}`);
-             setZonas(zonas.filter(zona => zona.id !== id));
-         } catch (err) {
-             setError('Error deleting zona');
-         } finally {
-             setLoading(false);
-         }
-     };
- 
-     */
   return {
     zonas,
     getZonas,
@@ -175,14 +73,7 @@ const useZonaAccion = () => {
     deshabilitarZona,
     getNuevoCodigo,
     getZonaPorTipo,
-    habilitarZona
-    /* loading,
-        error,
-        fetchZonas,
-        createZona,
-        updateZona,
-        deleteZona, */
+    habilitarZona,
   };
 };
-
 export default useZonaAccion;

@@ -22,7 +22,7 @@ export default function ModalComponent({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">{botonText}</Button>
+        <Button variant="outline" className="w-full">{botonText}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         {/* Titulo del Modal */}

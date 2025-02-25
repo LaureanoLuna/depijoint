@@ -20,6 +20,12 @@ export default function TablaZonas() {
 
   const Columnas: ColumnDef<Zona>[] = [
     {
+      accessorKey: "tipo",
+      header: ({ column }) => {
+        return <CabeceraColumna column={column} title="Tipo" />;
+      },
+    },
+    {
       accessorKey: "codigo",
       header: ({ column }) => {
         return <CabeceraColumna column={column} title="Codigo" />;
@@ -171,7 +177,7 @@ export default function TablaZonas() {
       <Tabla
         columns={Columnas}
         data={z}
-        opcionesFilto={["Codigo", "Nombre", "Precio", "Tiempo"]}
+        opcionesFilto={["Tipo","Codigo", "Nombre"]}
       />
     </>
   );
