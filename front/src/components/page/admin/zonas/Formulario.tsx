@@ -12,7 +12,7 @@ import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { useZonaContext } from "./context/ZonaContext";
 import useZonaAccion from "@/assets/hooks/useZonaAccion";
 import { Input } from "@/components/ui/input";
-import ModalCombo from "./ModalCombo";
+import ModalCombo from "./modals/ModalCombo";
 import { calcularPrecio, calcularTiempo } from "@/assets/function/funcionesZonas";
 export default function Formulario() {
   const [tipo, setTipo] = useState<string | undefined>(undefined);

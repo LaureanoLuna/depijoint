@@ -7,22 +7,25 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { ReactElement } from "react";
 
 export default function ModalComponent({
   botonText,
   titulo,
   descripcion,
   children,
+  estilo = "w-full"
 }: {
   children: React.ReactNode;
   titulo: string;
   descripcion: string;
-  botonText: string;
+  estilo?:string
+  botonText: string | ReactElement;
 }) {
   return (
-    <Dialog>
+    <Dialog >
       <DialogTrigger asChild>
-        <Button variant="outline" className="w-full">{botonText}</Button>
+        <Button variant="outline" className={estilo}>{botonText}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         {/* Titulo del Modal */}

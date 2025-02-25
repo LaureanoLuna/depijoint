@@ -10,7 +10,6 @@ import useDateFilter from "../hooks/useDateFilter";
 import useTurnoAccion from "../hooks/useTurnoAccion";
 import usePacienteAccion from "../hooks/usePacienteAccion";
 import { Paciente } from "../interfaces/paciente";
-import { useToast } from "@/hooks/use-toast";
 
 
 // Define el tipo para el estado que deseas compartir
@@ -126,11 +125,6 @@ const DepiJointProvider: React.FC<DepiJointProviderProps> = ({ children }) => {
     return false;
   };
 
-  /* ----------------------------------------------------------------------------------------------------------------------- */
-  /* ZONAS */
-
-
-  /* ----------------------------------------------------------------------------------------------------------------------- */
 
   return (
     <DepiJointContexto.Provider

@@ -9,6 +9,7 @@ interface InputFormProps {
   estilo?:string;
   register: UseFormRegister<any>;
   name: string;
+  deshabilitado? : boolean
   required?: boolean;
   validation?: (value: string) => boolean | string;
   error?: FieldError;
@@ -20,6 +21,7 @@ const InputForm: React.FC<InputFormProps> = ({
   register,
   name,
   estilo,
+  deshabilitado = false,
   required = false,
   validation,
   error,
@@ -30,6 +32,7 @@ const InputForm: React.FC<InputFormProps> = ({
         {label}
         <Input
           type={type}
+          disabled={deshabilitado}
           {...register(name, {
             required: required ? "Dato Requerido" : false,
             validate: validation,
