@@ -13,10 +13,7 @@ import { useZonaContext } from "./context/ZonaContext";
 import useZonaAccion from "@/assets/hooks/useZonaAccion";
 import { Input } from "@/components/ui/input";
 import ModalCombo from "./ModalCombo";
-import {
-  calcularPrecio,
-  calcularTiempo,
-} from "@/assets/function/funcionesZonas";
+import { calcularPrecio, calcularTiempo } from "@/assets/function/funcionesZonas";
 export default function Formulario() {
   const [tipo, setTipo] = useState<string | undefined>(undefined);
   const [precio, setPrecio] = useState<number>(0);
@@ -35,18 +32,17 @@ export default function Formulario() {
   const onSubmit: SubmitHandler<Zona> = async () => {
     if (!tipo) return;
     setValue("tipo", tipo);
-    if (tipo && tipo === "C") {
+    if (tipo === "C") {
       setValue("precio", precio);
       setValue("tiempo", tiempo);
     }
     addZona(watch());
     reset();
   };
-  const agregarZonasAlCombo = (zonasElegidas: string[]) => {
+  const actualizarZonasSeleccionadas = (zonasElegidas: string[]) => {
     setValue("zonaPadreId", JSON.stringify(zonasElegidas));
   };
-  
-  const handlePrecio = async () => {
+  const calcularValores = async () => {
     if (tipo !== "C") return;
     const allZonas = await getZonas();
     const indexZonas = JSON.parse(watch("zonaPadreId") || "[]");
@@ -55,22 +51,12 @@ export default function Formulario() {
       .filter(Boolean);
     if (zonas.length > 0) {
       setPrecio(calcularPrecio(zonas));
-    }
-  };
-  const handleTiempo = async () => {
-    if (tipo !== "C") return;
-    const allZonas = await getZonas();
-    const indexZonas = JSON.parse(watch("zonaPadreId") || "[]");
-    const zonas = indexZonas
-      .map((i: number) => allZonas.find((z) => z.zonaId === i))
-      .filter(Boolean);
-    if (zonas.length > 0) {
       setTiempo(calcularTiempo(zonas));
     }
   };
   useEffect(() => {
-    Promise.all([handlePrecio(), handleTiempo()]);
-  }, [watch("zonaPadreId"), tipo]); // Observa cambios en zonaPadreId y tipo
+    calcularValores();
+  }, [watch("zonaPadreId"), tipo]);
   return (
     <Card className="mt-3 py-4 px-2">
       <form onSubmit={handleSubmit(onSubmit)} className="px-2">
@@ -129,7 +115,7 @@ export default function Formulario() {
         />
         {tipo === "C" ? (
           <>
-            <ModalCombo agregarZonas={agregarZonasAlCombo} />
+            <ModalCombo agregarZonas={actualizarZonasSeleccionadas} />
             <div className="flex justify-between items-center gap-2">
               <div>
                 <Label>Precio</Label>
