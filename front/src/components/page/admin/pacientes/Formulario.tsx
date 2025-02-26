@@ -4,9 +4,10 @@ import InputForm from "@/assets/components/InputForm";
 import { Button } from "@/components/ui/button";
 import { useDepiJoint } from "@/assets/context/DepiJointContexto";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { usePacienteContext } from "./context/PacienteContext";
 
 const Formulario = () => {
-  const { addPaciente } = useDepiJoint();
+  const { addPaciente } = usePacienteContext();
   const {
     register,
     handleSubmit,

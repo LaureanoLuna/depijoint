@@ -92,13 +92,7 @@ export default function ModalDetalles({ zona }: { zona: Zona }) {
                         type="text"
                         error={errors.tiempo}
                     />
-                </div>
-                {tipo === "C" && JSON.parse(zonaPadreId || "[]").map((z:string) => {
-                    return (<h1>
-                        {z}
-                    </h1>
-                    )
-                })}
+                </div>               
                 <Controller
                     name="descripcion"
                     control={control}

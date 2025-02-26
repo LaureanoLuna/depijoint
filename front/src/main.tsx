@@ -11,6 +11,7 @@ import TablaPacientes from './components/page/admin/pacientes/TablaPacientes';
 import VistaPaciente from './components/page/admin/pacientes/VistaPaciente';
 import ErrorPage from './components/page/ErrorPage'; // Asegúrate de importar tu componente de error
 import Zona from './components/page/admin/zonas/Zona';
+import Paciente from './components/page/admin/pacientes/Paciente';
 
 const router = createBrowserRouter([
   {
@@ -24,7 +25,7 @@ const router = createBrowserRouter([
       },
       {
         path: "pacientes",
-        element: <TablaPacientes />,
+        element: <Paciente />,
       },
       {
         path: "pacientes/:pacienteId", // Corrige la ruta para que sea relativa a "pacientes"

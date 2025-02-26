@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import Cabecera from "@/assets/components/Cabecera";
 import { CabeceraColumna } from "@/assets/components/dataTable/CabeceraColumna";
 import { Paciente } from "@/assets/interfaces/paciente";
@@ -6,17 +5,13 @@ import { ColumnDef } from "@tanstack/react-table";
 import AddPaciente from "./AddPaciente";
 import { Tabla } from "@/assets/components/dataTable/Tabla";
 import GrupoBotones from "@/assets/components/GrupoBotones";
-import { FaEye, FaPencilAlt, FaRegTimesCircle } from "react-icons/fa";
-import { useDepiJoint } from "@/assets/context/DepiJointContexto";
+import { FaCheck, FaEye, FaPencilAlt, FaRegClipboard, FaRegTimesCircle } from "react-icons/fa";
 import { InputCheckBox } from "@/assets/components/InputCheckBox";
+import { usePacienteContext } from "./context/PacienteContext";
 
 export default function TablaPacientes() {
-  const { pacientes, allPacientes, deletePaciente } = useDepiJoint();
-  const [conDesabilitado, setConDesabilitado] = useState<boolean>(true);
+  const { p, conDesabilitado, handleConDeshabilitado, handleEstadoPaciente } = usePacienteContext();
 
-  useEffect(() => {
-    allPacientes(conDesabilitado);
-  }, [conDesabilitado]);
 
   const Columna: ColumnDef<Paciente>[] = [
     {
@@ -48,14 +43,20 @@ export default function TablaPacientes() {
       },
     },
     {
+      id: "crearTratamiento",
+      cell: ({ row }) => {
+        return <FaRegClipboard key={row.original.pacienteId} />
+      }
+    },
+    {
       id: "pacienteActions",
-      
-      header:()=> (
+
+      header: () => (
         <InputCheckBox
           id="inputCheckDeshabilitadosPacientes"
           label={"Deshabilitados"}
           marcado={conDesabilitado}
-          onChange={() => setConDesabilitado(!conDesabilitado)}
+          onChange={handleConDeshabilitado}
         />
       ),
       cell: ({ row }) => {
@@ -79,6 +80,7 @@ export default function TablaPacientes() {
                 text_tooltip: "editar",
               },
               {
+                estilo: `${!paciente.deshabilitado ? "flex" : "hidden"}`,
                 variante: "delete",
                 icono: <FaRegTimesCircle color="delete" />,
                 tamaño: "icon",
@@ -87,10 +89,27 @@ export default function TablaPacientes() {
                 onClick: () => {
                   if (
                     window.confirm(
-                      "¿Está seguro que desea eliminar el paciente?"
+                      "¿Está seguro que desea deshabilitar el paciente?"
                     )
                   ) {
-                    deletePaciente(paciente.dni);
+                    handleEstadoPaciente(paciente.dni, "deshabilita");
+                  }
+                },
+              },
+              {
+                estilo: `${paciente.deshabilitado ? "flex" : "hidden"}`,
+                variante: "confirm",
+                icono: <FaCheck />,
+                tamaño: "icon",
+                is_tooltip: true,
+                text_tooltip: "habilitar",
+                onClick: () => {
+                  if (
+                    window.confirm(
+                      "¿Está seguro que desea habilitar el paciente?"
+                    )
+                  ) {
+                    handleEstadoPaciente(paciente.dni, "habilita");
                   }
                 },
               },
@@ -134,7 +153,7 @@ export default function TablaPacientes() {
       />
       <Tabla
         columns={Columna}
-        data={pacientes}
+        data={p}
         opcionesFilto={["Nombre", "Apellido", "DNI"]}
       />
     </>

@@ -11,6 +11,7 @@ export const LIST_PACIENTE: Paciente[] = [
     telefono: "1126478811",
     direccion: "PO Box 35572",
     fechaNac: new Date("20041018"),
+    deshabilitado:false,
     consentimiento: {
       tiene: true,
     },
@@ -25,6 +26,7 @@ export const LIST_PACIENTE: Paciente[] = [
     telefono: "3208743824",
     direccion: "Suite 98",
     fechaNac: new Date("20070814"),
+    deshabilitado:false,
     consentimiento: { tiene: false },
   },
   {
@@ -37,6 +39,7 @@ export const LIST_PACIENTE: Paciente[] = [
     telefono: "6204978377",
     direccion: "PO Box 77897",
     fechaNac: new Date("20080323"),
+    deshabilitado:false,
     consentimiento: {
       tiene: false,
     },
@@ -51,6 +54,7 @@ export const LIST_PACIENTE: Paciente[] = [
     telefono: "3032389206",
     direccion: "Apt 555",
     fechaNac: new Date("19971215"),
+    deshabilitado:false,
     consentimiento: {
       tiene: false,
     },
@@ -65,6 +69,7 @@ export const LIST_PACIENTE: Paciente[] = [
     telefono: "2322297305",
     direccion: "Apt 86",
     fechaNac: new Date("19891014"),
+    deshabilitado:false,
     consentimiento: {
       tiene: false,
     },
@@ -79,6 +84,7 @@ export const LIST_PACIENTE: Paciente[] = [
     telefono: "3654270246",
     direccion: "Room 1388",
     fechaNac: new Date("19891226"),
+    deshabilitado:false,
     consentimiento: {
       tiene: false,
     },
@@ -93,6 +99,7 @@ export const LIST_PACIENTE: Paciente[] = [
     telefono: "5631042849",
     direccion: "4th Floor",
     fechaNac: new Date("19971110"),
+    deshabilitado:false,
     consentimiento: {
       tiene: false,
     },
@@ -107,6 +114,7 @@ export const LIST_PACIENTE: Paciente[] = [
     telefono: "9679904856",
     direccion: "2nd Floor",
     fechaNac: new Date("19891209"),
+    deshabilitado:false,
     consentimiento: {
       tiene: false,
     },
@@ -121,6 +129,7 @@ export const LIST_PACIENTE: Paciente[] = [
     telefono: "8141774792",
     direccion: "3rd Floor",
     fechaNac: new Date("19811130"),
+    deshabilitado:false,
     consentimiento: {
       tiene: false,
     },
@@ -135,6 +144,7 @@ export const LIST_PACIENTE: Paciente[] = [
     telefono: "2715234517",
     direccion: "10th Floor",
     fechaNac: new Date("19820619"),
+    deshabilitado:false,
     consentimiento: {
       tiene: false,
     },
