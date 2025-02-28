@@ -25,12 +25,14 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   opcionesFilto: string[];
+  tieneDeshabilotado?:boolean
 }
 
 export function Tabla<TData, TValue>({
   columns,
   data,
   opcionesFilto,
+  tieneDeshabilotado = false
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -102,11 +104,12 @@ export function Tabla<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className={`font-semibold tracking-wider ${tieneDeshabilotado? (row.getValue("deshabilitado") ? "line-through text-red-600" : "" ): ""} `}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
-                      className={`text-start pl-2 `}
+                      className={`text-start pl-2`}
                     >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>

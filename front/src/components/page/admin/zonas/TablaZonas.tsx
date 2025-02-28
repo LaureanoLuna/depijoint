@@ -4,15 +4,12 @@ import { Tabla } from "@/assets/components/dataTable/Tabla";
 import { ColumnDef } from "@tanstack/react-table";
 import { CabeceraColumna } from "@/assets/components/dataTable/CabeceraColumna";
 import { Zona } from "@/assets/interfaces/zona";
-import { FaCheck, FaRegTimesCircle } from "react-icons/fa";
-import GrupoBotones from "@/assets/components/GrupoBotones";
-import { useEffect } from "react";
 import { useZonaContext } from "./context/ZonaContext";
 import { InputCheckBox } from "@/assets/components/InputCheckBox";
 import ModalDetalles from "./modals/ModalDetalles";
 
 export default function TablaZonas() {
-  const { z, handleEstadoZona, handleConDeshabilitado, conDesabilitado } =
+  const { z, handleConDeshabilitado, conDesabilitado } =
     useZonaContext();
 
   const Columnas: ColumnDef<Zona>[] = [
@@ -58,7 +55,7 @@ export default function TablaZonas() {
       cell: (info) => info.getValue() + " min",
     },
     {
-      id: "zonaAcciones",
+      accessorKey:"deshabilitado",
       header: () => (
         <InputCheckBox
           id="inputCheckDeshabilitadosZona"
@@ -69,69 +66,8 @@ export default function TablaZonas() {
       ),
       cell: ({ row }) => {
         const zona = row.original;
-
         return (
-          <div className="grid grid-cols-2">
             <ModalDetalles zona={zona} />
-            <GrupoBotones
-              botonesAccion={[
-                {
-                  variante: "confirm",
-                  icono: <FaCheck color="success" />,
-                  estilo: `${!zona.deshabilitado ? "hidden" : "flex"}`,
-                  tamaño: "icon",
-                  is_tooltip: true,
-                  text_tooltip: "Habilitar",
-                  onClick: () => {
-                    handleEstadoZona(zona.zonaId, "habilita");
-                  },
-                },
-
-                {
-                  variante: "delete",
-                  estilo: `${zona.deshabilitado ? "hidden" : "flex"}`,
-                  icono: <FaRegTimesCircle color="delete" />,
-                  tamaño: "icon",
-                  is_tooltip: true,
-                  text_tooltip: "Deshabilitar",
-                  onClick: () => {
-                    handleEstadoZona(zona.zonaId, "deshabilita");
-                  },
-                },
-              ]}
-              botonesDropdown={[
-                {
-                  variante: "alert",
-                  tamaño: "sm",
-                  texto: "Editar",
-                  is_tooltip: false,
-                  onClick: () => {},
-                },
-                {
-                  variante: "confirm",
-                  tamaño: "sm",
-                  estilo: `${zona.deshabilitado ? "hidden" : "flex"} w-full`,
-                  texto: "Habilitar",
-                  is_tooltip: false,
-                  onClick: () => {
-                    handleEstadoZona(zona.zonaId, "habilita");
-                  },
-                },
-                {
-                  variante: "delete",
-                  estilo: `${zona.deshabilitado ? "hidden" : "flex"} w-full`,
-                  tamaño: "sm",
-                  texto: "Deshabilitar",
-                  is_tooltip: false,
-                  onClick: () => {
-                    handleEstadoZona(zona.zonaId, "deshabilita");
-                  },
-                },
-              ]}
-              key={zona.zonaId}
-            />
-
-          </div>
         );
       },
     },
@@ -147,6 +83,7 @@ export default function TablaZonas() {
         columns={Columnas}
         data={z}
         opcionesFilto={["Tipo", "Codigo", "Nombre"]}
+        tieneDeshabilotado = {true}
       />
     </>
   );
