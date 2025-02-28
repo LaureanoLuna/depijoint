@@ -9,7 +9,7 @@ export interface Contratacion {
   descripcion?: string;
   pacienteDni: string;
   //precioTotal: number;
-  tiempoSesion: number;
+  //tiempoSesion: number;
   zonas: Zona[];
 }
 

@@ -10,7 +10,7 @@ export const LIST_CONTRATACIONES: Contratacion[] = [
     descripcion: "Contratación de tratamiento facial",
     pacienteDni: "38232325",
     // precioTotal: 1500.5,
-    tiempoSesion: 60,
+    //tiempoSesion: 60,
     zonas: [
       {
         zonaId: 1,
@@ -59,7 +59,7 @@ export const LIST_CONTRATACIONES: Contratacion[] = [
     descripcion: "Contratación de tratamiento corporal",
     pacienteDni: "47064767",
     //precioTotal: 2500.75,
-    tiempoSesion: 90,
+    //tiempoSesion: 90,
     zonas: [
       {
         zonaId: 3,
