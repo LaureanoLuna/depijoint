@@ -14,11 +14,12 @@ interface ZonaContextProps {
   handleEstadoZona: (zonaId: number, tipo:'habilita' | 'deshabilita') => void;
   handleConDeshabilitado: any;
   conDesabilitado: boolean;
+  updateZona: (zona:Zona) => void;
 }
 const ZonaContext = createContext<ZonaContextProps | undefined>(undefined);
 
 const ZonaProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const { getZonas, agregarZona, deshabilitarZona, habilitarZona } =
+  const { getZonas, agregarZona, deshabilitarZona, habilitarZona,actualizarZona } =
     useZonaAccion();
   const {getNotificacion} = useNotificacionAccion()
   const [conDesabilitado, setConDesabilitado] = useState<boolean>(true);
@@ -75,6 +76,13 @@ const ZonaProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     }
   };
 
+  const updateZona = async (data:Zona): Promise<void> =>{
+    const success = await actualizarZona(data);
+    if(success){
+      await allZonas();
+    }
+  }
+
   useEffect(() => {
     allZonas();
   }, [conDesabilitado]);
@@ -87,6 +95,7 @@ const ZonaProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         handleEstadoZona,
         handleConDeshabilitado,
         conDesabilitado,
+        updateZona
       }}
     >
       {children}

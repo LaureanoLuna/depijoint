@@ -4,12 +4,12 @@ import { Zona } from "@/assets/interfaces/zona";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@radix-ui/react-dropdown-menu";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { FaEye } from "react-icons/fa";
 import { useZonaContext } from "../context/ZonaContext";
 
 export default function ModalDetalles({ zona }: { zona: Zona }) {
-  const { handleEstadoZona } = useZonaContext();
+  const { handleEstadoZona,updateZona } = useZonaContext();
   const {
     tipo,
     codigo,
@@ -26,7 +26,9 @@ export default function ModalDetalles({ zona }: { zona: Zona }) {
   const {
     register,
     formState: { errors },
+    watch,
     control,
+    handleSubmit
   } = useForm<Zona>({
     defaultValues: {
       tipo,
@@ -42,6 +44,10 @@ export default function ModalDetalles({ zona }: { zona: Zona }) {
       zonaPadreId,
     },
   });
+
+  const onSubmit:SubmitHandler<Zona> = async () =>{
+    updateZona(watch());
+  }
   return (
     <ModalComponent
       botonText={<FaEye />}
@@ -50,7 +56,7 @@ export default function ModalDetalles({ zona }: { zona: Zona }) {
       key={zona.codigo}
       estilo="w-full"
     >
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-4 gap-2">
           <InputForm
             estilo="col-span-1"
@@ -115,22 +121,22 @@ export default function ModalDetalles({ zona }: { zona: Zona }) {
         >
           Actualizar
         </Button>
+      </form>
         {deshabilitado ? (<Button
           type="button"
           variant={"confirm"}
-          className="border p-2 rounded-md hover:bg-green-500 hover:text-white hover:font-semibold w-full mt-5"
+          className="border p-2 rounded-md hover:bg-green-500 hover:text-white hover:font-semibold w-full"
           onClick={() => handleEstadoZona(zonaId, "habilita")}
         >
           Habilitar
         </Button>):(<Button
           type="button"
           variant={"delete"}
-          className="border p-2 rounded-md hover:bg-red-500 hover:text-white hover:font-semibold w-full mt-5"
+          className="border p-2 rounded-md hover:bg-red-500 hover:text-white hover:font-semibold w-full"
           onClick={() => handleEstadoZona(zonaId, "deshabilita")}
         >
           Deshabilitar
         </Button>)}
-      </form>
     </ModalComponent>
   );
 }

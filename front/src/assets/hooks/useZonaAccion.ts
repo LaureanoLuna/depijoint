@@ -3,7 +3,7 @@ import { Zona } from "../interfaces/zona";
 import { formatearCodigo } from "../function/funcionesZonas";
 const useZonaAccion = () => {
   const [zonas, setZonas] = useState<Zona[]>([]);
-  
+
   const cargarZonasDesdeLocalStorage = () => {
     const zonasGuardadas = localStorage.getItem("zonas");
     const zonasParseadas = zonasGuardadas ? JSON.parse(zonasGuardadas) : [];
@@ -38,7 +38,7 @@ const useZonaAccion = () => {
   const modificarZona = async (zonaId: number, habilitar: boolean): Promise<boolean> => {
     const indice = zonas.findIndex((f) => f.zonaId === zonaId);
     if (indice === -1) throw new Error('Zona no encontrada');
-    
+
     const zonasActualizadas = [...zonas];
     zonasActualizadas[indice].deshabilitado = !habilitar;
     guardarZonasEnLocalStorage(zonasActualizadas);
@@ -60,6 +60,15 @@ const useZonaAccion = () => {
     setZonas(updatedZonas);
     return true;
   };
+
+  const actualizarZona = async (data: Zona): Promise<boolean> => {
+    const zonas = await getZonas();
+    const indice = zonas.findIndex((z) => z.tipo === data.tipo && z.codigo === data.codigo);
+    zonas[indice] = data;
+    guardarZonasEnLocalStorage(zonas);
+    return true;
+  }
+
   const deshabilitarZona = (zonaId: number): Promise<boolean> => modificarZona(zonaId, false);
   const habilitarZona = (zonaId: number): Promise<boolean> => modificarZona(zonaId, true);
   useEffect(() => {
@@ -74,6 +83,7 @@ const useZonaAccion = () => {
     getNuevoCodigo,
     getZonaPorTipo,
     habilitarZona,
+    actualizarZona
   };
 };
 export default useZonaAccion;
