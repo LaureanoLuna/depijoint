@@ -15,10 +15,6 @@ export default function TablaZonas() {
   const { z, handleEstadoZona, handleConDeshabilitado, conDesabilitado } =
     useZonaContext();
 
-  useEffect(() => {
-    console.log("se renderiza");
-  }, []);
-
   const Columnas: ColumnDef<Zona>[] = [
     {
       accessorKey: "tipo",
@@ -75,7 +71,7 @@ export default function TablaZonas() {
         const zona = row.original;
 
         return (
-          <div className="grid border grid-cols-2">
+          <div className="grid grid-cols-2">
             <ModalDetalles zona={zona} />
             <GrupoBotones
               botonesAccion={[
