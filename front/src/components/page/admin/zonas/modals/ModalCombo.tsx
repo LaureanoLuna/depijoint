@@ -4,17 +4,19 @@ import useZonaAccion from "@/assets/hooks/useZonaAccion";
 import { Zona } from "@/assets/interfaces/zona";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DialogClose } from "@radix-ui/react-dialog";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-export default function ModalCombo({ agregarZonas }: { agregarZonas: any }) {
-  const [zonas, setZonas] = useState<number[]>([]);
+export default function ModalCombo({ agregarZonas, zonasSeleccionadas }: { agregarZonas: any, zonasSeleccionadas?:number[] }) {
+  const [zonas, setZonas] = useState<number[] | undefined>(
+    zonasSeleccionadas ? zonasSeleccionadas : []
+  );
   const { getZonaPorTipo } = useZonaAccion();
   const [zonasDisponibles, setZonasDisponibles] = useState<Zona[] | undefined>(
     []
   );
 
   const handleAgregarZonas = () => {
-    if (zonas.length < 2) {
+    if ((zonas?.length ?? 0) < 2) {
       alert("tiene que seleccionar minimo 2 Zonas");
     }
     agregarZonas(zonas);
@@ -35,12 +37,12 @@ export default function ModalCombo({ agregarZonas }: { agregarZonas: any }) {
           <div className="flex items-center space-x-2" key={x.zonaId}>
             <Checkbox
               id={x.codigo}
-              checked={zonas.includes(x.zonaId)}
+              checked={zonas?.includes(x.zonaId) ?? false}
               onCheckedChange={(c) => {
                 setZonas((prev) =>
                   c
-                    ? [...prev, x.zonaId]
-                    : prev.filter((zona) => zona !== x.zonaId)
+                    ? [...(prev ?? []), x.zonaId]
+                    : (prev ?? []).filter((zona) => zona !== x.zonaId)
                 );
               }}
             />
@@ -57,7 +59,7 @@ export default function ModalCombo({ agregarZonas }: { agregarZonas: any }) {
             </label>
           </div>
         ))}
-        {zonas.length >= 2 && (
+        {(zonas?.length ?? 0) >= 2 && (
           <DialogClose>
             <Boton
               prop={{
