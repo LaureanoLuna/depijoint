@@ -5,13 +5,25 @@ import { ColumnDef } from "@tanstack/react-table";
 import AddPaciente from "./AddPaciente";
 import { Tabla } from "@/assets/components/dataTable/Tabla";
 import GrupoBotones from "@/assets/components/GrupoBotones";
-import { FaCheck, FaEye, FaPencilAlt, FaRegClipboard, FaRegTimesCircle } from "react-icons/fa";
+import {
+  FaCheck,
+  FaEye,
+  FaPencilAlt,
+  FaRegTimesCircle,
+} from "react-icons/fa";
 import { InputCheckBox } from "@/assets/components/InputCheckBox";
 import { usePacienteContext } from "./context/PacienteContext";
+import {
+  HiOutlineClipboardCopy,
+  HiOutlineDownload,
+  HiOutlineExclamationCircle,
+} from "react-icons/hi";
+import ToolTipComponente from "@/assets/components/ToolTipComponente";
+import Boton from "@/assets/components/Boton";
 
 export default function TablaPacientes() {
-  const { p, conDesabilitado, handleConDeshabilitado, handleEstadoPaciente } = usePacienteContext();
-
+  const { p, conDesabilitado, handleConDeshabilitado, handleEstadoPaciente } =
+    usePacienteContext();
 
   const Columna: ColumnDef<Paciente>[] = [
     {
@@ -32,21 +44,43 @@ export default function TablaPacientes() {
     },
     {
       id: "consentimiento",
-      header: "Consentimiento",
       cell: ({ row }) => {
         const paciente = row.original;
         return paciente.consentimiento.tiene ? (
-          <h2>Tiene</h2>
+          <ToolTipComponente texto="Descargar" tituloBoton="Descargar">
+            <a
+              href={paciente.consentimiento.archivo}
+              target="_blank"
+              download
+              className="hover:cursor-pointer"
+            >
+              <HiOutlineDownload size={"1.5rem"} color="green" />
+            </a>
+          </ToolTipComponente>
         ) : (
-          <h2>NO tiene</h2>
+          <ToolTipComponente texto="No tiene" tituloBoton="Descargar">
+            <HiOutlineExclamationCircle size={"1.5rem"} color="red" />
+          </ToolTipComponente>
         );
       },
     },
     {
       id: "crearTratamiento",
       cell: ({ row }) => {
-        return <FaRegClipboard key={row.original.pacienteId} />
-      }
+        return (
+          <div>
+            <Boton
+              prop={{
+                is_tooltip: true,
+                text_tooltip:"Agregar Tratamiento",
+                tamaño: "icon",
+                icono: <HiOutlineClipboardCopy />,
+                variante: "outline",
+              }}
+            />
+          </div>
+        );
+      },
     },
     {
       id: "pacienteActions",

@@ -12,7 +12,7 @@ export const LIST_ZONAS: Zona[] = [
     "deshabilitado": false,
     "sexo": "M",
     "tamaño": "Grande",
-    "zonaPadreId": undefined
+    "zonaPadreId": "[2]"
   },
   {
     "zonaId": 2,
@@ -25,7 +25,7 @@ export const LIST_ZONAS: Zona[] = [
     "deshabilitado": false,
     "sexo": "H",
     "tamaño": "Pequeño",
-    "zonaPadreId": 1
+    "zonaPadreId": undefined
   },
   {
     "zonaId": 3,
@@ -38,7 +38,7 @@ export const LIST_ZONAS: Zona[] = [
     "deshabilitado": false,
     "sexo": "M",
     "tamaño": "Mediano",
-    "zonaPadreId": 1
+    "zonaPadreId": undefined
   },
   {
     "zonaId": 4,
@@ -64,7 +64,7 @@ export const LIST_ZONAS: Zona[] = [
     "deshabilitado": false,
     "sexo": "M",
     "tamaño": "Grande",
-    "zonaPadreId": undefined
+    "zonaPadreId": "[4]"
   },
   {
     "zonaId": 6,
@@ -90,7 +90,7 @@ export const LIST_ZONAS: Zona[] = [
     "deshabilitado": false,
     "sexo": "M",
     "tamaño": "Pequeño",
-    "zonaPadreId": 5
+    "zonaPadreId": "[6]"
   },
   {
     "zonaId": 8,
@@ -103,7 +103,7 @@ export const LIST_ZONAS: Zona[] = [
     "deshabilitado": false,
     "sexo": "H",
     "tamaño": "Mediano",
-    "zonaPadreId": 6
+    "zonaPadreId": undefined
   },
   {
     "zonaId": 9,
@@ -116,7 +116,7 @@ export const LIST_ZONAS: Zona[] = [
     "deshabilitado": false,
     "sexo": "M",
     "tamaño": "Pequeño",
-    "zonaPadreId": undefined
+    "zonaPadreId": "[8]"
   },
   {
     "zonaId": 10,
@@ -129,6 +129,6 @@ export const LIST_ZONAS: Zona[] = [
     "deshabilitado": false,
     "sexo": "H",
     "tamaño": "Grande",
-    "zonaPadreId": 6
+    "zonaPadreId": undefined
   }
 ];
