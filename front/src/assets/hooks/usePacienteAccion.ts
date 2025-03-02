@@ -2,7 +2,7 @@ import { Paciente } from "@/assets/interfaces/paciente";
 import { PersonaSearch } from "@/assets/interfaces/persona";
 import { useState } from "react";
 import useContratacionAccion from "./useContratacionAccion";
-import { Contratacion } from "../interfaces/contratacion";
+import { Tratamiento } from "../interfaces/contratacion";
 
 export interface InputPacienteInterface extends Paciente {
   file?: File;
@@ -104,7 +104,7 @@ const usePacienteAccion = () => {
    * @param pacienteId - ID del paciente para buscar sus contrataciones.
    * @returns Un array de contrataciones asociadas al paciente.
    */
-  const getContratacionesPaciente = (pacienteId: string): Contratacion[] => {
+  const getContratacionesPaciente = (pacienteId: string): Tratamiento[] => {
     return getContrataciones().filter(
       (contratacion) => contratacion.pacienteDni === pacienteId
     );

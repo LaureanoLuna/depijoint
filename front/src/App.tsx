@@ -27,9 +27,9 @@ function App() {
     if (!localStorage.getItem("zonas")) {
       localStorage.setItem("zonas", JSON.stringify(LIST_ZONAS));
     }
-    if (!localStorage.getItem("contrataciones")) {
+    if (!localStorage.getItem("tratamientos")) {
       localStorage.setItem(
-        "contrataciones",
+        "tratamientos",
         JSON.stringify(LIST_CONTRATACIONES)
       );
     }

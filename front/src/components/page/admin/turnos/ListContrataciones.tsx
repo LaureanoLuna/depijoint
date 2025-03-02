@@ -8,6 +8,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { CardContent, CardTitle } from "@/components/ui/card";
+import { Zona } from "@/assets/interfaces/zona";
 
 export default function ListContrataciones({
   dniPaciente,
@@ -23,18 +24,18 @@ export default function ListContrataciones({
   return (
     <>
       <CardTitle className="capitalize mb-1 flex items-start justify-between">
-        <span className="mb-2">tratamiento:</span> <span>#{contratacion?.contratacionId}</span> 
+        <span className="mb-2">tratamiento:</span> <span>#{contratacion?.id}</span> 
       </CardTitle>
       <CardContent className="p-0 grid grid-cols-4 gap-1">
-        {contratacion?.zonas.map((element, i) => (
+        {contratacion?.zonas.map((element:Zona, i:number) => (
           <TooltipProvider key={i}>
             <Tooltip>
               <TooltipTrigger>
                 <Badge variant={"outline"} className="text-xs w-">
                   {" "}
-                  {element.tipoZona.tipoZona +
+                  {element.tipo +
                     "-" +
-                    element.codigoZona +
+                    element.codigo +
                     "/" +
                     element.tamaño}
                 </Badge>{" "}

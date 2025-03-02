@@ -9,11 +9,11 @@ interface InputCheckBoxProps {
 
 export function InputCheckBox({ id, label, onChange, marcado }: InputCheckBoxProps) {
   return (
-    <div className="flex items-center space-x-2 justify-end pr-5">
+    <div className="w-fit flex items-center space-x-2 justify-end">
       <Checkbox id={id} checked={!marcado} onCheckedChange={onChange} />
       <label
         htmlFor={id}
-        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        className="text-sm font-medium "
       >
         {label}
       </label>

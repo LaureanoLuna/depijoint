@@ -5,12 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import AddPaciente from "./AddPaciente";
 import { Tabla } from "@/assets/components/dataTable/Tabla";
 import GrupoBotones from "@/assets/components/GrupoBotones";
-import {
-  FaCheck,
-  FaEye,
-  FaPencilAlt,
-  FaRegTimesCircle,
-} from "react-icons/fa";
+import { FaCheck, FaEye, FaPencilAlt, FaRegTimesCircle } from "react-icons/fa";
 import { InputCheckBox } from "@/assets/components/InputCheckBox";
 import { usePacienteContext } from "./context/PacienteContext";
 import {
@@ -20,6 +15,8 @@ import {
 } from "react-icons/hi";
 import ToolTipComponente from "@/assets/components/ToolTipComponente";
 import Boton from "@/assets/components/Boton";
+import { Link } from "react-router-dom";
+import AddTratamiento from "./modals/AddTratamiento";
 
 export default function TablaPacientes() {
   const { p, conDesabilitado, handleConDeshabilitado, handleEstadoPaciente } =
@@ -67,23 +64,11 @@ export default function TablaPacientes() {
     {
       id: "crearTratamiento",
       cell: ({ row }) => {
-        return (
-          <div>
-            <Boton
-              prop={{
-                is_tooltip: true,
-                text_tooltip:"Agregar Tratamiento",
-                tamaño: "icon",
-                icono: <HiOutlineClipboardCopy />,
-                variante: "outline",
-              }}
-            />
-          </div>
-        );
+        return <AddTratamiento paciente={row.original} />;
       },
     },
     {
-      id: "pacienteActions",
+      accessorKey: "deshabilitado",
 
       header: () => (
         <InputCheckBox
@@ -97,82 +82,18 @@ export default function TablaPacientes() {
         const paciente = row.original;
 
         return (
-          <GrupoBotones
-            botonesAccion={[
-              {
-                variante: "ghost",
-                icono: <FaEye color="success" />,
-                tamaño: "icon",
+          <Link className="w-full ml-auto" to={`${paciente.dni}`}>
+            <Boton
+              prop={{
                 is_tooltip: true,
-                text_tooltip: "ver",
-              },
-              {
-                variante: "alert",
-                icono: <FaPencilAlt color="alert" />,
-                tamaño: "icon",
-                is_tooltip: true,
-                text_tooltip: "editar",
-              },
-              {
-                estilo: `${!paciente.deshabilitado ? "flex" : "hidden"}`,
-                variante: "delete",
-                icono: <FaRegTimesCircle color="delete" />,
-                tamaño: "icon",
-                is_tooltip: true,
-                text_tooltip: "cancelar",
-                onClick: () => {
-                  if (
-                    window.confirm(
-                      "¿Está seguro que desea deshabilitar el paciente?"
-                    )
-                  ) {
-                    handleEstadoPaciente(paciente.dni, "deshabilita");
-                  }
-                },
-              },
-              {
-                estilo: `${paciente.deshabilitado ? "flex" : "hidden"}`,
-                variante: "confirm",
-                icono: <FaCheck />,
-                tamaño: "icon",
-                is_tooltip: true,
-                text_tooltip: "habilitar",
-                onClick: () => {
-                  if (
-                    window.confirm(
-                      "¿Está seguro que desea habilitar el paciente?"
-                    )
-                  ) {
-                    handleEstadoPaciente(paciente.dni, "habilita");
-                  }
-                },
-              },
-            ]}
-            botonesDropdown={[
-              {
-                variante: "confirm",
-                tamaño: "sm",
+                text_tooltip: "Ver Mas",
+                tamaño: "lg",
+                variante: "outline",
+                icono: <FaEye />,
                 estilo: "w-full",
-                texto: "confirmar",
-                is_tooltip: false,
-              },
-              {
-                variante: "alert",
-                estilo: "w-full",
-                tamaño: "sm",
-                texto: "editar",
-                is_tooltip: false,
-              },
-              {
-                variante: "delete",
-                estilo: "w-full",
-                tamaño: "sm",
-                texto: "cancelar",
-                is_tooltip: false,
-              },
-            ]}
-            key={paciente.dni}
-          />
+              }}
+            />
+          </Link>
         );
       },
     },
@@ -189,6 +110,7 @@ export default function TablaPacientes() {
         columns={Columna}
         data={p}
         opcionesFilto={["Nombre", "Apellido", "DNI"]}
+        tieneDeshabilotado={true}
       />
     </>
   );

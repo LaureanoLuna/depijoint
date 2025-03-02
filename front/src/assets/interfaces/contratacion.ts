@@ -1,7 +1,7 @@
 import { Zona } from "./zona";
 
-export interface Contratacion {
-  contratacionId: number;
+export interface Tratamiento {
+  id: number;
   fechaContratacion: string;
   fechaInicio?: string;
   fechaFin?: string;

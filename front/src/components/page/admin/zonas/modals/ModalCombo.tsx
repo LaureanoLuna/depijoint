@@ -4,7 +4,7 @@ import useZonaAccion from "@/assets/hooks/useZonaAccion";
 import { Zona } from "@/assets/interfaces/zona";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DialogClose } from "@radix-ui/react-dialog";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 export default function ModalCombo({ agregarZonas, zonasSeleccionadas }: { agregarZonas: any, zonasSeleccionadas?:number[] }) {
   const [zonas, setZonas] = useState<number[] | undefined>(

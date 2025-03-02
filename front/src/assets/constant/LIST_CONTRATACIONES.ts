@@ -1,8 +1,8 @@
-import { Contratacion } from "../interfaces/contratacion";
+import { Tratamiento } from "../interfaces/contratacion";
 
-export const LIST_CONTRATACIONES: Contratacion[] = [
+export const LIST_CONTRATACIONES: Tratamiento[] = [
   {
-    contratacionId: 1,
+    id: 1,
     fechaContratacion: "2023-10-01T10:00:00Z",
     fechaInicio: "2023-10-05T10:00:00Z",
     fechaFin: "2023-10-12T10:00:00Z",
@@ -51,7 +51,7 @@ export const LIST_CONTRATACIONES: Contratacion[] = [
     ],
   },
   {
-    contratacionId: 2,
+    id: 2,
     fechaContratacion: "2023-10-02T11:00:00Z",
     fechaInicio: "2023-10-07T11:00:00Z",
     fechaFin: "2023-10-14T11:00:00Z",
