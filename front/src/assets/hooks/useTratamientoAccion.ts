@@ -30,9 +30,19 @@ const useTratamientoAccion = () => {
     }
 
     const getZonasT = async (zonas: number[]): Promise<Zona[]> => {
-        const zonasT = await getZonas(); // Espera a que se obtengan las zonas
-        return zonasT.filter((z) => zonas.includes(z.zonaId)); // Filtra las zonas cuyo ID está en el array 'zonas'
-    }
+        // Espera a que se obtengan las zonas
+        const zonasT = await getZonas();
+        // Filtra las zonas cuyo ID está en el array 'zonas'
+        const zonasFiltradas = zonasT.filter((z) => zonas.includes(z.zonaId));
+        // Obtiene las zonas de tipo "C"
+        const zonasCombo = zonasFiltradas.filter((z) => z.tipo === "C");
+        // Obtiene los IDs de las zonas hijas
+        const idsZonasHijas = zonasCombo.map((z) => JSON.parse(z.zonaPadreId || "[]")).flat();
+        // Filtra las zonas que no tienen el mismo ID que sus zonas hijas
+        const zonasResultantes = zonasFiltradas.filter((zona) => !idsZonasHijas.includes(zona.zonaId));
+        //console.log(idsZonasHijas); // Para depuración
+        return zonasResultantes; // Devuelve las zonas resultantes
+    };
 
     const addTratamiento = async (pacienteDni: string, data: number[]): Promise<boolean> => {
         try {

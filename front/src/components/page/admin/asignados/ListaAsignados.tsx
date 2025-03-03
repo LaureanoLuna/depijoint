@@ -30,8 +30,13 @@ export default function ListaAsignados() {
     {
       accessorKey: "dia",
       header: ({ column }) => (
-        <CabeceraColumna column={column} title="Dia" />
+        <CabeceraColumna column={column} title="Día" />
       ),
+      cell: (info) => {
+        const fecha = info.getValue() as string;
+        const [year, month, day] = fecha.split("-");
+        return `${day}-${month}-${year}`; // Cambia el formato a "DD-MM-YYYY"
+      }
     },
     {
       accessorKey: "nombre",
@@ -52,8 +57,8 @@ export default function ListaAsignados() {
       ),
     },
     {
-      id:"detallePaciente",
-      cell:({row}) =>{
+      id: "detallePaciente",
+      cell: ({ row }) => {
         const paciente = row.original;
         return (
           <ModalObsevaciones id={paciente.dni} />

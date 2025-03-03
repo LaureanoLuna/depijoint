@@ -62,6 +62,7 @@ const useTurnoAccion = () => {
      * @returns Una promesa que resuelve a true si se agregó el turno, false en caso de error.
      */
     const agregarTurno = async (data: any): Promise<boolean> => {
+        
         try {
             const contratacion = await getContratacion(data.dni);
             if (!contratacion) {
@@ -74,7 +75,7 @@ const useTurnoAccion = () => {
             }
 
             const tiempo = contratacion.zonas.reduce(
-                (total, zona: Zona) => total + zona.tiempo,
+                (total, zona: Zona) => total + Number(zona.tiempo),
                 0
             );
             const costo = contratacion.zonas.reduce(
@@ -82,13 +83,15 @@ const useTurnoAccion = () => {
                 0
             );
 
+            
+
             const turnoNuevo: Turno = {
                 id: getTurnos().length.toFixed(), // Considerar generar un ID único dinámicamente
                 dia: data.dia,
                 hora: data.hora,
                 duracion: tiempo.toFixed(), // Considerar hacer que la duración sea dinámica
                 precio: costo ?? 0,
-                contratacion_id: contratacion.contratacionId,
+                contratacion_id: contratacion.id,
                 dni: paciente.dni,
                 nombre: paciente.nombre,
                 estado: false,

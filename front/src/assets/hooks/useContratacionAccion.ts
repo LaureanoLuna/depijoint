@@ -9,7 +9,7 @@ const useContratacionAccion = () => {
   const [contratacion, setContratacion] = useState<Tratamiento | undefined>(
     undefined
   );
-  const {getZonas} = useZonaAccion()
+  const { getZonas } = useZonaAccion()
 
   // Función para establecer la contratacion
   const setContratacionAccion = (contratacion: Tratamiento) => {
@@ -54,23 +54,23 @@ const useContratacionAccion = () => {
     const zonas = await getZonas(); // Obtén todas las zonas disponibles
     // Filtra las zonas de tratamiento que están disponibles
     const zonasFiltradas: Zona[] = tratamiento.zonas.filter((z) =>
-        zonas.some((zona) => zona.zonaId === z.zonaId)
+      zonas.some((zona) => zona.zonaId === z.zonaId)
     );
     // Mapea las zonas filtradas y maneja la lógica para zonas de tipo "C"
-    const zonasResultantes = await Promise.all(zonasFiltradas.map(async (y) => {
-        if (y.tipo === "C") {
-            const zonasHijasIds = JSON.parse(y.zonaPadreId || "[]"); // Obtén los IDs de las zonas hijas
-            const zonasHijas = await Promise.all(zonasHijasIds.map(async (id:number) => {
-                const zonaHija = zonas.find(z => z.zonaId === id); // Busca la zona hija en las zonas disponibles
-                return zonaHija; // Devuelve la zona hija encontrada
-            }));
-            return zonasHijas.filter(Boolean); // Filtra las zonas hijas que no son undefined
-        }
-        return y; // Devuelve la zona tal como está si no es de tipo "C"
-    }));
+    const zonasResultantes: Zona[] = (await Promise.all(zonasFiltradas.map(async (y) => {
+      if (y.tipo === "C") {
+        const zonasHijasIds = JSON.parse(y.zonaPadreId || "[]"); // Obtén los IDs de las zonas hijas
+        const zonasHijas: Zona[] = await Promise.all(zonasHijasIds.map(async (id: number) => {
+          const zonaHija = zonas.find(z => z.zonaId === id); // Busca la zona hija en las zonas disponibles
+          return zonaHija; // Devuelve la zona hija encontrada
+        }));
+        return [...zonasHijas, y].filter(Boolean) as Zona[]; // Filtra las zonas hijas que no son undefined y asegura que son de tipo Zona
+      }
+      return [y]; // Devuelve la zona en un array si no es de tipo "C"
+    }))).flat();
     // Aplana el array resultante en caso de que haya zonas hijas
     return zonasResultantes.flat().filter(Boolean); // Filtra valores undefined
-};
+  };
 
   // Función para calcular el tiempo total de sesiones de un paciente
   const calcularTiempoSesion = async (
@@ -84,7 +84,7 @@ const useContratacionAccion = () => {
 
     // Buscar la contratacion correspondiente al pacienteID
     const contratacion: Tratamiento | undefined = contrataciones.find(
-      (x: Tratamiento) => x.pacienteDni === pacienteID
+      (x: Tratamiento) => x.pacienteDni === pacienteID && x.estado === false
     );
 
     // Si no se encuentra la contratacion, retornar undefined
@@ -101,29 +101,37 @@ const useContratacionAccion = () => {
   // Función para calcular el precio total de sesiones de un paciente
   const calcularPrecioSesion = async (
     pacienteID: string | undefined
-  ): Promise<number | undefined> => {
-    if (!pacienteID) return;
-
+  ): Promise<number> => {
+    if (!pacienteID) return 0; // Retornar 0 si no hay pacienteID
     const contrataciones: Tratamiento[] = JSON.parse(
       localStorage.getItem("tratamientos") || "[]"
     );
-
-    // Buscar la contratacion correspondiente al pacienteID
+    // Buscar la contratación correspondiente al pacienteID
     const contratacion: Tratamiento | undefined = contrataciones.find(
-      (x: Tratamiento) => x.pacienteDni === pacienteID
+      (x: Tratamiento) => x.pacienteDni === pacienteID && x.estado === false
     );
+    // Si no se encuentra la contratación, retornar 0
+    if (!contratacion) return 0;
+    const zonas = contratacion.zonas;
+    // Buscamos que las zonas incluidas en el tratamiento no estén vinculadas al combo
+    const zonasACalcular = zonas.filter((z) => {
 
-    // Si no se encuentra la contratacion, retornar undefined
-    if (!contratacion) return;
+      if (z.tipo === "C") {
+        const zonasHijas = JSON.parse(z.zonaPadreId || "[]");
 
+        return zonasHijas.filter((y: number) => y !== z.zonaId).map((id:number) => {
+          return zonas.find((zona) => zona.zonaId === id); // Buscar la zona por ID
+        });
+      }
+      return [z]; // Retornar la zona original
+    }).filter(Boolean); // Filtrar valores undefined
     // Calcular la suma del precio de todas las zonas
-    const suma: number = contratacion.zonas.reduce(
-      (total, zona: Zona) => total + zona.precio,
+    const suma: number = zonasACalcular.reduce(
+      (total, zona: Zona) => total + (Number(zona?.precio) || 0), // Asegurarse de que precio sea un número
       0
     );
-
-    // Retornar el precio promedio (dividido por 6)
-    return Number.parseFloat((suma / 6).toFixed(2));
+    // Retornar el valor por sesion, calculada por cada item, lo cuales tienen su costo
+    return Number(suma);
   };
 
   return {
