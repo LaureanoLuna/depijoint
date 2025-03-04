@@ -13,12 +13,17 @@ import { useZonaContext } from "./context/ZonaContext";
 import useZonaAccion from "@/assets/hooks/useZonaAccion";
 import { Input } from "@/components/ui/input";
 import ModalCombo from "./modals/ModalCombo";
-import { calcularPrecio, calcularTiempo } from "@/assets/function/funcionesZonas";
+import {
+  calcularPrecio,
+  calcularTiempo,
+} from "@/assets/function/funcionesZonas";
+import { TipoZona } from "@/assets/interfaces/tipoZona";
 export default function Formulario() {
   const [tipo, setTipo] = useState<string | undefined>(undefined);
+  const [datos, setDatos] = useState<TipoZona[] | undefined>();
   const [precio, setPrecio] = useState<number>(0);
   const [tiempo, setTiempo] = useState<number>(0);
-  const { getNuevoCodigo, getZonas } = useZonaAccion();
+  const { getNuevoCodigo, getZonas, getTipoArticulo } = useZonaAccion();
   const { addZona } = useZonaContext();
   const {
     register,
@@ -42,6 +47,11 @@ export default function Formulario() {
   const actualizarZonasSeleccionadas = (zonasElegidas: string[]) => {
     setValue("zonaPadreId", JSON.stringify(zonasElegidas));
   };
+
+  const tiposArticulos = async () => {
+    const tipoZona= await getTipoArticulo(); // funcion get de axios
+    setDatos(tipoZona)
+  };
   const calcularValores = async () => {
     if (tipo !== "C") return;
     const allZonas = await getZonas();
@@ -57,19 +67,22 @@ export default function Formulario() {
   useEffect(() => {
     calcularValores();
   }, [watch("zonaPadreId"), tipo]);
+  useEffect(() => {
+    tiposArticulos();
+  }, []);
   return (
     <Card className="mt-3 py-4 px-2">
       <form onSubmit={handleSubmit(onSubmit)} className="px-2">
         <div className="flex items-center gap-1 uppercase ">
           <Seleccion
-            opciones={LIST_TIPO.map((tipo) => tipo.tipo)}
+            opciones={datos?.map((tipo) => tipo.tipo) ?? []}
             titulo="Tipo"
             name="tipozona"
             funccion={setTipo}
           />
           {tipo && (
             <h2 className="tracking-widest italic w-full text-center">
-              {LIST_TIPO.find((f) => f.tipo === tipo)?.descripcion}
+              {datos?.find((f) => f.tipo === tipo)?.nombre}
             </h2>
           )}
         </div>

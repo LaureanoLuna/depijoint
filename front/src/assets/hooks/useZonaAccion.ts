@@ -1,8 +1,15 @@
 import { useState, useEffect } from "react";
 import { Zona } from "../interfaces/zona";
 import { formatearCodigo } from "../function/funcionesZonas";
+import { TipoZona } from "../interfaces/tipoZona";
+import axios from "../api/axios";
 const useZonaAccion = () => {
   const [zonas, setZonas] = useState<Zona[]>([]);
+
+  const getTipoArticulo = async ():Promise<TipoZona[]> => {
+    const {data} = await axios.get("tipo-articulo");
+    return data;
+  }
 
   const cargarZonasDesdeLocalStorage = () => {
     const zonasGuardadas = localStorage.getItem("zonas");
@@ -83,7 +90,8 @@ const useZonaAccion = () => {
     getNuevoCodigo,
     getZonaPorTipo,
     habilitarZona,
-    actualizarZona
+    actualizarZona,
+    getTipoArticulo
   };
 };
 export default useZonaAccion;
