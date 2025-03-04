@@ -11,11 +11,10 @@ import { useEffect, useState } from "react";
 import { FaCheck, FaRegTimesCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import ModalObsevaciones from "./ModalObsevaciones";
-import { useDepiJoint } from "@/assets/context/DepiJointContexto";
 import { InputFecha } from "@/assets/components/InputFecha";
 
 export default function TablaAsignados() {
-  const { turnosFiltador, dia, setDia } = useDepiJoint()
+    const [dia, setDia] = useState<Date>(new Date());
   const [user, setUser] = useState<Usuario>();
   const { getTurnosAsignados, quitarAsignacion } = useAsignadoAccion()
   const { isLogin } = useLoginAccion();
@@ -132,7 +131,7 @@ export default function TablaAsignados() {
         contenidoMedio={<InputFecha date={dia} funcDate={setDia} />}
         botonAccion={<h1>Filtro</h1>}
       />
-      <Tabla columns={Columna} data={getTurnosAsignados(user?.id ?? "")} opcionesFilto={['nombre']} />
+      <Tabla columns={Columna} data={getTurnosAsignados(user?.id ?? "",dia)} opcionesFilto={['nombre']} />
     </>
   );
 }

@@ -1,14 +1,15 @@
+import { format } from "date-fns";
 import { Asignado } from "../interfaces/asignado";
 import useTurnoAccion from "./useTurnoAccion";
 
 export default function useAsignadoAccion() {
   const { getTurnos, setTurnos, cancelarTurno } = useTurnoAccion();
-  const getTurnosAsignados = (colaboradorId: string): Asignado[] => {
+  const getTurnosAsignados = (colaboradorId: string, dia:Date): Asignado[] => {
     const asignados = localStorage.getItem("asignados");
     return !asignados
       ? []
       : JSON.parse(asignados).filter(
-        (a: Asignado) => a.colaboradorId === colaboradorId
+        (a: Asignado) => a.colaboradorId === colaboradorId && a.dia === format(dia, "yyyy-MM-dd")
       );
   };
 
