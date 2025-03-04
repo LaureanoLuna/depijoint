@@ -1,6 +1,7 @@
 export interface TipoZona {
   tipoZonaId: number;
   tipo: string;
+  nombre:string;
   descripcion: string;
   deshabilitado: boolean;
 }

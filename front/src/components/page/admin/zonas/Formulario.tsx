@@ -1,6 +1,5 @@
 import InputForm from "@/assets/components/InputForm";
 import Seleccion from "@/assets/components/Seleccion";
-import { LIST_TIPO } from "@/assets/constant/LIST_TIPOZONA";
 import { Zona } from "@/assets/interfaces/zona";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
