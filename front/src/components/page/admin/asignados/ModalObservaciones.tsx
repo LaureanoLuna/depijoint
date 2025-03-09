@@ -28,7 +28,9 @@ export default function ModalObservaciones({ dni }: ModalObservacionesProps) {
   const { itemsTratamiento } = useContratacionAccion();
   const [zonasTratamiento, setZonasTratamiento] = useState<Zona[]>([]);
   const [zonas, setZonas] = useState<number[]>([]);
-  const [zonasTratadas, setZonasTratadas] = useState<{ zonasId: number, value: string }[]>([]);
+  const [zonasTratadas, setZonasTratadas] = useState<
+    { zonasId: number; value: string }[]
+  >([]);
   const [observacion, setObservacion] = useState<string>("");
   // Función para obtener las observaciones de un paciente
   const getObservaciones = (dniPaciente: string) => {
@@ -47,6 +49,8 @@ export default function ModalObservaciones({ dni }: ModalObservacionesProps) {
   };
   // Efecto para cargar turnos y zonas al montar el componente
   useEffect(() => {
+    console.log("re render");
+
     getObservaciones(dni);
     getZonas();
   }, [dni]);
@@ -59,49 +63,55 @@ export default function ModalObservaciones({ dni }: ModalObservacionesProps) {
       children={
         <>
           <Card>
-            <CardHeader className="px-2 py-1">
-              Zonas a tratarse:
-            </CardHeader>
+            <CardHeader className="px-2 py-1">Zonas a tratarse:</CardHeader>
             <CardContent>
               <form onSubmit={handleEnvioZonasTratadas}>
-                {zonasTratamiento.map((x) => (
-                  <div className="flex items-center justify-between space-x-2 my-1" key={x.zonaId}>
-                    <div className="flex items-center space-x-2 my-1">
-                      <Checkbox
-                        id={x.codigo}
-                        checked={zonas.includes(x.zonaId)}
-                        onCheckedChange={(c) => {
-                          setZonas((prev) =>
-                            c
-                              ? [...prev, x.zonaId]
-                              : prev.filter((zona) => zona !== x.zonaId)
-                          );
-                        }}
-                      />
-                      <label
-                        className="text-sm font-medium leading-none flex gap-2"
-                        htmlFor={x.codigo}
+                {zonasTratamiento.map(
+                  (x) =>
+                    x.tipo !== "C" && (
+                      <div
+                        className="flex items-center justify-between space-x-2 my-1"
+                        key={x.zonaId}
                       >
-                        <span>{x.tipo}</span>
-                        <span>{x.codigo}</span>
-                        <span>{x.nombre}</span>
-                      </label>
-                    </div>
-                    <Input
-                      type="text"
-                      className="w-16"
-                      disabled={!zonas.includes(x.zonaId)}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        setZonasTratadas((prev) => {
-                          const updated = prev.filter(item => item.zonasId !== x.zonaId);
-                          updated.push({ zonasId: x.zonaId, value });
-                          return updated;
-                        });
-                      }}
-                    />
-                  </div>
-                ))}
+                        <div className="flex items-center space-x-2 my-1">
+                          <Checkbox
+                            id={x.codigo}
+                            checked={zonas.includes(x.zonaId)}
+                            onCheckedChange={(c) => {
+                              setZonas((prev) =>
+                                c
+                                  ? [...prev, x.zonaId]
+                                  : prev.filter((zona) => zona !== x.zonaId)
+                              );
+                            }}
+                          />
+                          <label
+                            className="text-sm font-medium leading-none flex gap-2"
+                            htmlFor={x.codigo}
+                          >
+                            <span>{x.tipo}</span>
+                            <span>{x.codigo}</span>
+                            <span>{x.nombre}</span>
+                          </label>
+                        </div>
+                        <Input
+                          type="text"
+                          className="w-16"
+                          disabled={!zonas.includes(x.zonaId)}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            setZonasTratadas((prev) => {
+                              const updated = prev.filter(
+                                (item) => item.zonasId !== x.zonaId
+                              );
+                              updated.push({ zonasId: x.zonaId, value });
+                              return updated;
+                            });
+                          }}
+                        />
+                      </div>
+                    )
+                )}
                 <Label htmlFor="observacionesTurno">
                   Observación
                   <Textarea
@@ -111,19 +121,23 @@ export default function ModalObservaciones({ dni }: ModalObservacionesProps) {
                     onChange={(e) => setObservacion(e.target.value)}
                   />
                 </Label>
-                <Button
-                  type="submit"
-                  className="border p-2 rounded-md hover:bg-gray-500 hover:text-black hover:font-semibold w-full mt-5"
-                >
-                  Cargar
-                </Button>
+                {zonasTratadas.length > 0 && (
+                  <Button
+                    type="submit"
+                    className="border p-2 rounded-md hover:bg-gray-500 hover:text-black hover:font-semibold w-full mt-5"
+                  >
+                    Cargar
+                  </Button>
+                )}
               </form>
             </CardContent>
           </Card>
           <Accordion type="single" collapsible className="w-full">
             {turnos.map((turno) => (
               <AccordionItem value={turno.id} key={turno.id}>
-                <AccordionTrigger>Turno: {formatearFecha(turno.dia)}</AccordionTrigger>
+                <AccordionTrigger>
+                  Turno: {formatearFecha(turno.dia)}
+                </AccordionTrigger>
                 <AccordionContent>
                   <p>{turno.observaciones}</p>
                 </AccordionContent>
