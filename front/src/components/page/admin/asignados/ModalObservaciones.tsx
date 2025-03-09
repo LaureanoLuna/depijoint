@@ -18,10 +18,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { format } from "date-fns";
 interface ModalObservacionesProps {
   dni: string;
+  dia:Date;
 }
-export default function ModalObservaciones({ dni }: ModalObservacionesProps) {
+export default function ModalObservaciones({ dni, dia }: ModalObservacionesProps) {
   // Estado para almacenar los turnos y zonas de tratamiento
   const [turnos, setTurnos] = useState<Turno[]>([]);
   const { getTurnosPaciente } = useTurnoAccion();
@@ -34,7 +36,9 @@ export default function ModalObservaciones({ dni }: ModalObservacionesProps) {
   const [observacion, setObservacion] = useState<string>("");
   // Función para obtener las observaciones de un paciente
   const getObservaciones = (dniPaciente: string) => {
-    const t = getTurnosPaciente(dniPaciente);
+    const t = getTurnosPaciente(dniPaciente).filter((x) => x.dia !== format(dia, "yyyy-MM-dd"));
+    console.log();
+    
     if (t) setTurnos(t);
   };
   // Función para obtener las zonas de tratamiento

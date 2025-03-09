@@ -41,7 +41,7 @@ export default function TablaAsignados() {
           </div>
           <p>{`Turno Nº ${asignado.turnoNumero ?? 1}`}</p>
           <div className="grid grid-cols-2 gap-2 items-center">
-            <ModalObservaciones dni={asignado.dni}  />
+            <ModalObservaciones dni={asignado.dni} dia={dia}  />
             <Button
               size="lg"
               variant="delete"
