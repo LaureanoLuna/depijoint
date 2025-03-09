@@ -64,7 +64,7 @@ const useContratacionAccion = () => {
           const zonaHija = zonas.find(z => z.zonaId === id); // Busca la zona hija en las zonas disponibles
           return zonaHija; // Devuelve la zona hija encontrada
         }));
-        return [...zonasHijas, y].filter(Boolean) as Zona[]; // Filtra las zonas hijas que no son undefined y asegura que son de tipo Zona
+        return [...zonasHijas,y].filter(Boolean) as Zona[]; // Filtra las zonas hijas que no son undefined y asegura que son de tipo Zona
       }
       return [y]; // Devuelve la zona en un array si no es de tipo "C"
     }))).flat();

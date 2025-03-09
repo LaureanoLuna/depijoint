@@ -1,9 +1,10 @@
 import { format } from "date-fns";
 import { Asignado } from "../interfaces/asignado";
 import useTurnoAccion from "./useTurnoAccion";
+import { Turno } from "../interfaces/turno";
 
 export default function useAsignadoAccion() {
-  const { getTurnos, setTurnos, cancelarTurno } = useTurnoAccion();
+  const { getTurnos, setTurnos, cancelarTurno, getTurnosTratamiento } = useTurnoAccion();
   const getTurnosAsignados = (colaboradorId: string, dia:Date): Asignado[] => {
     const asignados = localStorage.getItem("asignados");
     return !asignados
@@ -25,7 +26,7 @@ export default function useAsignadoAccion() {
     return turno;
   };
 
-  const asignarTurno = (turno: any, colaborador: string): boolean => {
+  const asignarTurno = (turno: Turno, colaborador: string): boolean => {
     let bool = false;
     let x;
 
@@ -34,8 +35,7 @@ export default function useAsignadoAccion() {
         throw new Error("Faltan datos: turno o colaboradorId");
       }
 
-      const { id, dia, dni, duracion, hora, nombre } = turno;
-
+      const { id, dia, dni, duracion, hora, nombre, contratacion_id  } = turno;
       if ( x = getAsinado(id)) {      
         eliminarAsignacion(x.id)
       }
@@ -43,6 +43,7 @@ export default function useAsignadoAccion() {
       const asignacion: Asignado = {
         id: getAsignados().length.toString(), // Considera usar un ID único real
         turnoId: id,
+        turnoNumero: getTurnosTratamiento(contratacion_id).length ,
         dia: dia,
         nombre: nombre,
         dni: dni,
@@ -66,7 +67,7 @@ export default function useAsignadoAccion() {
     return bool;
   };
 
-  const quitarAsignacion = async (turnoId: string): Promise<boolean> => {
+  const quitarAsignacion = async (turnoId: string): Promise<boolean> => {  
     try {
       const asignados = getAsignados();
       if (!asignados || asignados.length === 0) {

@@ -88,7 +88,7 @@ export default function AddTratamiento({ paciente }: { paciente: Paciente }) {
               </label>
             </div>
           ))}
-        <DialogClose className="w-full">
+        <DialogClose className="w-full" asChild>
 
           <Button
             className="border p-2 rounded-md hover:bg-gray-500 hover:text-black hover:font-semibold w-full mt-5"

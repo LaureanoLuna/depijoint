@@ -1,5 +1,5 @@
 import { estaDisponible } from "../function/funcionesTurnos";
-import { Turno} from "../interfaces/turno";
+import { Turno } from "../interfaces/turno";
 import { Zona } from "../interfaces/zona";
 import useContratacionAccion from "./useContratacionAccion";
 import usePacienteAccion from "./usePacienteAccion";
@@ -28,7 +28,12 @@ const useTurnoAccion = () => {
     };
 
     const getTurnosPaciente = (dni: string): Turno[] => {
-        const turnos = getTurnos().filter((turno) => turno.dni === dni);
+        const turnos = getTurnos().filter((turno) => turno.dni === dni && turno.estado );
+        return turnos;
+    }
+
+    const getTurnosTratamiento = (contratacionId: number): Turno[] => {
+        const turnos = getTurnos().filter((turno) => turno.contratacion_id === contratacionId && turno.estado === false);
         return turnos;
     }
 
@@ -39,7 +44,7 @@ const useTurnoAccion = () => {
      */
     const setTurnos = (turno: Turno): boolean => {
         console.log(turno);
-        
+
         try {
             const turnos = getTurnos();
             turnos.push(turno);
@@ -62,7 +67,7 @@ const useTurnoAccion = () => {
      * @returns Una promesa que resuelve a true si se agregó el turno, false en caso de error.
      */
     const agregarTurno = async (data: any): Promise<boolean> => {
-        
+
         try {
             const contratacion = await getContratacion(data.dni);
             if (!contratacion) {
@@ -83,7 +88,7 @@ const useTurnoAccion = () => {
                 0
             );
 
-            
+
 
             const turnoNuevo: Turno = {
                 id: getTurnos().length.toFixed(), // Considerar generar un ID único dinámicamente
@@ -98,6 +103,9 @@ const useTurnoAccion = () => {
                 fecha_creacion: new Date(),
 
             };
+
+            console.log(turnoNuevo);
+            
 
             if (!validaTurno(turnoNuevo)) return false;
 
@@ -151,6 +159,7 @@ const useTurnoAccion = () => {
         getTurno,
         getTurnos,
         getTurnosPaciente,
+        getTurnosTratamiento,
         setTurnos
     };
 };
