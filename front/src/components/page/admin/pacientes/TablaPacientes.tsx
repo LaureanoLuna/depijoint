@@ -4,12 +4,10 @@ import { Paciente } from "@/assets/interfaces/paciente";
 import { ColumnDef } from "@tanstack/react-table";
 import AddPaciente from "./AddPaciente";
 import { Tabla } from "@/assets/components/dataTable/Tabla";
-import GrupoBotones from "@/assets/components/GrupoBotones";
-import { FaCheck, FaEye, FaPencilAlt, FaRegTimesCircle } from "react-icons/fa";
+import { FaEye } from "react-icons/fa";
 import { InputCheckBox } from "@/assets/components/InputCheckBox";
 import { usePacienteContext } from "./context/PacienteContext";
 import {
-  HiOutlineClipboardCopy,
   HiOutlineDownload,
   HiOutlineExclamationCircle,
 } from "react-icons/hi";
@@ -19,7 +17,7 @@ import { Link } from "react-router-dom";
 import AddTratamiento from "./modals/AddTratamiento";
 
 export default function TablaPacientes() {
-  const { p, conDesabilitado, handleConDeshabilitado, handleEstadoPaciente } =
+  const { p, conDesabilitado, handleConDeshabilitado} =
     usePacienteContext();
 
   const Columna: ColumnDef<Paciente>[] = [

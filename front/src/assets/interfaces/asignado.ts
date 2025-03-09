@@ -1,6 +1,7 @@
 export interface Asignado {
   id: string;
   turnoId: string;
+  turnoNumero: number;
   dia:string;
   nombre :string;
   dni:string;
