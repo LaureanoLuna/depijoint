@@ -1,6 +1,6 @@
 import ModalComponent from "@/assets/components/ModalComponent";
 import useZonaAccion from "@/assets/hooks/useZonaAccion";
-import { Tratamiento } from "@/assets/interfaces/contratacion";
+import { Tratamiento } from "@/assets/interfaces/tratamiento";
 import { Paciente } from "@/assets/interfaces/paciente";
 import { Zona } from "@/assets/interfaces/zona";
 import { Checkbox } from "@/components/ui/checkbox";

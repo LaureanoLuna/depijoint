@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Tratamiento } from "../interfaces/contratacion";
+import { Tratamiento } from "../interfaces/tratamiento";
 import { Zona } from "../interfaces/zona";
 import { calcularTiempo } from "../function/funcionesZonas";
 import useZonaAccion from "./useZonaAccion";

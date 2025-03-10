@@ -2,7 +2,7 @@ import { Paciente } from "@/assets/interfaces/paciente";
 import { PersonaSearch } from "@/assets/interfaces/persona";
 import { useState } from "react";
 import useContratacionAccion from "./useContratacionAccion";
-import { Tratamiento } from "../interfaces/contratacion";
+import { Tratamiento } from "../interfaces/tratamiento";
 
 export interface InputPacienteInterface extends Paciente {
   file?: File;

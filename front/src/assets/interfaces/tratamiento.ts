@@ -1,5 +1,4 @@
-import { Zona } from "./zona";
-
+import TratamientoItems from "./tratamientoItems";
 export interface Tratamiento {
   id: number;
   fechaContratacion: string;
@@ -8,9 +7,7 @@ export interface Tratamiento {
   estado: boolean;
   descripcion?: string;
   pacienteDni: string;
-  //precioTotal: number;
-  //tiempoSesion: number;
-  zonas: Zona[];
+  zonas: TratamientoItems[];
 }
 
 

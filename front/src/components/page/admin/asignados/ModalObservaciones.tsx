@@ -53,11 +53,10 @@ export default function ModalObservaciones({ dni, dia }: ModalObservacionesProps
   };
   // Efecto para cargar turnos y zonas al montar el componente
   useEffect(() => {
-    console.log("re render");
-
     getObservaciones(dni);
     getZonas();
   }, [dni]);
+  
   return (
     <ModalComponent
       botonText={<FaCheck />}

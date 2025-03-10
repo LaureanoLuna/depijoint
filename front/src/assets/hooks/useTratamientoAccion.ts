@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Tratamiento } from '../interfaces/contratacion';
+import { Tratamiento } from '../interfaces/tratamiento';
 import { Zona } from '../interfaces/zona';
 import useZonaAccion from './useZonaAccion';
 

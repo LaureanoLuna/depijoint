@@ -32,6 +32,7 @@ export interface Turno {
     nombre: string;  //Nombre del Paciente 
     estado: boolean; // ID del estado del turno    
     observaciones?: string; // Observaciones adicionales (opcional)
+    colaboradorId?:string;
     fecha_creacion: Date; // Fecha de creación del turno (por ejemplo, '2023-10-30T12:00:00Z')
     fecha_actualizacion?: Date; // Fecha de la última actualización del turno
 }

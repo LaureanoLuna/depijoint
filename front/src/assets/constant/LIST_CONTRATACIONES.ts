@@ -1,4 +1,4 @@
-import { Tratamiento } from "../interfaces/contratacion";
+import { Tratamiento } from "../interfaces/tratamiento";
 
 export const LIST_CONTRATACIONES: Tratamiento[] = [
   {
